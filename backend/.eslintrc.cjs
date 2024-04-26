@@ -1,20 +1,19 @@
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
+  parserOptions: {
+    sourceType: 'module',
+  },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
+    'plugin:import/recommended',
     'plugin:prettier/recommended',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
     indent: ['error', 2],
     semi: ['error', 'always'],
     'prefer-const': 'error',
@@ -41,4 +40,4 @@ module.exports = {
     'spaced-comment': ['error', 'always'],
     'unicode-bom': ['error', 'never'],
   },
-}
+};
