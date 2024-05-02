@@ -5,6 +5,7 @@ import Search from '@/pages/Search';
 import CreateReview from '@/pages/CreateReview';
 import ReviewList from '@/pages/ReviewList';
 import MyPage from '@/pages/MyPage';
+import Login from '@/pages/Login';
 
 const routerData = [
   {
@@ -26,6 +27,10 @@ const routerData = [
   {
     path: '/mypage',
     element: <MyPage />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
 ];
 
