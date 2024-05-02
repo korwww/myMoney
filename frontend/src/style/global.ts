@@ -29,6 +29,7 @@ export const GlobalStyle = createGlobalStyle`
   dd {
     margin-block-start: 0;
     margin-block-end: 0;
+    color: #17171B;
   }
 
   /* list를 role값으로 갖는 ul, ol 요소의 기본 목록 스타일을 제거합니다. */

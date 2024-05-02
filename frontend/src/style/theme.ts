@@ -3,6 +3,7 @@ export type Button = 'large' | 'medium' | 'small';
 export type FontSize = 'small' | 'medium' | 'large';
 export type FontWeight = 'bold' | 'regular' | 'semiBold';
 export type Heading = 'small' | 'medium' | 'large' | 'xLarge';
+export type LayoutWidth = 'default' | 'mobileMax' | 'adminMin';
 export type ColorKey =
   | 'primary'
   | 'secondary'
@@ -19,11 +20,11 @@ interface Theme {
   };
   // 제목 크기
   heading: {
-    [key in Heading]: string;
+    [key in Heading]: { fontSize: string };
   };
   // 본문 크기
   text: {
-    [key in FontSize]: string;
+    [key in FontSize]: { fontSize: string };
   };
   // 텍스트 굵기
   fontWeight: {
@@ -46,10 +47,15 @@ interface Theme {
     };
   };
   // 본문 좌우 여백
-  contentPadding: string;
+  padding: { mainContent: string };
   // 모서리 둥근 정도
-  borderRadius: string;
-  // flex
+  borderRadius: { default: string };
+  // 레이아웃
+  layout: {
+    width: {
+      [key in LayoutWidth]: string;
+    };
+  };
 }
 
 export const theme: Theme = {
@@ -63,15 +69,15 @@ export const theme: Theme = {
     background: '#F3F3F3',
   },
   heading: {
-    xLarge: '32px',
-    large: '28px',
-    medium: '20px',
-    small: '18px',
+    xLarge: { fontSize: '32px' },
+    large: { fontSize: '28px' },
+    medium: { fontSize: '20px' },
+    small: { fontSize: '18px' },
   },
   text: {
-    large: '16px',
-    medium: '14px',
-    small: '12px',
+    large: { fontSize: '16px' },
+    medium: { fontSize: '14px' },
+    small: { fontSize: '12px' },
   },
   fontWeight: {
     bold: 700,
@@ -114,6 +120,16 @@ export const theme: Theme = {
       color: '#59B05F',
     },
   },
-  contentPadding: '0 16px',
-  borderRadius: '5px',
+  padding: {
+    mainContent: '0 16px',
+  },
+  borderRadius: { default: '5px' },
+
+  layout: {
+    width: {
+      default: '390px',
+      mobileMax: '767px',
+      adminMin: '768px',
+    },
+  },
 };
