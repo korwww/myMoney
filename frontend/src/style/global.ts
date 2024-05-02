@@ -1,12 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 
-
 export const GlobalStyle = createGlobalStyle`
   /* box-sizing 규칙을 명시합니다. */
   *,
   *::before,
   *::after {
     box-sizing: border-box;
+    font-family: "NotoSansKR", "Noto Sans", sans-serif;
   }
 
   /* 폰트 크기의 팽창을 방지합니다. */
@@ -92,4 +92,5 @@ export const GlobalStyle = createGlobalStyle`
   :target {
     scroll-margin-block: 5ex;
   }
+
 `;
