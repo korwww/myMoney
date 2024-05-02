@@ -1,3 +1,12 @@
+---
+name: bug
+about: Describe this issue template's purpose here.
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 ## 개요 및 증상
 
 - 버그 발생 일시:
