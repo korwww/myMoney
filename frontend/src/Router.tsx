@@ -32,7 +32,7 @@ const routerData = [
 export const router = createBrowserRouter(
   routerData.map(({ path, element }) => ({
     path,
-    element: <Layout>{element}</Layout>,
+    element,
   })),
 );
 

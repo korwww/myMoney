@@ -1,5 +1,7 @@
+import Layout from "@/layout/Layout";
+
 function MyPage() {
-  return <div>MyPage</div>;
+  return <Layout showBackButton={true} title="마이페이지">MyPage</Layout>;
 }
 
 export default MyPage;
