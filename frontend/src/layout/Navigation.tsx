@@ -1,11 +1,12 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
 import { User } from '@/assets/icons/User.tsx';
 import { MagnifyingGlass } from '@/assets/icons/MagnifyingGlass.tsx';
 import { Plus } from '@/assets/icons/Plus.tsx';
 import { Archive } from '@/assets/icons/Archive.tsx';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { House } from '@/assets/icons/House';
-import { useState } from 'react';
 
 interface NavItem {
   text?: string;

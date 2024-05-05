@@ -2,6 +2,8 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import AlertText from '@/components/common/AlertText';
 import Checkbox from './Checkbox';
+import Button from '../common/Button';
+import { IUserLogin } from '@/models/user.model';
 import {
   FindPassword,
   FormStyle,
@@ -9,20 +11,31 @@ import {
   InputGroup,
   OptionStyle,
 } from './LoginForm.style';
-import { IUser } from '@/models/user.model';
 
 interface LoginFormProps {
   onSubmit: () => void;
-  register: UseFormRegister<IUser>;
-  errors: FieldErrors<IUser>;
+  register: UseFormRegister<IUserLogin>;
+  errors: FieldErrors<IUserLogin>;
 }
 
 function LoginForm({ onSubmit, register, errors }: LoginFormProps) {
   return (
     <FormStyle onSubmit={onSubmit}>
       <InputGroup>
-        <input type="email" placeholder="이메일을 입력해주세요" />
-        <input type="password" placeholder="비밀번호를 입력해주세요" />
+        <fieldset>
+          <input
+            {...register('email', { required: true })}
+            type="email"
+            placeholder="이메일을 입력해주세요"
+          />
+        </fieldset>
+        <fieldset>
+          <input
+            {...register('password', { required: true })}
+            type="password"
+            placeholder="비밀번호를 입력해주세요"
+          />
+        </fieldset>
       </InputGroup>
 
       <OptionStyle>
@@ -34,8 +47,9 @@ function LoginForm({ onSubmit, register, errors }: LoginFormProps) {
           <p>비밀번호 찾기</p>
         </FindPassword>
       </OptionStyle>
-
-      <button type="submit">로그인</button>
+      <Button $fullWidth type="submit" scheme="primary" size="large">
+        로그인
+      </Button>
       <AlertText size="small">오류메세지</AlertText>
     </FormStyle>
   );

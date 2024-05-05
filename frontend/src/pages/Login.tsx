@@ -1,16 +1,16 @@
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
-import { IUser } from '@/models/user.model';
 import LoginForm from '@/components/Login/LoginForm';
 import AuthOptions from '@/components/common/AuthOptions';
+import { IUserLogin } from '@/models/user.model';
 
 function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IUser>();
+  } = useForm<IUserLogin>();
 
   const onSubmit = handleSubmit(() => {});
   return (

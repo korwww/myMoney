@@ -1,11 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from '@/layout/Layout';
+
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import CreateReview from '@/pages/CreateReview';
 import ReviewList from '@/pages/ReviewList';
 import MyPage from '@/pages/MyPage';
 import Login from '@/pages/Login';
+import JoinStep1Email from '@/pages/Join/JoinStep1Email';
+import JoinStep2Nickname from '@/pages/Join/JoinStep2Nickname';
+import JoinStep3Password from '@/pages/Join/JoinStep3Password';
+import ResetPassword from '@/pages/ResetPassword';
 
 const routerData = [
   {
@@ -32,12 +36,29 @@ const routerData = [
     path: '/login',
     element: <Login />,
   },
+  { path: '/join', element: <JoinStep1Email /> },
+  {
+    path: '/join/step1',
+    element: <JoinStep1Email />,
+  },
+  {
+    path: '/join/step2',
+    element: <JoinStep2Nickname />,
+  },
+  {
+    path: '/join/step3',
+    element: <JoinStep3Password />,
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPassword />,
+  },
 ];
 
 export const router = createBrowserRouter(
   routerData.map(({ path, element }) => ({
     path,
-    element: <Layout>{element}</Layout>,
+    element,
   })),
 );
 

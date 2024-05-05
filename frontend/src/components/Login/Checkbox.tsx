@@ -1,6 +1,6 @@
-import { Checked } from '@/assets/icons/checked';
-import React from 'react';
 import styled from 'styled-components';
+
+import { Checked } from '@/assets/icons/Checked';
 
 function Checkbox() {
   return (
@@ -36,6 +36,7 @@ const CheckboxLabel = styled.label`
   border: 1px solid ${({ theme }) => theme.color.border};
   border-radius: ${({ theme }) => theme.borderRadius.default};
 `;
+
 const Icon = styled.div`
   display: flex;
   justify-content: center;

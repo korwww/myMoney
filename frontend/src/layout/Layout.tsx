@@ -14,8 +14,7 @@ function Layout({ children }: LayoutProps) {
 
 const Main = styled.div`
   /* max-width: 768px; */
-  /* width: 390px; */
-  /* margin: 0 auto; */
-  padding: ${({ theme }) => theme.contentPadding};
+  width: 390px;
+  margin: 0 auto;
 `;
 export default Layout;
