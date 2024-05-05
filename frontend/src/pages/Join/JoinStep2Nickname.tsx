@@ -34,7 +34,7 @@ const JoinStep2Nickname = () => {
   });
 
   return (
-    <Layout>
+    <Layout title="회원가입" showBackButton>
       <JoinTemplate
         current={2}
         title="닉네임을\n입력해주세요."

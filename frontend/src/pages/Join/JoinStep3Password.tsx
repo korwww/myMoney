@@ -69,9 +69,9 @@ const JoinStep3Password = () => {
     // 회원가입 로직
     // 로그인페이지로 이동
   });
-  console.log();
+
   return (
-    <Layout>
+    <Layout title="회원가입" showBackButton>
       <JoinTemplate
         current={3}
         title="비밀번호를\n입력해주세요."

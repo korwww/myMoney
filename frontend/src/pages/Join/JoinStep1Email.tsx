@@ -8,6 +8,7 @@ import AuthOptions from '@/components/common/AuthOptions';
 import AlertText from '@/components/common/AlertText';
 import { IUserRegistration } from '@/models/user.model';
 import { useNavigate } from 'react-router-dom';
+import { VALIDATE } from '@/constance/validate';
 
 function JoinStep1Email() {
   const navigate = useNavigate();
@@ -15,14 +16,22 @@ function JoinStep1Email() {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<Pick<IUserRegistration, 'email'>>();
+  } = useForm<Pick<IUserRegistration, 'email'>>({ mode: 'onChange' });
+
+  const emailValidation = {
+    required: '이메일을 입력해주세요',
+    pattern: {
+      value: VALIDATE.EMAIL_REGEX,
+      message: '올바른 이메일 형식이 아닙니다.',
+    },
+  };
 
   const onSubmit = handleSubmit(() => {
     // 다음 단계로 이동, zustand에 유저 정보 저장
     // navigate('/join/step2');
   });
   return (
-    <Layout>
+    <Layout title="회원가입" showBackButton>
       <JoinTemplate
         current={1}
         title="이메일을\n입력해주세요."
@@ -31,8 +40,7 @@ function JoinStep1Email() {
       >
         <fieldset>
           <input
-            {...register('email', { required: '이메일을 입력해주세요' })}
-            type="email"
+            {...register('email', emailValidation)}
             placeholder="이메일을 입력해주세요"
           />
           {errors.email && (

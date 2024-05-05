@@ -1,4 +1,5 @@
 export const VALIDATE = {
+  EMAIL_REGEX: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
   PASSWORD_REGEX:
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%])(?!.*(.)\1\1)[A-Za-z\d!@#$%]{6,12}$/,
   BANNED_WORDS: [
