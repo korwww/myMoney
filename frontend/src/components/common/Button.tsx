@@ -9,7 +9,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   scheme: ButtonScheme; // 버튼 테마 (primary, disabled, transparent, border)
   disabled?: boolean; // 비활성화 여부
   isLoading?: boolean; // 로딩 상태 여부
-  fullWidth?: boolean;
+  $fullWidth?: boolean;
 }
 
 // 버튼 컴포넌트 정의
@@ -19,7 +19,7 @@ export default function Button({
   scheme,
   disabled,
   isLoading,
-  fullWidth = false,
+  $fullWidth = false,
   ...props
 }: Props) {
   return (
@@ -28,7 +28,7 @@ export default function Button({
       scheme={scheme}
       disabled={disabled}
       isLoading={isLoading}
-      fullWidth={fullWidth}
+      $fullWidth={$fullWidth}
       {...props}
     >
       {children}
@@ -38,7 +38,7 @@ export default function Button({
 
 // 버튼 스타일 정의
 const ButtonStyle = styled.button<Omit<Props, 'children'>>`
-  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
+  width: ${({ $fullWidth }) => ($fullWidth ? '100%' : 'auto')};
 
   // 버튼 텍스트 스타일
   font-size: ${({ theme, size }) => theme.button[size].fontSize};
