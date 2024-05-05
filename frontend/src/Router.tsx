@@ -39,7 +39,7 @@ const routerData = [
     path: '/login',
     element: <Login />,
   },
-  { path: '/join', element: <JoinStep1Email />, isAdmin: false },
+  { path: '/join', element: <JoinStep1Email /> },
   {
     path: '/join/step1',
     element: <JoinStep1Email />,
