@@ -1,21 +1,35 @@
 import styled from 'styled-components';
 
 interface IconProps {
-  size: number;
+  width: number;
+  height?: number;
   icon: JSX.Element;
+  fill?: string;
+  $iconSize?: number;
 }
 
-function Icon({ size, icon }: IconProps) {
-  return <IconStyle size={size}>{icon}</IconStyle>;
+function Icon({ width, height, icon, fill, $iconSize }: IconProps) {
+  return (
+    <IconStyle width={width} height={height} fill={fill} $iconSize={$iconSize}>
+      {icon}
+    </IconStyle>
+  );
 }
 
-const IconStyle = styled.div<{ size: number }>`
+const IconStyle = styled.div<Omit<IconProps, 'icon'>>`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: ${({ width }) => width}px;
+  height: ${({ width, height }) => (height ? height : width)}px;
   svg {
-    width: ${({ size }) => size}px;
-    height: ${({ size }) => size}px;
+    width: ${({ $iconSize }) => ($iconSize ? `${$iconSize}px` : 'inherit')};
+    height: ${({ $iconSize }) => ($iconSize ? `${$iconSize}px` : 'inherit')};
+    fill: ${({ theme, fill }) => (fill ? fill : theme.color.darkGray)};
+    transition: all 0.3s;
+    path {
+      fill: inherit;
+    }
   }
 `;
 
