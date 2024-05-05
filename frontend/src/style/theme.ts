@@ -1,5 +1,5 @@
 export type ButtonScheme = 'primary' | 'disabled' | 'transparent' | 'border';
-export type Button = 'large' | 'medium' | 'small';
+export type ButtonSize = 'large' | 'medium' | 'small';
 export type FontSize = 'small' | 'medium' | 'large';
 export type FontWeight = 'bold' | 'regular' | 'semiBold';
 export type Heading = 'small' | 'medium' | 'large' | 'xLarge';
@@ -32,7 +32,7 @@ interface Theme {
   };
   // 버튼 크기
   button: {
-    [key in Button]: {
+    [key in ButtonSize]: {
       height: string;
       padding: string;
       fontSize: string;
