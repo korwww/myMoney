@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const InputGroup = styled.div`
+export const InputGroup = styled.div<{ $isUserLoginPage: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-bottom: 6px;
+  margin-bottom: ${({ $isUserLoginPage }) =>
+    !$isUserLoginPage ? '26px' : '6px'};
   input {
     padding: 12px;
     border: 1px solid ${({ theme }) => theme.color.border};

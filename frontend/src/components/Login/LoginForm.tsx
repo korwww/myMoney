@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import AlertText from '@/components/common/AlertText';
@@ -19,9 +20,11 @@ interface LoginFormProps {
 }
 
 function LoginForm({ onSubmit, register, errors }: LoginFormProps) {
+  const { pathname } = useLocation();
+  const $isUserLoginPage = pathname === '/login';
   return (
     <FormStyle onSubmit={onSubmit}>
-      <InputGroup>
+      <InputGroup $isUserLoginPage={$isUserLoginPage}>
         <fieldset>
           <input
             {...register('email', { required: true })}
@@ -38,15 +41,18 @@ function LoginForm({ onSubmit, register, errors }: LoginFormProps) {
         </fieldset>
       </InputGroup>
 
-      <OptionStyle>
-        <IDCheckbox>
-          <Checkbox />
-          <p>아이디저장</p>
-        </IDCheckbox>
-        <FindPassword to="/password-reset">
-          <p>비밀번호 찾기</p>
-        </FindPassword>
-      </OptionStyle>
+      {$isUserLoginPage && (
+        <OptionStyle>
+          <IDCheckbox>
+            <Checkbox />
+            <p>아이디저장</p>
+          </IDCheckbox>
+          <FindPassword to="/password-reset">
+            <p>비밀번호 찾기</p>
+          </FindPassword>
+        </OptionStyle>
+      )}
+
       <Button $fullWidth type="submit" scheme="primary" size="large">
         로그인
       </Button>
