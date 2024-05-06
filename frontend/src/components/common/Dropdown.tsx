@@ -61,8 +61,7 @@ const DropdownStyle = styled.div<DropdownStyleProps>`
 
   .panel {
     position: absolute;
-    top: 40px;
-    /* right: 0; */
+    right: 0;
     background: #fff;
     border: 1px solid ${({ theme }) => theme.color.border};
     border-radius: ${({ theme }) => theme.borderRadius.default};
@@ -70,8 +69,10 @@ const DropdownStyle = styled.div<DropdownStyleProps>`
 
     ul {
       li {
+        width: 90px;
         display: flex;
         align-items: center;
+        justify-content: center;
         border-bottom: 1px solid ${({ theme }) => theme.color.border};
         padding: 6px 16px;
         font-size: ${({ theme }) => theme.text.medium.fontSize};
@@ -86,17 +87,17 @@ const DropdownStyle = styled.div<DropdownStyleProps>`
             fill: ${({ theme }) => theme.color.darkGray};
           }
         }
-      }
 
-      li:last-child {
-        border-bottom: none;
-      }
+        &:last-child {
+          border-bottom: none;
+        }
 
-      li:hover {
-        color: ${({ theme }) => theme.color.secondary};
-        svg {
-          path {
-            fill: ${({ theme }) => theme.color.secondary};
+        &:hover {
+          color: ${({ theme }) => theme.color.secondary};
+          svg {
+            path {
+              fill: ${({ theme }) => theme.color.secondary};
+            }
           }
         }
       }
