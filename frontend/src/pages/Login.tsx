@@ -19,7 +19,7 @@ function Login() {
       <LoginForm register={register} onSubmit={onSubmit} errors={errors} />
       <AuthOptions
         description="아직 계정이 없으신가요?"
-        linkPath="/join"
+        linkPath="/join/step1"
         linkText="회원가입"
       />
     </Container>
