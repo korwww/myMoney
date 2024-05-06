@@ -26,6 +26,7 @@ export const FormStyle = styled.form`
 export const OptionStyle = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 27px;
   font-size: ${({ theme }) => theme.text['small'].fontSize};
 `;
@@ -35,6 +36,7 @@ export const IDCheckbox = styled.div`
   align-items: center;
   gap: 4px;
   color: ${({ theme }) => theme.color.darkGray};
+  cursor: pointer;
 `;
 
 export const FindPassword = styled(Link)`

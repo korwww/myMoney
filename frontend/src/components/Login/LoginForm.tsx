@@ -4,6 +4,7 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import AlertText from '@/components/common/AlertText';
 import Checkbox from './Checkbox';
 import Button from '../common/Button';
+import InputPassword from '../common/InputPassword';
 import { IUserLogin } from '@/models/user.model';
 import {
   FindPassword,
@@ -17,11 +18,20 @@ interface LoginFormProps {
   onSubmit: () => void;
   register: UseFormRegister<IUserLogin>;
   errors: FieldErrors<IUserLogin>;
+  checkedRememberEmail: boolean;
+  toggleCheckedRememberEmail: () => void;
 }
 
-function LoginForm({ onSubmit, register, errors }: LoginFormProps) {
+function LoginForm({
+  checkedRememberEmail,
+  toggleCheckedRememberEmail,
+  onSubmit,
+  register,
+  errors,
+}: LoginFormProps) {
   const { pathname } = useLocation();
   const $isUserLoginPage = pathname === '/login';
+
   return (
     <FormStyle onSubmit={onSubmit}>
       <InputGroup $isUserLoginPage={$isUserLoginPage}>
@@ -33,9 +43,8 @@ function LoginForm({ onSubmit, register, errors }: LoginFormProps) {
           />
         </fieldset>
         <fieldset>
-          <input
+          <InputPassword
             {...register('password', { required: true })}
-            type="password"
             placeholder="비밀번호를 입력해주세요"
           />
         </fieldset>
@@ -44,8 +53,11 @@ function LoginForm({ onSubmit, register, errors }: LoginFormProps) {
       {$isUserLoginPage && (
         <OptionStyle>
           <IDCheckbox>
-            <Checkbox />
-            <p>아이디저장</p>
+            <Checkbox
+              checkedRememberEmail={checkedRememberEmail}
+              toggleCheckedRememberEmail={toggleCheckedRememberEmail}
+            />
+            <p onClick={toggleCheckedRememberEmail}> 아이디저장</p>
           </IDCheckbox>
           <FindPassword to="/password-reset">
             <p>비밀번호 찾기</p>
