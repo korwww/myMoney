@@ -39,6 +39,7 @@ const Container = styled.div`
   justify-content: center;
   border-bottom: 1px solid ${({ theme }) => theme.color.background};
   position: relative;
+  background-color: white;
 `;
 
 const Icon = styled.div`
