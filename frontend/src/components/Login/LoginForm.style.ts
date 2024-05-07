@@ -6,16 +6,6 @@ export const InputGroup = styled.div<{ $isUserLoginPage: boolean }>`
   gap: 15px;
   margin-bottom: ${({ $isUserLoginPage }) =>
     !$isUserLoginPage ? '26px' : '6px'};
-  input {
-    padding: 12px;
-    border: 1px solid ${({ theme }) => theme.color.border};
-    border-radius: ${({ theme }) => theme.borderRadius.default};
-    font-size: ${({ theme }) => theme.text['medium'].fontSize};
-    &:focus {
-      outline: none;
-      border: 1px solid ${({ theme }) => theme.color.primary};
-    }
-  }
 `;
 
 export const FormStyle = styled.form`
