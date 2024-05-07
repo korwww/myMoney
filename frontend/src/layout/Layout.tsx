@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 import Navigation from './Navigation';
 import Header from './Header';
 
@@ -11,10 +13,15 @@ function Layout({ children, showBackButton, title }: LayoutProps) {
   return (
     <div>
       <Header title={title} showBackButton={showBackButton} />
-      {children}
+      <Main id="main">{children}</Main>
       <Navigation />
     </div>
   );
 }
 
+const Main = styled.div`
+  /* max-width: 768px; */
+  width: 390px;
+  margin: 0 auto;
+`;
 export default Layout;

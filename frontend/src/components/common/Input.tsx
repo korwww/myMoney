@@ -74,8 +74,7 @@ const IconButton = styled.button`
   position: absolute;
   right: 10px;
   top: 50%;
-  transform: traslateY(-50%);
-  top: 0;
+  transform: translateY(-50%);
   border: none;
   background-color: transparent;
   cursor: pointer;
