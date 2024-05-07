@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { User } from '@/assets/icons/User.tsx';
@@ -42,29 +42,16 @@ export default function Navigation() {
     },
   ];
 
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-
-  const handleClick = (index: number) => {
-    setActiveIndex(index);
-  };
+  const location = useLocation();
 
   return (
     <NavStyle>
       <div className="navigation">
         {NAV_ITEMS.map((item, index) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={
-              index === 2
-                ? 'greenBg'
-                : activeIndex === index
-                  ? 'IconBox activeIcon'
-                  : 'IconBox'
-            }
-            onClick={() => handleClick(index)}
-          >
-            <Icon>{item.icon}</Icon>
+          <Link key={item.path} to={item.path}>
+            <Icon className={index === 2 ? 'greenBg' : location.pathname === item.path ? 'active' : ''}>
+              {item.icon}
+            </Icon>
             {item.text && <span>{item.text}</span>}
           </Link>
         ))}
@@ -87,7 +74,7 @@ const NavStyle = styled.div`
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 
-    .IconBox {
+    a {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -99,8 +86,9 @@ const NavStyle = styled.div`
         color: ${({ theme }) => theme.color.darkGray};
       }
     }
+  }
 
-    .greenBg {
+  .greenBg {
       display: flex;
       width: 50px;
       height: 50px;
@@ -117,20 +105,24 @@ const NavStyle = styled.div`
         }
       }
     }
+`;
 
-    .activeIcon {
+const Icon = styled.div`
+  display: flex;
+  &.active {
+    color: ${({ theme }) => theme.color.primary};
+
+    svg {
       path {
         fill: ${({ theme }) => theme.color.primary};
       }
     }
   }
-`;
-
-const Icon = styled.div`
-  display: flex;
 
   svg {
     width: 25px;
     height: 25px;
   }
 `;
+
+
