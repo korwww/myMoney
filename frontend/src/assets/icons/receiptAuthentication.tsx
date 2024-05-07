@@ -1,4 +1,4 @@
-export function ReceiptAuthentication() {
+export function receiptAuthentication() {
   return (
     <svg
       width="22"
