@@ -9,19 +9,16 @@ type TinputType = 'text' | 'email' | 'password' | 'number';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
-  inputType: TinputType;
-}
-
-interface IinputText extends React.InputHTMLAttributes<HTMLInputElement> {
-  isPassword: TinputType;
+  $inputType: TinputType;
 }
 
 const Input = React.forwardRef(
   (
-    { placeholder, inputType, onChange, ...props }: Props,
+    { placeholder, $inputType, onChange, ...props }: Props,
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
-    const [inputTypeState, setInputTypeState] = useState<TinputType>(inputType);
+    const [inputTypeState, setInputTypeState] =
+      useState<TinputType>($inputType);
 
     const handleTogglePasswordType = () => {
       if (inputTypeState === 'password') {
@@ -38,10 +35,10 @@ const Input = React.forwardRef(
           ref={ref}
           type={inputTypeState}
           onChange={onChange}
-          isPassword={inputType}
+          $inputType={$inputType}
           {...props}
         />
-        {inputType === 'password' && (
+        {$inputType === 'password' && (
           <IconButton type="button" onClick={handleTogglePasswordType}>
             <Icon
               fill="#aba7af"
@@ -61,10 +58,10 @@ const InputStyle = styled.div`
   align-items: center;
 `;
 
-const InputTextStyle = styled.input<IinputText>`
+const InputTextStyle = styled.input<Props>`
   padding: 0.25rem 0.75rem;
-  padding-right: ${({ isPassword }) =>
-    isPassword === 'password' ? '42px' : '0px'};
+  padding-right: ${({ $inputType }) =>
+    $inputType === 'password' ? '42px' : '0px'};
   border: 1px solid ${({ theme }) => theme.color.border};
   border-radius: ${({ theme }) => theme.borderRadius.default};
   font-size: 1rem;
