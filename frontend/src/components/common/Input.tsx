@@ -1,7 +1,9 @@
-import { EyeClosed } from '@/assets/icons/EyeClosed';
-import { Eye } from '@/assets/icons/Eye';
 import React, { ForwardedRef, useState } from 'react';
 import styled from 'styled-components';
+
+import { EyeClosed } from '@/assets/icons/EyeClosed';
+import { Eye } from '@/assets/icons/Eye';
+import Icon from './Icon';
 
 type TinputType = 'text' | 'email' | 'password' | 'number';
 
@@ -74,7 +76,8 @@ const InputTextStyle = styled.input<IinputText>`
 const IconButton = styled.button`
   position: absolute;
   right: 10px;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
   border: none;
   background-color: transparent;
   cursor: pointer;

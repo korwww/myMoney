@@ -22,12 +22,12 @@ function JoinTemplate({
   onSubmit,
 }: JoinTemplateProps) {
   return (
-    <div>
+    <>
       <ProgressBar total={TOTAL_STEP} current={current} />
       <Inner>
         <TitleWrapper>
-          {title.split('\\n').map((text) => (
-            <Title>{text}</Title>
+          {title.split('\\n').map((text, idx) => (
+            <Title key={idx}>{text}</Title>
           ))}
         </TitleWrapper>
 
@@ -39,20 +39,19 @@ function JoinTemplate({
           {children}
         </JoinForm>
       </Inner>
-    </div>
+    </>
   );
 }
-const TitleWrapper = styled.div`
+export const TitleWrapper = styled.div`
   padding-top: 100px;
   margin-bottom: 35px;
 `;
-const Title = styled.h1`
-  width: 160px;
+export const Title = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
   font-size: ${({ theme }) => theme.heading['large'].fontSize};
   line-height: 1.2;
 `;
-const Inner = styled.div`
+export const Inner = styled.div`
   padding: ${({ theme }) => theme.padding.mainContent};
 `;
 export default JoinTemplate;

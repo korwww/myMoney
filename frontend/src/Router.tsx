@@ -9,7 +9,6 @@ import Login from '@/pages/Login';
 import JoinStep1Email from '@/pages/Join/JoinStep1Email';
 import JoinStep2Nickname from '@/pages/Join/JoinStep2Nickname';
 import JoinStep3Password from '@/pages/Join/JoinStep3Password';
-import ResetPassword from '@/pages/ResetPassword';
 import AdminLogin from '@/pages/Admin/AdminLogin';
 import ReportedUsersDashboard from '@/pages/Admin/ReportedUsersDashboard';
 import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard';
@@ -39,7 +38,6 @@ const routerData = [
     path: '/login',
     element: <Login />,
   },
-  { path: '/join', element: <JoinStep1Email /> },
   {
     path: '/join/step1',
     element: <JoinStep1Email />,
@@ -51,10 +49,6 @@ const routerData = [
   {
     path: '/join/step3',
     element: <JoinStep3Password />,
-  },
-  {
-    path: '/reset-password',
-    element: <ResetPassword />,
   },
   {
     path: '/myMoney-admin',

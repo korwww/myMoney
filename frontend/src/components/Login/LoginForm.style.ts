@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const InputGroup = styled.div<{ $isUserLoginPage: boolean }>`
@@ -39,7 +38,8 @@ export const IDCheckbox = styled.div`
   cursor: pointer;
 `;
 
-export const FindPassword = styled(Link)`
+export const FindPassword = styled.p`
   text-decoration: none;
   color: ${({ theme }) => theme.color.darkGray};
+  cursor: pointer;
 `;
