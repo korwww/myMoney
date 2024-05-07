@@ -37,7 +37,7 @@ function LoginForm({
       <InputGroup $isUserLoginPage={$isUserLoginPage}>
         <fieldset>
           <Input
-            inputType="text"
+            $inputType="text"
             {...register('email', { required: true })}
             type="email"
             placeholder="이메일을 입력해주세요"
@@ -45,7 +45,7 @@ function LoginForm({
         </fieldset>
         <fieldset>
           <Input
-            inputType="text"
+            $inputType="password"
             {...register('password', { required: true })}
             placeholder="비밀번호를 입력해주세요"
           />
