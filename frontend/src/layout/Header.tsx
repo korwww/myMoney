@@ -8,30 +8,29 @@ interface HeaderProps {
   className?: string;
 }
 
-export default function Header({ title, showBackButton }: HeaderProps ) {
+export default function Header({ title, showBackButton = false }: HeaderProps) {
   const handleGoBack = () => {
     window.history.back();
   };
 
-  if (!showBackButton) {
-    return (
-      <Container>
+  return (
+    <Container>
+      {showBackButton && (
+        <BackIcon onClick={handleGoBack}>
+          <CaretLeft />
+        </BackIcon>
+      )}
+
+      {title ? (
+        <h2>{title}</h2>
+      ) : (
         <Icon>
           <TextLogo />
         </Icon>
-      </Container>
-    );
-  }
-
-  return (
-    <Container>
-      <BackIcon onClick={handleGoBack}>
-        <CaretLeft />
-      </BackIcon>
-      <a>{title}</a>
+      )}
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   display: flex;
@@ -40,6 +39,7 @@ const Container = styled.div`
   justify-content: center;
   border-bottom: 1px solid ${({ theme }) => theme.color.background};
   position: relative;
+  background-color: white;
 `;
 
 const Icon = styled.div`
@@ -63,4 +63,3 @@ const BackIcon = styled.div`
     height: 24px;
   }
 `;
-
