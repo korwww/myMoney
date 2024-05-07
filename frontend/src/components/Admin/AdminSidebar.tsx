@@ -3,10 +3,10 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import AdminNavItem, { AdminNavItemProps } from './AdminNavItem';
-import { TextLogo } from '@/assets/icons/textLogo';
 import { Link as LinkIcon } from '@/assets/icons/Link';
 import { User } from '@/assets/icons/User';
 import { ReceiptAuthentication } from '@/assets/icons/ReceiptAuthentication';
+import { TextLogo } from '@/assets/icons/textLogo';
 
 const adminNav: AdminNavItemProps[] = [
   {
@@ -24,7 +24,6 @@ const adminNav: AdminNavItemProps[] = [
 
 function AdminSidebar() {
   const { pathname } = useLocation();
-  console.log(pathname);
   return (
     <Container>
       <Logo>
