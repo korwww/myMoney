@@ -59,7 +59,7 @@ const InputStyle = styled.div`
 `;
 
 const InputTextStyle = styled.input<Props>`
-  padding: 0.25rem 0.75rem;
+  padding: 12px;
   padding-right: ${({ $inputType }) =>
     $inputType === 'password' ? '42px' : '0px'};
   border: 1px solid ${({ theme }) => theme.color.border};
@@ -68,6 +68,11 @@ const InputTextStyle = styled.input<Props>`
   line-height: 1.5;
   color: ${({ theme }) => theme.color.text};
   width: 100%;
+
+  &:focus {
+    border-color: 59B05F;
+    outline: none;
+  }
 `;
 
 const IconButton = styled.button`
