@@ -59,7 +59,7 @@ const InputStyle = styled.div`
   align-items: center;
 `;
 
-const InputTextStyle = styled.input<IinutText>`
+const InputTextStyle = styled.input<IinputText>`
   padding: 0.25rem 0.75rem;
   padding-right: ${({ isPassword }) =>
     isPassword === 'password' ? '42px' : '0px'};
