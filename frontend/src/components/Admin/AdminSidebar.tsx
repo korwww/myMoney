@@ -27,7 +27,6 @@ function AdminSidebar() {
   return (
     <Container>
       <Logo>
-        ∏
         <TextLogo />
       </Logo>
 
