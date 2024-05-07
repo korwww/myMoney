@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import AdminNavItem, { AdminNavItemProps } from './AdminNavItem';
 import { Link as LinkIcon } from '@/assets/icons/Link';
 import { User } from '@/assets/icons/User';
-import { receiptAuthentication as ReceiptAuthentication } from '@/assets/icons/receiptAuthentication';
+import { ReceiptAuthentication } from '@/assets/icons/ReceiptAuthentication';
 import { TextLogo } from '@/assets/icons/textLogo';
 
 const adminNav: AdminNavItemProps[] = [
@@ -27,6 +27,7 @@ function AdminSidebar() {
   return (
     <Container>
       <Logo>
+        ∏
         <TextLogo />
       </Logo>
 
