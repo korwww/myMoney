@@ -10,7 +10,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   inputType: TinputType;
 }
 
-interface IinutText extends React.InputHTMLAttributes<HTMLInputElement> {
+interface IinputText extends React.InputHTMLAttributes<HTMLInputElement> {
   isPassword: TinputType;
 }
 
