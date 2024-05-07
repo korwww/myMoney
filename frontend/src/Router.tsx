@@ -51,15 +51,15 @@ const routerData = [
     element: <JoinStep3Password />,
   },
   {
-    path: '/myMoney-admin',
+    path: '/admin',
     element: <AdminLogin />,
   },
   {
-    path: '/myMoney-admin/report-user',
+    path: '/admin/report-user',
     element: <ReportedUsersDashboard />,
   },
   {
-    path: '/myMoney-admin/unverified-reviews',
+    path: '/admin/unverified-reviews',
     element: <UnverifiedReviewsDashboard />,
   },
 ];
