@@ -9,6 +9,7 @@ import AlertText from '@/components/common/AlertText';
 import { IUserRegistration } from '@/models/user.model';
 import { useNavigate } from 'react-router-dom';
 import { VALIDATE } from '@/constance/validate';
+import Input from '@/components/common/Input';
 
 function JoinStep1Email() {
   const navigate = useNavigate();
@@ -39,7 +40,8 @@ function JoinStep1Email() {
         isValid={isValid}
       >
         <fieldset>
-          <input
+          <Input
+            $inputType="text"
             {...register('email', emailValidation)}
             placeholder="이메일을 입력해주세요"
           />

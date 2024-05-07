@@ -6,6 +6,7 @@ import AlertText from '@/components/common/AlertText';
 import Layout from '@/layout/Layout';
 import { IUserRegistration } from '@/models/user.model';
 import { VALIDATE } from '@/constance/validate';
+import Input from '@/components/common/Input';
 
 const JoinStep2Nickname = () => {
   const navigate = useNavigate();
@@ -42,7 +43,8 @@ const JoinStep2Nickname = () => {
         isValid={isValid}
       >
         <fieldset>
-          <input
+          <Input
+            $inputType="text"
             {...register('nickname', nicknameValidation)}
             type="text"
             placeholder="닉네임을 입력해주세요"

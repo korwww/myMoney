@@ -7,6 +7,7 @@ import AlertText from '@/components/common/AlertText';
 import Layout from '@/layout/Layout';
 import { IUserRegistration } from '@/models/user.model';
 import { VALIDATE } from '@/constance/validate';
+import Input from '@/components/common/Input';
 
 const JoinStep3Password = () => {
   const {
@@ -79,7 +80,8 @@ const JoinStep3Password = () => {
         isValid={isValid}
       >
         <fieldset>
-          <input
+          <Input
+            $inputType="password"
             {...register('password', passwordValidation)}
             type="password"
             placeholder="비밀번호를 입력해주세요"
@@ -89,7 +91,8 @@ const JoinStep3Password = () => {
           )}
         </fieldset>
         <fieldset>
-          <input
+          <Input
+            $inputType="password"
             {...register('password_checked', passwordCheckedValidation)}
             type="password"
             placeholder="비밀번호를 다시 입력해주세요"
