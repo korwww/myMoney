@@ -1,22 +1,46 @@
 import styled from 'styled-components';
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Button from './Button';
 
 interface Props {
-  title: string;
   buttonText: string;
   isOpen: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  title?: string;
+  imageSrc?: string;
   summary?: string;
   report?: boolean;
 }
 
-function Modal({ title, buttonText, isOpen, onClose, summary, report }: Props) {
+function Modal({
+  buttonText,
+  isOpen,
+  onClose,
+  onConfirm,
+  onCancel,
+  title,
+  imageSrc,
+  summary,
+  report,
+}: Props) {
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const handleClose = () => {
+    setIsFadingOut(true);
+  };
+
+  const handleConfirm = () => {
+    onConfirm?.();
+    setIsFadingOut(true);
+  };
+
+  const handleCancel = () => {
+    onCancel?.();
     setIsFadingOut(true);
   };
 
@@ -28,6 +52,7 @@ function Modal({ title, buttonText, isOpen, onClose, summary, report }: Props) {
 
   const handleAnimationEnd = () => {
     if (isFadingOut) {
+      setIsFadingOut(false);
       onClose();
     }
   };
@@ -42,12 +67,21 @@ function Modal({ title, buttonText, isOpen, onClose, summary, report }: Props) {
     >
       <div className="modal-body" ref={modalRef}>
         <div className="modal-contents">
-          <div className="title">{title}</div>
+          {title && <div className="title">{title}</div>}
+          {imageSrc && (
+            <div className="image">
+              <img src={imageSrc} alt={'사진'} />
+            </div>
+          )}
           {summary && <div className="summary">{summary}</div>}
           {report && <div>신고 버튼 컴포넌트</div>}
           <div className="buttons">
-            <button onClick={handleClose}>취소</button>
-            <button>{buttonText}</button>
+            <Button size={'small'} scheme={'border'} onClick={handleCancel}>
+              취소
+            </Button>
+            <Button size={'small'} scheme={'primary'} onClick={handleConfirm}>
+              {buttonText}
+            </Button>
           </div>
         </div>
       </div>
@@ -95,7 +129,7 @@ const ModalStyle = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
-    transfrom: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     width: 300px;
     height: auto;
     border-radius: ${({ theme }) => theme.borderRadius.default};
@@ -103,23 +137,55 @@ const ModalStyle = styled.div`
 
     background-color: #fff;
     max-width: 80%;
+    max-heght: 90%;
+
+
+    @media (min-width: 1000px) {
+      width: 800px;
+      height: auto;
+    }
   }
 
   .modal-contents {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 16px;
 
     .title {
-      margin: 16px auto;
+      margin-bottom: 16px;
+      font-weight: bold;
+      font-size: 20px;
+      text-align: center
+      white-space: pre-wrap;
     }
 
     .summary {
       color: #4b3a5a;
+      text-align: center;
+      white-space: pre-wrap;
     }
 
+    .image{
+      margin-bottom: 16px;
+      width: 268px;
+      height: auto;
+      max-height: 200px;
+      text-align: center;  
+      overflow: scroll;
+    
+      @media (min-width: 1000px) {
+        width: 600px;
+        height: 550px;
+      }
+    
+      img{
+        width: inherit;
+        height: auto;
+      }
+    }
     .buttons {
-      margin: 16px auto 40px auto;
+      margin-top: 16px;
       display: flex;
       gap: 16px;
     }
