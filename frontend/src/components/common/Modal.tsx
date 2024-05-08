@@ -68,7 +68,11 @@ function Modal({
       <div className="modal-body" ref={modalRef}>
         <div className="modal-contents">
           {title && <div className="title">{title}</div>}
-          {imageSrc && <img src={imageSrc} alt={'사진'} />}
+          {imageSrc && (
+            <div className="image">
+              <img src={imageSrc} alt={'사진'} />
+            </div>
+          )}
           {summary && <div className="summary">{summary}</div>}
           {report && <div>신고 버튼 컴포넌트</div>}
           <div className="buttons">
@@ -133,6 +137,13 @@ const ModalStyle = styled.div`
 
     background-color: #fff;
     max-width: 80%;
+    max-heght: 90%;
+
+
+    @media (min-width: 1000px) {
+      width: 800px;
+      height: auto;
+    }
   }
 
   .modal-contents {
@@ -155,6 +166,24 @@ const ModalStyle = styled.div`
       white-space: pre-wrap;
     }
 
+    .image{
+      margin-bottom: 16px;
+      width: 268px;
+      height: auto;
+      max-height: 200px;
+      text-align: center;  
+      overflow: scroll;
+    
+      @media (min-width: 1000px) {
+        width: 600px;
+        height: 550px;
+      }
+    
+      img{
+        width: inherit;
+        height: auto;
+      }
+    }
     .buttons {
       margin-top: 16px;
       display: flex;
