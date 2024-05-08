@@ -145,6 +145,8 @@ const ModalStyle = styled.div`
       margin-bottom: 16px;
       font-weight: bold;
       font-size: 20px;
+      text-align: center
+      white-space: pre-wrap;
     }
 
     .summary {
