@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -7,12 +6,7 @@ import { IUserLogin } from '@/models/user.model';
 import AuthOptions from '@/components/common/AuthOptions';
 
 function AdminLogin() {
-  const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IUserLogin>();
+  const { register, handleSubmit } = useForm<IUserLogin>();
 
   const onSubmit = handleSubmit(() => {
     // navigate('/myMoney-admin/report-user')
@@ -21,7 +15,11 @@ function AdminLogin() {
     <Container>
       <Inner>
         <Title>관리자 로그인</Title>
-        <LoginForm onSubmit={onSubmit} register={register} errors={errors} />
+        <LoginForm
+          onSubmit={onSubmit}
+          register={register}
+          errorMessage={null}
+        />
         <div
           onClick={() =>
             alert('준비 중인 서비스입니다. 서비스 관리자에게 문의하세요')
