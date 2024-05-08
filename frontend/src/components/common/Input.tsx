@@ -70,7 +70,7 @@ const InputTextStyle = styled.input<Props>`
   width: 100%;
 
   &:focus {
-    border-color: 59B05F;
+    border-color: #59b05f;
     outline: none;
   }
 `;
