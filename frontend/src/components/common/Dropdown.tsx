@@ -5,9 +5,17 @@ interface Props {
   children: React.ReactNode;
   toggleButton: React.ReactNode;
   isOpen?: boolean;
+  $position: 'left' | 'right';
+  $positionValue?: number;
 }
 
-function Dropdown({ children, toggleButton, isOpen = false }: Props) {
+function Dropdown({
+  children,
+  toggleButton,
+  isOpen = false,
+  $position = 'right',
+  $positionValue,
+}: Props) {
   const [open, setOpen] = useState(isOpen);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +37,12 @@ function Dropdown({ children, toggleButton, isOpen = false }: Props) {
   }, [dropdownRef]);
 
   return (
-    <DropdownStyle $open={open} ref={dropdownRef}>
+    <DropdownStyle
+      $open={open}
+      ref={dropdownRef}
+      $position={$position}
+      $positionValue={$positionValue}
+    >
       <button className="toggle" onClick={() => setOpen(!open)}>
         {toggleButton}
       </button>
@@ -40,6 +53,8 @@ function Dropdown({ children, toggleButton, isOpen = false }: Props) {
 
 interface DropdownStyleProps {
   $open: boolean;
+  $position: 'left' | 'right';
+  $positionValue?: number;
 }
 
 const DropdownStyle = styled.div<DropdownStyleProps>`
@@ -61,6 +76,10 @@ const DropdownStyle = styled.div<DropdownStyleProps>`
 
   .panel {
     position: absolute;
+    ${({ $position, $positionValue }) =>
+      $position === 'left'
+        ? `left: ${$positionValue ? `${$positionValue}px` : '0px'}`
+        : `right: ${$position ? `${$positionValue}px` : '0px'}`};
     background: #fff;
     border: 1px solid ${({ theme }) => theme.color.border};
     border-radius: ${({ theme }) => theme.borderRadius.default};
