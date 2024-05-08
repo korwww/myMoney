@@ -68,7 +68,7 @@ function Modal({
       <div className="modal-body" ref={modalRef}>
         <div className="modal-contents">
           {title && <div className="title">{title}</div>}
-          {image && <img src={image} alt={'영수증'} />}
+          {image && <img src={image} alt={'사진'} />}
           {summary && <div className="summary">{summary}</div>}
           {report && <div>신고 버튼 컴포넌트</div>}
           <div className="buttons">
