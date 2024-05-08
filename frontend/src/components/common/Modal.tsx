@@ -122,7 +122,7 @@ const ModalStyle = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
-    transfrom: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     width: 300px;
     height: auto;
     border-radius: ${({ theme }) => theme.borderRadius.default};
