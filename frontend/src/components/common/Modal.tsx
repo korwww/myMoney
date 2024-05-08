@@ -50,6 +50,7 @@ function Modal({
 
   const handleAnimationEnd = () => {
     if (isFadingOut) {
+      setIsFadingOut(false);
       onClose();
     }
   };
