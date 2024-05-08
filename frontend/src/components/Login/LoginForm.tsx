@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 
 import AlertText from '@/components/common/AlertText';
 import Checkbox from './Checkbox';
@@ -17,7 +17,7 @@ import Input from '../common/Input';
 interface ILoginFormProps {
   onSubmit: () => void;
   register: UseFormRegister<IUserLogin>;
-  errors: FieldErrors<IUserLogin>;
+  errorMessage: string | null;
   checkedRememberEmail?: boolean;
   toggleCheckedRememberEmail?: () => void;
 }
@@ -27,7 +27,7 @@ function LoginForm({
   toggleCheckedRememberEmail,
   onSubmit,
   register,
-  errors,
+  errorMessage,
 }: ILoginFormProps) {
   const { pathname } = useLocation();
   const $isUserLoginPage = pathname === '/login';
@@ -76,7 +76,7 @@ function LoginForm({
       <Button $fullWidth type="submit" scheme="primary" size="large">
         로그인
       </Button>
-      <AlertText size="small">오류메세지</AlertText>
+      {errorMessage && <AlertText size="small">{errorMessage}</AlertText>}
     </FormStyle>
   );
 }

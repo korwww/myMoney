@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import JoinTemplate from '@/components/Join/JoinTemplate';
@@ -7,14 +6,22 @@ import Layout from '@/layout/Layout';
 import { IUserRegistration } from '@/models/user.model';
 import { VALIDATE } from '@/constance/validate';
 import Input from '@/components/common/Input';
+import useUserRegistrationStore from '@/store/user.registration.store';
+import { useAuth } from '@/hooks/useAuth';
 
 const JoinStep2Nickname = () => {
-  const navigate = useNavigate();
+  const { errorMessage, userCheckedNickname } = useAuth();
+  const { nickname } = useUserRegistrationStore();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<Pick<IUserRegistration, 'nickname'>>({ mode: 'onChange' });
+  } = useForm<Pick<IUserRegistration, 'nickname'>>({
+    mode: 'onChange',
+    defaultValues: {
+      nickname: nickname ?? '',
+    },
+  });
 
   const nicknameValidation = {
     required: '닉네임을 입력하세요',
@@ -28,10 +35,8 @@ const JoinStep2Nickname = () => {
     },
   };
 
-  const onSubmit = handleSubmit(() => {
-    // if (errors.nickname) return;
-    // 다음 단계로 이동, zustand에 유저 정보 저장
-    navigate('/join/step3');
+  const onSubmit = handleSubmit((data) => {
+    userCheckedNickname(data.nickname.trim());
   });
 
   return (
@@ -41,6 +46,7 @@ const JoinStep2Nickname = () => {
         title="닉네임을\n입력해주세요."
         onSubmit={onSubmit}
         isValid={isValid}
+        errorMessage={errorMessage}
       >
         <fieldset>
           <Input
