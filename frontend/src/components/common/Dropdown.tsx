@@ -61,7 +61,6 @@ const DropdownStyle = styled.div<DropdownStyleProps>`
 
   .panel {
     position: absolute;
-    right: 0;
     background: #fff;
     border: 1px solid ${({ theme }) => theme.color.border};
     border-radius: ${({ theme }) => theme.borderRadius.default};
