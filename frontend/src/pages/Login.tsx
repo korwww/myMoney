@@ -6,6 +6,9 @@ import LoginForm from '@/components/Login/LoginForm';
 import AuthOptions from '@/components/common/AuthOptions';
 import { IUserLogin } from '@/models/user.model';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Icon from '@/components/common/Icon';
+import { TextLogo } from '@/assets/icons/textLogo';
 
 // 아이디 저장 만료일 (한달)
 const EXPIRATION_MAX_AGE = 30 * 24 * 60 * 60;
@@ -45,7 +48,9 @@ function Login() {
   }, []);
   return (
     <Container>
-      <Title>로그인</Title>
+      <Title to="/">
+        <Icon width={160} height={38} icon={<TextLogo />} fill="#59B05F" />
+      </Title>
       <LoginForm
         checkedRememberEmail={checkedRememberEmail}
         toggleCheckedRememberEmail={toggleCheckedRememberEmail}
@@ -63,13 +68,17 @@ function Login() {
 }
 
 const Container = styled.div`
+  max-width: 390px;
+  margin-inline: auto;
   padding: ${({ theme }) => theme.padding.mainContent};
 `;
 
-const Title = styled.div`
+const Title = styled(Link)`
+  display: flex;
+  justify-content: center;
   padding-top: 140px;
-  margin-bottom: 120px;
-  text-align: center;
+  margin-bottom: 100px;
+  margin-inline: auto;
   color: ${({ theme }) => theme.color.primary};
   font-size: 42px;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
