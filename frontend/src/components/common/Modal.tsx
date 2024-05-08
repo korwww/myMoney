@@ -145,6 +145,8 @@ const ModalStyle = styled.div`
 
     .summary {
       color: #4b3a5a;
+      text-align: center;
+      white-space: pre-wrap;
     }
 
     .buttons {
