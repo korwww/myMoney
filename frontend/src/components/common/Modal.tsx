@@ -139,9 +139,10 @@ const ModalStyle = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 16px;
 
     .title {
-      margin: 16px auto;
+      margin-bottom: 16px;
       font-weight: bold;
       font-size: 20px;
     }
@@ -153,7 +154,7 @@ const ModalStyle = styled.div`
     }
 
     .buttons {
-      margin: 16px auto 40px auto;
+      margin-top: 16px;
       display: flex;
       gap: 16px;
     }
