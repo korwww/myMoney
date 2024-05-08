@@ -22,11 +22,17 @@ function AdminLogin() {
       <Inner>
         <Title>관리자 로그인</Title>
         <LoginForm onSubmit={onSubmit} register={register} errors={errors} />
-        <AuthOptions
-          description="계정을 잊으셨나요?"
-          linkPath=""
-          linkText="계정찾기"
-        />
+        <div
+          onClick={() =>
+            alert('준비 중인 서비스입니다. 서비스 관리자에게 문의하세요')
+          }
+        >
+          <AuthOptions
+            description="계정을 잊으셨나요?"
+            linkPath=""
+            linkText="계정찾기"
+          />
+        </div>
       </Inner>
     </Container>
   );
