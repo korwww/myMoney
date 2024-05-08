@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
@@ -13,62 +13,35 @@ import AdminLogin from '@/pages/Admin/AdminLogin';
 import ReportedUsersDashboard from '@/pages/Admin/ReportedUsersDashboard';
 import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard';
 
-const routerData = [
-  {
-    path: '/',
-    element: <Home />,
-  },
-  {
-    path: '/search',
-    element: <Search />,
-  },
-  {
-    path: '/create',
-    element: <CreateReview />,
-  },
-  {
-    path: '/list',
-    element: <ReviewList />,
-  },
-  {
-    path: '/mypage',
-    element: <MyPage />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/join/step1',
-    element: <JoinStep1Email />,
-  },
-  {
-    path: '/join/step2',
-    element: <JoinStep2Nickname />,
-  },
-  {
-    path: '/join/step3',
-    element: <JoinStep3Password />,
-  },
-  {
-    path: '/admin',
-    element: <AdminLogin />,
-  },
-  {
-    path: '/admin/report-user',
-    element: <ReportedUsersDashboard />,
-  },
-  {
-    path: '/admin/unverified-reviews',
-    element: <UnverifiedReviewsDashboard />,
-  },
-];
+export function Router() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/create" element={<CreateReview />} />
+        <Route path="/list" element={<ReviewList />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/login" element={<Login />} />
 
-export const router = createBrowserRouter(
-  routerData.map(({ path, element }) => ({
-    path,
-    element,
-  })),
-);
+        {/* 관리자 페이지 */}
+        <Route path="/admin">
+          <Route index element={<AdminLogin />} />
+          <Route path="report-user" element={<ReportedUsersDashboard />} />
+          <Route
+            path="unverified-reviews"
+            element={<UnverifiedReviewsDashboard />}
+          />
+        </Route>
 
-// errorElement: "오류 컴포넌트"
+        {/* 회원가입 */}
+        <Route path="/join">
+          <Route index element={<JoinStep1Email />} />
+          <Route path="step1" element={<JoinStep1Email />} />
+          <Route path="step2" element={<JoinStep2Nickname />} />
+          <Route path="step3" element={<JoinStep3Password />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
