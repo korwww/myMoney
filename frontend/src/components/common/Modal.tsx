@@ -1,22 +1,44 @@
 import styled from 'styled-components';
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import Button from './Button';
 
 interface Props {
-  title: string;
   buttonText: string;
   isOpen: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  title?: string;
+  image?: string;
   summary?: string;
   report?: boolean;
 }
 
-function Modal({ title, buttonText, isOpen, onClose, summary, report }: Props) {
+function Modal({
+  buttonText,
+  isOpen,
+  onClose,
+  onConfirm,
+  onCancel,
+  title,
+  image,
+  summary,
+  report,
+}: Props) {
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const handleClose = () => {
+    setIsFadingOut(true);
+  };
+
+  const handleConfirm = () => {
+    setIsFadingOut(true);
+  };
+
+  const handleCancel = () => {
     setIsFadingOut(true);
   };
 
@@ -42,12 +64,17 @@ function Modal({ title, buttonText, isOpen, onClose, summary, report }: Props) {
     >
       <div className="modal-body" ref={modalRef}>
         <div className="modal-contents">
-          <div className="title">{title}</div>
+          {title && <div className="title">{title}</div>}
+          {image && <img src={image} alt={'영수증'} />}
           {summary && <div className="summary">{summary}</div>}
           {report && <div>신고 버튼 컴포넌트</div>}
           <div className="buttons">
-            <button onClick={handleClose}>취소</button>
-            <button>{buttonText}</button>
+            <Button size={'small'} scheme={'border'} onClick={handleCancel}>
+              취소
+            </Button>
+            <Button size={'small'} scheme={'primary'} onClick={handleConfirm}>
+              {buttonText}
+            </Button>
           </div>
         </div>
       </div>
@@ -112,6 +139,8 @@ const ModalStyle = styled.div`
 
     .title {
       margin: 16px auto;
+      font-weight: bold;
+      font-size: 20px;
     }
 
     .summary {
