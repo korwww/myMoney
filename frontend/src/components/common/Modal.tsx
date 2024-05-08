@@ -10,7 +10,7 @@ interface Props {
   onConfirm?: () => void;
   onCancel?: () => void;
   title?: string;
-  image?: string;
+  imageSrc?: string;
   summary?: string;
   report?: boolean;
 }
@@ -22,7 +22,7 @@ function Modal({
   onConfirm,
   onCancel,
   title,
-  image,
+  imageSrc,
   summary,
   report,
 }: Props) {
@@ -68,7 +68,7 @@ function Modal({
       <div className="modal-body" ref={modalRef}>
         <div className="modal-contents">
           {title && <div className="title">{title}</div>}
-          {image && <img src={image} alt={'사진'} />}
+          {imageSrc && <img src={imageSrc} alt={'사진'} />}
           {summary && <div className="summary">{summary}</div>}
           {report && <div>신고 버튼 컴포넌트</div>}
           <div className="buttons">
