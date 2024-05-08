@@ -35,10 +35,12 @@ function Modal({
   };
 
   const handleConfirm = () => {
+    onConfirm?.();
     setIsFadingOut(true);
   };
 
   const handleCancel = () => {
+    onCancel?.();
     setIsFadingOut(true);
   };
 
