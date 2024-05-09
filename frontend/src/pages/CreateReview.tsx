@@ -1,104 +1,132 @@
-import { Camera } from '@/assets/icons/Camera';
-import CaretDown from '@/assets/icons/CaretDown';
+import CategorySelector from '@/components/CreateReview/CategorySelect';
+import CreateContent from '@/components/CreateReview/CreateContent';
+import PhotoUpload from '@/components/CreateReview/PhotoUpload';
 import StarRating from '@/components/CreateReview/StarRating';
 import Button from '@/components/common/Button';
-import Dropdown from '@/components/common/Dropdown';
 import Input from '@/components/common/Input';
-import Layout from '@/layout/Layout';
-import { useRef, ChangeEvent, useState } from 'react';
+import Header from '@/layout/Header';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+
+const categoryOptions = [
+  '디지털',
+  '의류',
+  '가구/인테리어',
+  '가전',
+  '문화',
+  '식품',
+  '뷰티/미용',
+  '장소',
+  '기타',
+];
+
+interface FormData {
+  review_img: FileList | null;
+  receipt_img: FileList | null;
+  category_id: number;
+  title: string;
+  content: string;
+}
+
+export interface PhotoItem {
+  id: string;
+  file: File;
+}
 
 function CreateReview() {
   const [ratingIndex, setRatingIndex] = useState<number>(3);
-  const [category, setCategory] = useState<string>('카테고리');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [categoryIndex, setCategoryIndex] = useState<number>(0);
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [photoToAddList, setPhotoToAddList] = useState<PhotoItem[]>([]);
+  const { register, handleSubmit } = useForm<FormData>();
+  
+  console.log(photoToAddList);
 
-  const handleUpload = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+
+  const onSubmit = (data: FormData) => {
+    console.log('제출되는 데이터:', {
+      title,
+      review_img: '',
+      receipt_img: '',
+      category_id: ratingIndex,
+      content,
+    });
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
-      console.log('Selected file:', selectedFile);
+  const handlePhotoSelect = (files: FileList | null) => {
+    const temp: PhotoItem[] = [];
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        temp.push({
+          id: file.name,
+          file: file,
+        });
+      }
+      setPhotoToAddList((prevList) => [...prevList, ...temp]);
     }
   };
 
   return (
-    <Layout showBackButton={true} title="리뷰작성">
-      <ImageContainer>
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          ref={fileInputRef}
-          onChange={handleFileChange}
+    <>
+      <Header showBackButton={true} title="리뷰 작성" />
+
+      <CreateReviewStyled>
+        <PhotoUpload
+          onPhotoSelect={handlePhotoSelect}
+          photoToAddList={photoToAddList}
         />
-        <ImgUploadBtn onClick={handleUpload}>
-          <Camera />
-          <p>사진 첨부</p>
-        </ImgUploadBtn>
-      </ImageContainer>
 
-      <ButtonContainer>
-        <Button size="medium" scheme="disabled" $fullWidth={true}>
-          영수증 리뷰 인증
-        </Button>
-      </ButtonContainer>
+        <ButtonContainer>
+          <Button size="medium" scheme="disabled" $fullWidth={true}>
+            영수증 리뷰 인증
+          </Button>
+        </ButtonContainer>
 
-      <StarRating ratingIndex={ratingIndex} setRatingIndex={setRatingIndex} />
+        <StarRating ratingIndex={ratingIndex} setRatingIndex={setRatingIndex} />
 
-      <CategoryContainer>
-        <p>{category}</p>
-        <Dropdown toggleButton={<CaretDown/>}>
-          <ul>
-            <li onClick={() => setCategory('카테고리A')}>카테고리A</li>
-            <li onClick={() => setCategory('카테고리B')}>카테고리B</li>
-            <li onClick={() => setCategory('카테고리C')}>카테고리C</li>
-          </ul>
-        </Dropdown>
-      </CategoryContainer>
+        <CategorySelector
+          categoryOptions={categoryOptions}
+          categoryIndex={categoryIndex}
+          setCategoryIndex={setCategoryIndex}
+        />
 
-      <Input $inputType="text" type="text" placeholder="제목을 입력해주세요" />
-      <Input $inputType="text" type="text" placeholder="내용을 입력해주세요" />
-    </Layout>
+        <p>제목</p>
+        <Input
+          $inputType="text"
+          type="text"
+          placeholder="제목을 입력해주세요"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+
+        <p>내용</p>
+        <CreateContent onChange={(value) => setContent(value)} />
+
+        <ButtonContainer>
+          <Button
+            size="large"
+            scheme="primary"
+            $fullWidth={true}
+            onClick={handleSubmit(onSubmit)}
+          >
+            작성완료
+          </Button>
+        </ButtonContainer>
+      </CreateReviewStyled>
+    </>
   );
 }
 
 export default CreateReview;
 
-const ImageContainer = styled.div`
-  height: 90px;
-  width: 100%;
-  padding: 16px;
-  background-color: red;
-`;
-
-const ImgUploadBtn = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: ${({ theme }) => theme.borderRadius.default};
-  border: 1px solid ${({ theme }) => theme.color.border};
-  background-color: white;
-
-  p {
-    font-size: ${({ theme }) => theme.text.small.fontSize};
-  }
+const CreateReviewStyled = styled.div`
+  padding: 0px 16px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 358px;
-  margin: 0px 16px;
 `;
-
-const CategoryContainer = styled.div`
-  display: flex;
-
-`

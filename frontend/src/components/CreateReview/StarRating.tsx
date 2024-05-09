@@ -31,8 +31,7 @@ const RatingContainer = styled.div`
   text-align: center;
   margin: 12px 0px;
   justify-content: center;
-  background-color: blue;
-
+  
   .inactive {
     color: ${({ theme }) => theme.color.disabled};
   }
