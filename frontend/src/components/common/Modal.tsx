@@ -171,6 +171,12 @@ const ModalStyle = styled.div`
       max-height: 300px;
       text-align: center;  
       overflow: scroll;
+
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      ::-webkit-scrollbar {
+        display: none;
+      }
     
       @media (min-width: 1000px) {
         width: 600px;
