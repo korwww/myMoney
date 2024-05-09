@@ -1,11 +1,12 @@
 import express from 'express';
+import { getReviews } from '../controllers/reviews.controller';
 
 const router = express.Router();
 
 router.use(express.json());
 
-router.route('/').get().post();
+router.route('/').get(getReviews).post();
 
 router.route('/:id').get().patch().delete();
 
-module.exports = router;
+export { router as reviewsRouter };
