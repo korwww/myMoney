@@ -1,4 +1,5 @@
 import { Camera } from '@/assets/icons/Camera';
+import CaretDown from '@/assets/icons/CaretDown';
 import StarRating from '@/components/CreateReview/StarRating';
 import Button from '@/components/common/Button';
 import Dropdown from '@/components/common/Dropdown';
@@ -8,7 +9,8 @@ import { useRef, ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 
 function CreateReview() {
-  const [ratingIndex, setRatingIndex] = useState(3);
+  const [ratingIndex, setRatingIndex] = useState<number>(3);
+  const [category, setCategory] = useState<string>('카테고리');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = () => {
@@ -47,8 +49,16 @@ function CreateReview() {
 
       <StarRating ratingIndex={ratingIndex} setRatingIndex={setRatingIndex} />
 
-      <div>카테고리</div>
-
+      <CategoryContainer>
+        <p>{category}</p>
+        <Dropdown toggleButton={<CaretDown/>}>
+          <ul>
+            <li onClick={() => setCategory('카테고리A')}>카테고리A</li>
+            <li onClick={() => setCategory('카테고리B')}>카테고리B</li>
+            <li onClick={() => setCategory('카테고리C')}>카테고리C</li>
+          </ul>
+        </Dropdown>
+      </CategoryContainer>
 
       <Input $inputType="text" type="text" placeholder="제목을 입력해주세요" />
       <Input $inputType="text" type="text" placeholder="내용을 입력해주세요" />
@@ -87,3 +97,8 @@ const ButtonContainer = styled.div`
   width: 358px;
   margin: 0px 16px;
 `;
+
+const CategoryContainer = styled.div`
+  display: flex;
+
+`
