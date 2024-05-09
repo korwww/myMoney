@@ -14,10 +14,7 @@ function Checkbox({
 }: CheckboxProps) {
   return (
     <>
-      <CheckboxLabel
-        onClick={() => console.log('checked')}
-        htmlFor="loginCheckbox"
-      >
+      <CheckboxLabel htmlFor="loginCheckbox">
         {checkedRememberEmail && (
           <Icon fill="#59b05f" width={12} icon={<Checked />} />
         )}

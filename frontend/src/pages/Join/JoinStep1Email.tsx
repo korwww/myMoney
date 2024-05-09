@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -7,17 +6,23 @@ import JoinTemplate from '@/components/Join/JoinTemplate';
 import AuthOptions from '@/components/common/AuthOptions';
 import AlertText from '@/components/common/AlertText';
 import { IUserRegistration } from '@/models/user.model';
-import { useNavigate } from 'react-router-dom';
 import { VALIDATE } from '@/constance/validate';
 import Input from '@/components/common/Input';
+import useUserRegistrationStore from '@/store/user.registration.store';
+import { useAuth } from '@/hooks/useAuth';
+import { withUnauthenticatedUser } from '@/components/hocs/withUnauthenticatedUser';
 
 function JoinStep1Email() {
-  const navigate = useNavigate();
+  const { errorMessage, userCheckedEmail } = useAuth();
+  const { email: storeEmail } = useUserRegistrationStore();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<Pick<IUserRegistration, 'email'>>({ mode: 'onChange' });
+  } = useForm<Pick<IUserRegistration, 'email'>>({
+    mode: 'onChange',
+    defaultValues: { email: storeEmail ?? '' },
+  });
 
   const emailValidation = {
     required: '이메일을 입력해주세요',
@@ -27,10 +32,10 @@ function JoinStep1Email() {
     },
   };
 
-  const onSubmit = handleSubmit(() => {
-    // 다음 단계로 이동, zustand에 유저 정보 저장
-    // navigate('/join/step2');
+  const onSubmit = handleSubmit((data) => {
+    userCheckedEmail(data.email.trim());
   });
+
   return (
     <Layout title="회원가입" showBackButton>
       <JoinTemplate
@@ -38,6 +43,7 @@ function JoinStep1Email() {
         title="이메일을\n입력해주세요."
         onSubmit={onSubmit}
         isValid={isValid}
+        errorMessage={errorMessage}
       >
         <fieldset>
           <Input
@@ -50,6 +56,7 @@ function JoinStep1Email() {
           )}
         </fieldset>
       </JoinTemplate>
+
       <Inner>
         <AuthOptions
           description="이미 계정을 가지고 계신가요?"
@@ -65,4 +72,4 @@ const Inner = styled.div`
   padding: ${({ theme }) => theme.padding.mainContent};
 `;
 
-export default JoinStep1Email;
+export default withUnauthenticatedUser(JoinStep1Email);

@@ -28,7 +28,7 @@ export const IDCheckbox = styled.div`
   cursor: pointer;
 `;
 
-export const FindPassword = styled.p`
+export const FindPassword = styled.div`
   text-decoration: none;
   color: ${({ theme }) => theme.color.darkGray};
   cursor: pointer;
