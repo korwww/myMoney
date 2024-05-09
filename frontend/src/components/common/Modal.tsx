@@ -135,15 +135,14 @@ const ModalStyle = styled.div`
     border-radius: ${({ theme }) => theme.borderRadius.default};
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 
-    background-color: #fff;
-    max-width: 80%;
-    max-heght: 90%;
-
-
     @media (min-width: 1000px) {
       width: 800px;
       height: auto;
     }
+
+    background-color: #fff;
+    max-width: 90%;
+    max-heght: 90%;
   }
 
   .modal-contents {
@@ -169,21 +168,28 @@ const ModalStyle = styled.div`
     .image{
       margin-bottom: 16px;
       width: 268px;
-      height: auto;
-      max-height: 200px;
+      max-height: 300px;
       text-align: center;  
       overflow: scroll;
+
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      ::-webkit-scrollbar {
+        display: none;
+      }
     
       @media (min-width: 1000px) {
         width: 600px;
-        height: 550px;
+        height: 100%;
+        max-height: 550px;
       }
     
       img{
-        width: inherit;
+        width: 100%;
         height: auto;
       }
     }
+
     .buttons {
       margin-top: 16px;
       display: flex;
