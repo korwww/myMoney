@@ -1,5 +1,3 @@
-import React from 'react';
-
 import AdminLayout from '@/components/Admin/AdminLayout';
 import AdminContent from '@/components/Admin/AdminContent';
 import AdminTable, { TableHeadItem } from '@/components/Admin/AdminTable';
@@ -14,12 +12,12 @@ interface ReportUserTd {
 }
 
 const tableHead: TableHeadItem[] = [
-  { name: 'No', width: 40 },
-  { name: '이메일', width: 295 },
-  { name: '신고 사유', width: 240 },
-  { name: '횟수', width: 50 },
-  { name: '상태', width: 150 },
-  { name: '', width: 135 },
+  { name: 'No', $widthRatio: 40 },
+  { name: '이메일', $widthRatio: 295 },
+  { name: '신고 사유', $widthRatio: 240 },
+  { name: '횟수', $widthRatio: 50 },
+  { name: '상태', $widthRatio: 150 },
+  { name: '', $widthRatio: 135 },
 ];
 
 const tableBody: ReportUserTd[] = [
