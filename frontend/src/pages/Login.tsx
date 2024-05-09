@@ -28,6 +28,7 @@ function Login() {
   useEffect(() => {
     if (cookies.email) {
       setValue('email', cookies.email);
+      setCheckedRememberEmail(true);
     }
   }, []);
 
