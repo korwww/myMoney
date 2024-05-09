@@ -1,23 +1,23 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class User {
+export class Users {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ comment: '비밀번호' })
   password!: string;
 
-  @Column({ comment: '이메일', unique: true })
+  @Column({ comment: '이메일', unique: true, nullable: false })
   email!: string;
 
-  @Column({ comment: '닉네임', unique: true })
+  @Column({ comment: '닉네임', unique: true, nullable: false })
   nickname!: string;
 
   @Column({
     type: 'timestamp',
     comment: '정지 종료 날짜',
-    default: () => 'CURRENT_TIMESTAMP - INTERVAL 1 DAY',
+    nullable: false,
   })
   expired_date!: Date;
 
@@ -25,7 +25,7 @@ export class User {
     comment: '관리자, 일반 유저 구분',
     default: false,
   })
-  isAdmin!: boolean;
+  is_admin!: boolean;
 
   @Column({
     comment: '신고 횟수',

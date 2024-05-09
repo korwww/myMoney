@@ -1,5 +1,4 @@
 import { DataSource } from 'typeorm';
-import { User } from './entity/user.entity';
 import {
   DB_DATABASE,
   DB_HOST,
@@ -7,6 +6,7 @@ import {
   DB_PORT,
   DB_USERNAME,
 } from './settings';
+import { Users } from './entity/users.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mariadb',
@@ -15,6 +15,6 @@ export const AppDataSource = new DataSource({
   username: DB_USERNAME,
   password: DB_PASSWORD,
   database: DB_DATABASE,
-  entities: [User],
+  entities: [Users],
   synchronize: true,
 });

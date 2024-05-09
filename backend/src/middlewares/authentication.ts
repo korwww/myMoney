@@ -2,10 +2,9 @@ import { NextFunction, Response, Request } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { AppDataSource } from '../data-source';
-import { User } from '../entity/user.entity';
+import { Users } from '../entity/users.entity';
 import { IUserInfo } from '../models/user.model';
-
-const TOKEN_PRIVATE_KEY = process.env.TOKEN_PRIVATE_KEY;
+import { TOKEN_PRIVATE_KEY } from '../settings';
 
 export interface CustomRequest extends Request {
   user?: IUserInfo;
@@ -16,7 +15,7 @@ export const authentication = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const UserRepository = AppDataSource.getRepository(User);
+  const UserRepository = AppDataSource.getRepository(Users);
   const accessToken = req.cookies['access-token'];
 
   if (!accessToken) return res.status(401).send({ message: 'Token Not found' });

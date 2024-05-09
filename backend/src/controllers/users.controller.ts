@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { QueryError } from 'mysql2';
 
 import { AppDataSource } from '../data-source';
-import { User } from '../entity/user.entity';
+import { Users } from '../entity/users.entity';
 import { CustomRequest } from '../middlewares/authentication';
 import {
   comparePassword,
@@ -10,7 +10,7 @@ import {
   hashPassword,
 } from '../utils/authUtils';
 
-const userRepository = AppDataSource.getRepository(User);
+const userRepository = AppDataSource.getRepository(Users);
 
 export const LoginUser = async (req: CustomRequest, res: Response) => {
   const { email, password } = req.body;
@@ -27,7 +27,7 @@ export const LoginUser = async (req: CustomRequest, res: Response) => {
   res
     .status(200)
     .cookie('access-token', token, { httpOnly: true })
-    .send({ message: 'success', isAdmin: !!user.isAdmin });
+    .send({ message: 'success', isAdmin: !!user.is_admin });
 };
 
 export const LogoutUser = async (req: CustomRequest, res: Response) => {
@@ -66,7 +66,7 @@ export const JoinUser = async (req: CustomRequest, res: Response) => {
     const today = new Date();
     today.setDate(today.getDate() - 1);
 
-    const user = new User();
+    const user = new Users();
     user.email = email;
     user.password = await hashPassword(password);
     user.nickname = nickname;

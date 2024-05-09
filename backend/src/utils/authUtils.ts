@@ -1,8 +1,8 @@
-import { IUserInfo } from '../models/user.model';
-import { SALT_ROUNDS, TOKEN_PRIVATE_KEY } from '../settings';
-
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+
+import { IUserInfo } from '../models/user.model';
+import { SALT_ROUNDS, TOKEN_PRIVATE_KEY } from '../settings';
 
 export const hashPassword = async (password: string) => {
   return await bcrypt.hash(password, SALT_ROUNDS);
