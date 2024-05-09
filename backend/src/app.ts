@@ -4,9 +4,7 @@ import cors from 'cors';
 import 'express-async-errors';
 import 'reflect-metadata';
 import { usersRouter } from './routes/users.route';
-
-const CORS_ALLOWED_ORIGIN =
-  process.env.CORS_ALLOWED_ORIGIN ?? 'http://localhost:5173';
+import { CORS_ALLOWED_ORIGIN } from './settings';
 
 const app: Express = express();
 
@@ -14,7 +12,7 @@ dotenv.config();
 
 app.use(
   cors({
-    origin: [CORS_ALLOWED_ORIGIN, 'http://localhost:5173'],
+    origin: [CORS_ALLOWED_ORIGIN!, 'http://localhost:5173'],
     credentials: true,
   }),
 );
