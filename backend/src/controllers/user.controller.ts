@@ -12,6 +12,8 @@ import {
 
 const userRepository = AppDataSource.getRepository(User);
 
+// user.controller.ts 코드 -> 모델+서비스 코드로 분리하는 리팩토링 작업할 예정입니다.
+
 export const LoginUser = async (req: CustomRequest, res: Response) => {
   const { email, password } = req.body;
 

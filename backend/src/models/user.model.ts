@@ -1,4 +1,1 @@
-export interface IUserInfo {
-  email: string;
-  id: number;
-}
+// 데이터베이스와 직접적인 CRUD 작업하는 코드 작성

@@ -3,8 +3,12 @@ import jwt from 'jsonwebtoken';
 
 import { AppDataSource } from '../data-source';
 import { User } from '../entity/users.entity';
-import { IUserInfo } from '../models/user.model';
 import { TOKEN_PRIVATE_KEY } from '../settings';
+
+export interface IUserInfo {
+  email: string;
+  id: number;
+}
 
 export interface CustomRequest extends Request {
   user?: IUserInfo;
