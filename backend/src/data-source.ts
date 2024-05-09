@@ -6,7 +6,7 @@ import {
   DB_PORT,
   DB_USERNAME,
 } from './settings';
-import { Users } from './entity/users.entity';
+import { User } from './entity/users.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mariadb',
@@ -15,6 +15,6 @@ export const AppDataSource = new DataSource({
   username: DB_USERNAME,
   password: DB_PASSWORD,
   database: DB_DATABASE,
-  entities: [Users],
+  entities: [User],
   synchronize: true,
 });

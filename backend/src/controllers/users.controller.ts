@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { QueryError } from 'mysql2';
 
 import { AppDataSource } from '../data-source';
-import { Users } from '../entity/users.entity';
+import { User } from '../entity/users.entity';
 import { CustomRequest } from '../middlewares/authentication';
 import {
   comparePassword,
@@ -10,7 +10,7 @@ import {
   hashPassword,
 } from '../utils/authUtils';
 
-const userRepository = AppDataSource.getRepository(Users);
+const userRepository = AppDataSource.getRepository(User);
 
 export const LoginUser = async (req: CustomRequest, res: Response) => {
   const { email, password } = req.body;
@@ -66,7 +66,7 @@ export const JoinUser = async (req: CustomRequest, res: Response) => {
     const today = new Date();
     today.setDate(today.getDate() - 1);
 
-    const user = new Users();
+    const user = new User();
     user.email = email;
     user.password = await hashPassword(password);
     user.nickname = nickname;
