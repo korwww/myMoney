@@ -11,20 +11,24 @@ import {
 } from '@/api/auth.api';
 import useUserRegistrationStore from '@/store/user.registration.store';
 import { IUserLogin } from '@/models/user.model';
+import useAuthStore from '@/store/auth.store';
 
 // 아이디 저장 만료일 (한달)
 const EXPIRATION_MAX_AGE = 30 * 24 * 60 * 60;
 
 export const useAuth = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(['email']);
+  const [_, setCookie, removeCookie] = useCookies(['email']);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
   const navigate = useNavigate();
+  const { storeLogin, storeLogout, setIsAdminUser } = useAuthStore();
   const { email, nickname, setEmail, setNickname } = useUserRegistrationStore();
 
   const userCheckedEmail = (email: string) => {
     checkedEmail({ email })
-      .then((res) => {
+      .then(() => {
         setEmail(email);
+        setErrorMessage(null);
+
         navigate('/join/step2');
       })
       .catch((error) => {
@@ -38,9 +42,16 @@ export const useAuth = () => {
   };
 
   const userCheckedNickname = (nickname: string) => {
+    if (!email) {
+      alert('이메일을 입력하지 않으셨습니다.');
+      navigate('/join/step1');
+      return;
+    }
     checkedNickname({ nickname })
-      .then((res) => {
+      .then(() => {
+        setErrorMessage(null);
         setNickname(nickname);
+
         navigate('/join/step3');
       })
       .catch((error) => {
@@ -54,13 +65,22 @@ export const useAuth = () => {
   };
 
   const userJoin = (password: string) => {
-    if (!email) return navigate('/join/step1');
-    if (!nickname) return navigate('/join/step2');
+    if (!email) {
+      alert('이메일을 입력하지 않으셨습니다.');
+      navigate('/join/step1');
+      return;
+    }
+    if (!nickname) {
+      alert('닉네임을 입력하지 않으셨습니다.');
+      navigate('/join/step2');
+      return;
+    }
 
     join({ email, nickname, password })
-      .then((res) => {
+      .then(() => {
         setEmail(null);
         setNickname(null);
+        setErrorMessage(null);
 
         alert('회원가입에 성공했습니다.');
         navigate('/login');
@@ -76,6 +96,10 @@ export const useAuth = () => {
   const userLogin = (data: IUserLogin, rememberEmail: boolean) => {
     login(data)
       .then((res) => {
+        // 정지 유저 확인 로직 추가
+        console.log(res);
+        setErrorMessage(null);
+
         if (rememberEmail) {
           setCookie('email', data.email, {
             path: '/login',
@@ -84,7 +108,14 @@ export const useAuth = () => {
         } else {
           removeCookie('email');
         }
-        setErrorMessage(null);
+
+        if (res.data.isAdmin) {
+          setIsAdminUser(true);
+          navigate('/admin/report-user');
+          return;
+        }
+
+        // storeLogin();
         navigate('/');
       })
       .catch((error) => {
@@ -95,7 +126,11 @@ export const useAuth = () => {
 
   const userLogout = () => {
     logout()
-      .then((res) => navigate('/'))
+      .then(() => {
+        setIsAdminUser(false);
+        storeLogout();
+        navigate('/');
+      })
       .catch((error) => console.error(error));
   };
 

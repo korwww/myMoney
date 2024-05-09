@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import LoginForm from '@/components/Login/LoginForm';
 import { IUserLogin } from '@/models/user.model';
 import AuthOptions from '@/components/common/AuthOptions';
+import { useAuth } from '@/hooks/useAuth';
 
 function AdminLogin() {
+  const { errorMessage, userLogin } = useAuth();
   const { register, handleSubmit } = useForm<IUserLogin>();
 
-  const onSubmit = handleSubmit(() => {
-    // navigate('/myMoney-admin/report-user')
+  const onSubmit = handleSubmit((data) => {
+    userLogin(data, false);
   });
   return (
     <Container>
@@ -18,7 +20,7 @@ function AdminLogin() {
         <LoginForm
           onSubmit={onSubmit}
           register={register}
-          errorMessage={null}
+          errorMessage={errorMessage}
         />
         <div
           onClick={() =>

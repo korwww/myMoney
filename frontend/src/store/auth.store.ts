@@ -5,6 +5,7 @@ interface AuthStoreState {
   isAdminUser: boolean;
   storeLogin: (token: string) => void;
   storeLogout: () => void;
+  setIsAdminUser: (isAdminUser: boolean) => void;
 }
 
 const useAuthStore = create<AuthStoreState>((set) => ({
@@ -17,6 +18,9 @@ const useAuthStore = create<AuthStoreState>((set) => ({
   },
   storeLogout: () => {
     set(() => ({ isLoggedIn: false }));
+  },
+  setIsAdminUser: (isAdminUser: boolean) => {
+    set(() => ({ isAdminUser: isAdminUser }));
   },
 }));
 

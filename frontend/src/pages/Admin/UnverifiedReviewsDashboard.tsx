@@ -6,6 +6,7 @@ import AdminLayout from '@/components/Admin/AdminLayout';
 import AdminTable, { TableHeadItem } from '@/components/Admin/AdminTable';
 import { Image } from '@/assets/icons/Image';
 import Icon from '@/components/common/Icon';
+import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthenticatedUser';
 
 interface ReportUserTd {
   title: string;
@@ -69,4 +70,4 @@ const IconButton = styled.div`
   cursor: pointer;
 `;
 
-export default UnverifiedReviewsDashboard;
+export default withAdminAuthenticatedUser(UnverifiedReviewsDashboard);

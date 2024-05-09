@@ -4,6 +4,7 @@ import AdminLayout from '@/components/Admin/AdminLayout';
 import AdminContent from '@/components/Admin/AdminContent';
 import AdminTable, { TableHeadItem } from '@/components/Admin/AdminTable';
 import Button from '@/components/common/Button';
+import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthenticatedUser';
 
 interface ReportUserTd {
   email: string;
@@ -65,4 +66,4 @@ function ReportedUsersDashboard() {
   );
 }
 
-export default ReportedUsersDashboard;
+export default withAdminAuthenticatedUser(ReportedUsersDashboard);
