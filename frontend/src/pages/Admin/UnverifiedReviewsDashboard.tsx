@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import AdminContent from '@/components/Admin/AdminContent';
@@ -6,6 +6,7 @@ import AdminLayout from '@/components/Admin/AdminLayout';
 import AdminTable, { TableHeadItem } from '@/components/Admin/AdminTable';
 import { Image } from '@/assets/icons/Image';
 import Icon from '@/components/common/Icon';
+import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthenticatedUser';
 
 interface ReportUserTd {
   title: string;
@@ -15,10 +16,10 @@ interface ReportUserTd {
 }
 
 const tableHead: TableHeadItem[] = [
-  { name: 'No', width: 40 },
-  { name: '제목', width: 445 },
-  { name: '작성자(이메일)', width: 230 },
-  { name: '인증 사진', width: 187 },
+  { name: 'No', $widthRatio: 5 },
+  { name: '제목', $widthRatio: 44.5 },
+  { name: '작성자(이메일)', $widthRatio: 23 },
+  { name: '인증 사진', $widthRatio: 18.7 },
 ];
 
 const tableBody: ReportUserTd[] = [
@@ -69,4 +70,4 @@ const IconButton = styled.div`
   cursor: pointer;
 `;
 
-export default UnverifiedReviewsDashboard;
+export default withAdminAuthenticatedUser(UnverifiedReviewsDashboard);

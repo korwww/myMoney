@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export interface TableHeadItem {
   name: string;
-  width: number;
+  $widthRatio: number;
 }
 
 interface AdminTableProps {
@@ -13,11 +13,11 @@ interface AdminTableProps {
 
 function AdminTable({ tableHead, children }: AdminTableProps) {
   return (
-    <table>
+    <Table>
       <THead>
         <tr>
-          {tableHead.map(({ name, width }) => (
-            <Th width={width} key={name}>
+          {tableHead.map(({ name, $widthRatio }) => (
+            <Th $widthRatio={$widthRatio} key={name}>
               {name}
             </Th>
           ))}
@@ -25,18 +25,23 @@ function AdminTable({ tableHead, children }: AdminTableProps) {
       </THead>
 
       <TBody>{children}</TBody>
-    </table>
+    </Table>
   );
 }
 
+const Table = styled.table`
+  width: 100%;
+`;
+
 const THead = styled.thead`
+  width: 100%;
   height: 40px;
   padding: 0 10px;
   background-color: ${({ theme }) => theme.color.background};
 `;
 
-const Th = styled.th<Pick<TableHeadItem, 'width'>>`
-  width: ${({ width }) => width}px;
+const Th = styled.th<Pick<TableHeadItem, '$widthRatio'>>`
+  width: ${({ $widthRatio }) => `calc((100% * ${$widthRatio})/100)`}px;
   font-size: ${({ theme }) => theme.text['medium'].fontSize};
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
   line-height: 40px;

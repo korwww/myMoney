@@ -12,6 +12,7 @@ interface JoinTemplateProps {
   title: string;
   onSubmit: () => void;
   isValid: boolean;
+  errorMessage: string | null;
 }
 
 function JoinTemplate({
@@ -20,6 +21,7 @@ function JoinTemplate({
   title,
   isValid,
   onSubmit,
+  errorMessage,
 }: JoinTemplateProps) {
   return (
     <>
@@ -35,6 +37,7 @@ function JoinTemplate({
           onSubmit={onSubmit}
           isLastStep={current === TOTAL_STEP}
           isValid={isValid}
+          errorMessage={errorMessage}
         >
           {children}
         </JoinForm>
