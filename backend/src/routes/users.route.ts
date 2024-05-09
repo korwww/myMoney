@@ -6,7 +6,7 @@ import {
   JoinUser,
   LoginUser,
   LogoutUser,
-} from '../controllers/users.controller';
+} from '../controllers/user.controller';
 
 const router = express.Router();
 
