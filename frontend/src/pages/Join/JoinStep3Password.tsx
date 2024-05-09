@@ -9,6 +9,7 @@ import { IUserRegistration } from '@/models/user.model';
 import { VALIDATE } from '@/constance/validate';
 import Input from '@/components/common/Input';
 import { useAuth } from '@/hooks/useAuth';
+import { withUnauthenticatedUser } from '@/components/hocs/withUnauthenticatedUser';
 
 const JoinStep3Password = () => {
   const { errorMessage, userJoin } = useAuth();
@@ -116,4 +117,4 @@ const PasswordDescription = styled.p`
   font-size: ${({ theme }) => theme.text['small'].fontSize};
 `;
 
-export default JoinStep3Password;
+export default withUnauthenticatedUser(JoinStep3Password);

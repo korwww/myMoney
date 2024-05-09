@@ -10,6 +10,7 @@ import { VALIDATE } from '@/constance/validate';
 import Input from '@/components/common/Input';
 import useUserRegistrationStore from '@/store/user.registration.store';
 import { useAuth } from '@/hooks/useAuth';
+import { withUnauthenticatedUser } from '@/components/hocs/withUnauthenticatedUser';
 
 function JoinStep1Email() {
   const { errorMessage, userCheckedEmail } = useAuth();
@@ -71,4 +72,4 @@ const Inner = styled.div`
   padding: ${({ theme }) => theme.padding.mainContent};
 `;
 
-export default JoinStep1Email;
+export default withUnauthenticatedUser(JoinStep1Email);

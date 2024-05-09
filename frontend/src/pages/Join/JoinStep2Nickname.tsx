@@ -8,6 +8,7 @@ import { VALIDATE } from '@/constance/validate';
 import Input from '@/components/common/Input';
 import useUserRegistrationStore from '@/store/user.registration.store';
 import { useAuth } from '@/hooks/useAuth';
+import { withUnauthenticatedUser } from '@/components/hocs/withUnauthenticatedUser';
 
 const JoinStep2Nickname = () => {
   const { errorMessage, userCheckedNickname } = useAuth();
@@ -64,4 +65,4 @@ const JoinStep2Nickname = () => {
   );
 };
 
-export default JoinStep2Nickname;
+export default withUnauthenticatedUser(JoinStep2Nickname);

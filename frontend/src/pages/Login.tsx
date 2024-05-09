@@ -10,6 +10,7 @@ import { IUserLogin } from '@/models/user.model';
 import Icon from '@/components/common/Icon';
 import { TextLogo } from '@/assets/icons/textLogo';
 import { useAuth } from '@/hooks/useAuth';
+import { withUnauthenticatedUser } from '@/components/hocs/withUnauthenticatedUser';
 
 function Login() {
   const [cookies] = useCookies(['email']);
@@ -70,4 +71,4 @@ const Title = styled(Link)`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-export default Login;
+export default withUnauthenticatedUser(Login);
