@@ -4,6 +4,7 @@ import { Review } from '../entity/reviews.entity';
 
 const reviewRepository = AppDataSource.getRepository(Review);
 
+//데이터베이스와 CRUD
 export const allReviews = async ({
   categoryId,
   isVerified,
