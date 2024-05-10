@@ -10,6 +10,9 @@ import { Review } from './reviews.entity';
 
 @Entity('likes')
 export class Like {
+  @PrimaryGeneratedColumn()
+  id: number | undefined;
+
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user!: User;
