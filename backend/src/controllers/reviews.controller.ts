@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { serviceAllReviews } from '../services/review.service';
+import { serviceReviewList } from '../services/review.service';
 
 export interface IReviewQueryParams {
   categoryId?: string;
@@ -9,27 +9,33 @@ export interface IReviewQueryParams {
   best?: boolean;
   myReviews?: boolean;
 }
-
+//request, response를 담당
 export const getReviews: RequestHandler<{}, {}, {}, IReviewQueryParams> = (
   req,
   res,
 ) => {
   const { categoryId, isVerified, query, liked, best, myReviews } = req.query;
-
-  serviceAllReviews({
-    categoryId,
-    isVerified,
-    query,
-    liked,
-    best,
-    myReviews,
-  }).then(
-    (responseData) => {
-      res.status(200).json({ reviews: responseData });
-    },
-    (err) => {
-      console.log(err);
-      res.status(500).json({ message: '오류' });
-    },
-  );
+  try {
+    serviceReviewList({
+      categoryId,
+      isVerified,
+      query,
+      liked,
+      best,
+      myReviews,
+    }).then(
+      (responseData) => {
+        return res
+          .status(200)
+          .json({ reviews: responseData, pagination: 'pagenation' });
+      },
+      (err) => {
+        throw err;
+      },
+    );
+  } catch (err) {
+    //공통 에러 핸들러 필요
+    console.log(err);
+    return res.status(500).json({ message: '오류' });
+  }
 };
