@@ -10,6 +10,7 @@ import { User } from './entity/users.entity';
 import { Review } from './entity/reviews.entity';
 import { Category } from './entity/category.entity';
 import { Report } from './entity/report_content.entity';
+import { Like } from './entity/likes.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mariadb',
@@ -18,6 +19,6 @@ export const AppDataSource = new DataSource({
   username: DB_USERNAME,
   password: DB_PASSWORD,
   database: DB_DATABASE,
-  entities: [User, Review, Category, Report],
+  entities: [User, Like, Review, Category, Report],
   synchronize: true,
 });
