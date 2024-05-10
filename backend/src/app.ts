@@ -3,9 +3,12 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import 'express-async-errors';
 import 'reflect-metadata';
-import { usersRouter } from './routes/users.route';
 import { CORS_ALLOWED_ORIGIN } from './settings';
 import { convertToCamelCase } from './middlewares/convertToCamelCase';
+import { usersRouter } from './routes/users.route';
+import { reviewsRouter } from './routes/reviews.route';
+import { commentsRouter } from './routes/comments.route';
+import { likeRouter } from './routes/likes.route';
 
 const app: Express = express();
 
@@ -21,6 +24,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(convertToCamelCase);
 app.use('/users', usersRouter);
+app.use('/list', reviewsRouter);
+app.use('/comments', commentsRouter);
+app.use('/likes', likeRouter);
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
