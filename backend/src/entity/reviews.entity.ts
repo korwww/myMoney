@@ -15,11 +15,11 @@ export class Review {
   id!: number;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user!: User;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
+  @JoinColumn({ name: 'categoryId' })
   category!: Category;
 
   @Column({ comment: '제목', type: 'varchar', length: 100 })
