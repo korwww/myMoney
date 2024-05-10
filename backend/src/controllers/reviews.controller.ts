@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
+import { serviceAllReviews } from '../services/review.service';
 
-interface IReviewQueryParams {
+export interface IReviewQueryParams {
   categoryId?: string;
   isVerified?: boolean;
   query?: string;
@@ -15,5 +16,20 @@ export const getReviews: RequestHandler<{}, {}, {}, IReviewQueryParams> = (
 ) => {
   const { categoryId, isVerified, query, liked, best, myReviews } = req.query;
 
-  return res.status(200).json({ message: 'success' });
+  serviceAllReviews({
+    categoryId,
+    isVerified,
+    query,
+    liked,
+    best,
+    myReviews,
+  }).then(
+    (responseData) => {
+      res.status(200).json({ reviews: responseData });
+    },
+    (err) => {
+      console.log(err);
+      res.status(500).json({ message: '오류' });
+    },
+  );
 };
