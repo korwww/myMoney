@@ -37,11 +37,11 @@ export class Review {
   stars!: number;
 
   @CreateDateColumn({ comment: '작성 날짜', type: 'timestamp' })
-  created_at!: Date;
+  createdAt!: Date;
 
   @Column({ comment: '인증 여부', type: 'boolean', default: false })
   verified!: boolean;
 
   @Column({ comment: '인증용 사진', type: 'text' })
-  receipt_img!: string;
+  receiptImg!: string;
 }
