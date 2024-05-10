@@ -6,15 +6,16 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './users.entity';
-import { Review } from './reviews.entity';
 
-@Entity('likes')
-export class Like {
+@Entity('report_content')
+export class Report {
+  @PrimaryGeneratedColumn()
+  id!: number;
+
+  @Column({ comment: '신고 카테고리', type: 'varchar', length: 50 })
+  name!: string;
+
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user!: User;
-
-  @ManyToOne(() => Review)
-  @JoinColumn({ name: 'review_id' })
-  review!: Review;
 }
