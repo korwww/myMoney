@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './users.entity';
-// import { Category } from './category.entity';
+import { Category } from './category.entity';
 
 @Entity('reviews')
 export class Review {
@@ -15,12 +15,12 @@ export class Review {
   id!: number;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user!: User;
 
-  // @ManyToOne(() => Category)
-  // @JoinColumn({ name: 'category_id' })
-  // category!: Category;
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'categoryId' })
+  category!: Category;
 
   @Column({ comment: '제목', type: 'varchar', length: 100 })
   title!: string;
