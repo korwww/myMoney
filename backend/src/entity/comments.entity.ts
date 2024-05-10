@@ -28,7 +28,4 @@ export class Comment {
 
   @CreateDateColumn({ comment: '작성 날짜', type: 'timestamp' })
   createdAt!: Date;
-
-  @UpdateDateColumn({ comment: '수정 날짜', type: 'timestamp' })
-  updatedAt!: Date;
 }
