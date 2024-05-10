@@ -1,18 +1,42 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Camera } from '@/assets/icons/Camera';
-import { PhotoItem } from '@/pages/CreateReview';
+import { convertToBase64 } from '@/utils/base64';
+import { X } from '@/assets/icons/X';
+import Icon from '../common/Icon';
 
-interface PhotoUploadProps {
-  onPhotoSelect: (files: FileList | null) => void;
-  photoToAddList: PhotoItem[];
+interface PhotoItem {
+  base64: string;
 }
 
-function PhotoUpload({ onPhotoSelect, photoToAddList }: PhotoUploadProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+interface PhotoUploadProps {
+  setPhotoToAddList: React.Dispatch<React.SetStateAction<PhotoItem[]>>;
+}
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onPhotoSelect(e.target.files);
+function PhotoUpload({ setPhotoToAddList }: PhotoUploadProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [previewURLs, setPreviewURLs] = useState<string[]>([]);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+
+    if (files) {
+      const base64Array: string[] = [];
+      const previews: string[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const base64 = await convertToBase64(file);
+        const withoutPrefix = base64.split(',')[1];
+        base64Array.push(withoutPrefix);
+        previews.push(base64);
+      }
+      setPreviewURLs((prevURLs) => [...prevURLs, ...previews]);
+      setPhotoToAddList((prevList) => [
+        ...prevList,
+        ...base64Array.map((base64) => ({ base64 })),
+      ]);
+    }
   };
 
   const handleClick = () => {
@@ -21,10 +45,18 @@ function PhotoUpload({ onPhotoSelect, photoToAddList }: PhotoUploadProps) {
     }
   };
 
+  const handleRemovePhoto = (index: number) => {
+    setPreviewURLs((prevURLs) => prevURLs.filter((_, i) => i !== index));
+    setPhotoToAddList((prevList) => prevList.filter((_, i) => i !== index));
+  };
+
   const renderPhotoPreviews = () => {
-    return photoToAddList.map((photo: PhotoItem, index: number) => (
+    return previewURLs.map((url: string, index: number) => (
       <PhotoPreview key={index}>
-        <img src={URL.createObjectURL(photo.file)} alt={`Photo ${index}`} />
+        <CloseButton onClick={() => handleRemovePhoto(index)}>
+          <Icon width={12} fill="white" icon={<X />} />
+        </CloseButton>
+        <img src={url} alt={`Photo ${index}`} />
       </PhotoPreview>
     ));
   };
@@ -55,7 +87,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: #4f4f4f;
 `;
 
 const Button = styled.button`
@@ -68,6 +99,7 @@ const Button = styled.button`
   border-radius: ${({ theme }) => theme.borderRadius.default};
   border: 1px solid ${({ theme }) => theme.color.border};
   background-color: white;
+  margin-right: 10px;
 
   p {
     font-size: ${({ theme }) => theme.text.small.fontSize};
@@ -75,6 +107,7 @@ const Button = styled.button`
 `;
 
 const PhotoPreview = styled.div`
+  position: relative;
   width: 60px;
   height: 60px;
   margin-right: 10px;
@@ -85,4 +118,19 @@ const PhotoPreview = styled.div`
     object-fit: cover;
     border-radius: 5px;
   }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: -8px;
+  right: -5px;
+  background-color: black;
+  width: 18px;
+  height: 18px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
 `;

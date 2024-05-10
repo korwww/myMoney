@@ -29,44 +29,28 @@ interface FormData {
   content: string;
 }
 
-export interface PhotoItem {
-  id: string;
-  file: File;
+interface PhotoItem {
+  base64: string;
 }
 
 function CreateReview() {
   const [ratingIndex, setRatingIndex] = useState<number>(3);
   const [categoryIndex, setCategoryIndex] = useState<number>(0);
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+  });
   const [photoToAddList, setPhotoToAddList] = useState<PhotoItem[]>([]);
   const { register, handleSubmit } = useForm<FormData>();
-  
-  console.log(photoToAddList);
 
-
-  const onSubmit = (data: FormData) => {
-    console.log('제출되는 데이터:', {
-      title,
-      review_img: '',
-      receipt_img: '',
+  const onSubmit = () => {
+    const data = {
+      ...formData,
       category_id: ratingIndex,
-      content,
-    });
-  };
-
-  const handlePhotoSelect = (files: FileList | null) => {
-    const temp: PhotoItem[] = [];
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        temp.push({
-          id: file.name,
-          file: file,
-        });
-      }
-      setPhotoToAddList((prevList) => [...prevList, ...temp]);
-    }
+      review_img: photoToAddList,
+      receipt_img: '', // Placeholder for receipt_img
+    };
+    console.log('제출되는 데이터:', data);
   };
 
   return (
@@ -74,10 +58,7 @@ function CreateReview() {
       <Header showBackButton={true} title="리뷰 작성" />
 
       <CreateReviewStyled>
-        <PhotoUpload
-          onPhotoSelect={handlePhotoSelect}
-          photoToAddList={photoToAddList}
-        />
+        <PhotoUpload setPhotoToAddList={setPhotoToAddList} />
 
         <ButtonContainer>
           <Button size="medium" scheme="disabled" $fullWidth={true}>
@@ -93,16 +74,18 @@ function CreateReview() {
           setCategoryIndex={setCategoryIndex}
         />
 
-        <p>제목</p>
+        <Title>제목</Title>
         <Input
           $inputType="text"
           type="text"
           placeholder="제목을 입력해주세요"
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
 
-        <p>내용</p>
-        <CreateContent onChange={(value) => setContent(value)} />
+        <Title>내용</Title>
+        <CreateContent
+          onChange={(value) => setFormData({ ...formData, content: value })}
+        />
 
         <ButtonContainer>
           <Button
@@ -129,4 +112,11 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 358px;
+`;
+
+const Title = styled.h1`
+  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  font-size: ${({ theme }) => theme.text['medium'].fontSize};
+  margin: 8px 0px;
+  line-height: 1.2;
 `;
