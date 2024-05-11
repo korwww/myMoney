@@ -17,9 +17,11 @@
     "react": "^18.2.0",
     "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.13",
     "react-hook-form": "^7.51.3",
     "react-router-dom": "^6.23.0",
     "react-slick": "^0.30.2",
+    "snakecase-keys": "^8.0.0",
     "styled-components": "^6.1.8",
     "zustand": "^4.5.2"
   },

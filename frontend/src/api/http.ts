@@ -1,5 +1,7 @@
+import { handleGoLogin } from '@/utils/routingUtils';
 import axios, { AxiosRequestConfig } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
+import snakecaseKeys from 'snakecase-keys';
 
 const BASE_URL = 'http://localhost:3031';
 const DEFAULT_TIMEOUT = 30000;
@@ -15,19 +17,26 @@ export const createClient = (config?: AxiosRequestConfig) => {
     ...config,
   });
 
+  axiosInstance.interceptors.request.use((config) => {
+    if (config.data) {
+      config.data = snakecaseKeys(config.data, { deep: true });
+    }
+    return config;
+  });
+
   axiosInstance.interceptors.response.use(
     (response) => {
       if (response.data) {
-        response.data = camelcaseKeys(response.data);
+        response.data = camelcaseKeys(response.data, { deep: true });
       }
       return response;
     },
     (error) => {
       console.error(error);
+      error.response.data = camelcaseKeys(error.response.data);
 
-      if (error.status === 401) {
-        // 로그인 유저 정보 삭제 로직 추가
-        window.location.href = '/login';
+      if (error.status === 401 || error.response.status === 401) {
+        handleGoLogin();
         return;
       }
 
