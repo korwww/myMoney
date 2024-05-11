@@ -1,17 +1,19 @@
 import {
-  Entity,
   Column,
-  ManyToOne,
+  CreateDateColumn,
+  Entity,
   JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from './users.entity';
 import { Review } from './reviews.entity';
 
-@Entity('likes')
-export class Like {
+@Entity('comments')
+export class Comment {
   @PrimaryGeneratedColumn()
-  id: number | undefined;
+  id!: number;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
@@ -20,4 +22,10 @@ export class Like {
   @ManyToOne(() => Review)
   @JoinColumn({ name: 'review_id' })
   review!: Review;
+
+  @Column({ comment: '댓글 내용', type: 'varchar', length: 100 })
+  content!: string;
+
+  @CreateDateColumn({ comment: '작성 날짜', type: 'timestamp' })
+  createdAt!: Date;
 }
