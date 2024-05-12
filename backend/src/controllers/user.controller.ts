@@ -1,21 +1,21 @@
-import { NextFunction, Response } from 'express';
+import { Response } from 'express';
 
 import { CustomRequest } from '../middlewares/authentication';
 import {
   checkDuplicateEmail,
   checkDuplicateNickname,
   getUserInfo,
-  joinUser,
-  loginUser,
+  join,
+  login,
 } from '../services/user.service';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 
-export const LoginUser = async (req: CustomRequest, res: Response) => {
+export const loginUser = async (req: CustomRequest, res: Response) => {
   try {
     const { email, password } = req.body;
 
     const { user, token, isAdmin, isSuspended, suspensionRemainingDays } =
-      await loginUser(email, password);
+      await login(email, password);
 
     if (isSuspended) {
       return res.status(403).send({
@@ -35,12 +35,12 @@ export const LoginUser = async (req: CustomRequest, res: Response) => {
   }
 };
 
-export const LogoutUser = async (req: CustomRequest, res: Response) => {
+export const logoutUser = async (req: CustomRequest, res: Response) => {
   res.clearCookie('access-token');
   res.send(204).end();
 };
 
-export const CheckedDuplicateEmail = async (
+export const checkedDuplicateEmail = async (
   req: CustomRequest,
   res: Response,
 ) => {
@@ -53,7 +53,7 @@ export const CheckedDuplicateEmail = async (
   }
 };
 
-export const CheckedDuplicateNickname = async (
+export const checkedDuplicateNickname = async (
   req: CustomRequest,
   res: Response,
 ) => {
@@ -66,18 +66,18 @@ export const CheckedDuplicateNickname = async (
   }
 };
 
-export const JoinUser = async (req: CustomRequest, res: Response) => {
+export const joinUser = async (req: CustomRequest, res: Response) => {
   const { email, password, nickname } = req.body;
 
   try {
-    await joinUser(email, password, nickname);
+    await join(email, password, nickname);
     res.status(201).send({ message: 'Created' });
   } catch (error: any) {
     throw new Error(error.message);
   }
 };
 
-export const UserInfo = async (req: CustomRequest, res: Response) => {
+export const userInfo = async (req: CustomRequest, res: Response) => {
   // 요청에서 사용자 ID를 얻습니다. (인증 미들웨어를 통해 req.user에 사용자 정보가 존재한다고 가정)
   // const { userId } = req.body; -> postman 테스트용 코드(테스트 할 때는 바로 밑에 코드는 주석처리하고 사용해야함!)
   const { email } = req.user!;
