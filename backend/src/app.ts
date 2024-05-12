@@ -1,6 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import 'express-async-errors';
 import 'reflect-metadata';
 import { usersRouter } from './routes/users.route';
@@ -19,6 +20,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use('/users', usersRouter);
 app.use('/reviews', reviewsRouter);
