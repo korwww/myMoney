@@ -2,11 +2,14 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { QueryError } from 'mysql2';
 import 'express-async-errors';
 import 'reflect-metadata';
 import { usersRouter } from './routes/users.route';
 import { CORS_ALLOWED_ORIGIN } from './settings';
 import { reviewsRouter } from './routes/reviews.route';
+import { ERROR_MESSAGE } from './constance/errorMessage';
+import { getStatusCode } from './utils/getStatusCode';
 
 const app: Express = express();
 
@@ -27,7 +30,9 @@ app.use('/reviews', reviewsRouter);
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
-  res.sendStatus(500);
+
+  const errorStatus = getStatusCode((err as Error).message);
+  res.status(errorStatus).send({ message: (err as Error).message });
 });
 
 export { app };
