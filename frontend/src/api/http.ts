@@ -1,5 +1,5 @@
+import { handleGoLogin } from '@/utils/routingUtils';
 import axios, { AxiosRequestConfig } from 'axios';
-import camelcaseKeys from 'camelcase-keys';
 
 const BASE_URL = 'http://localhost:3031';
 const DEFAULT_TIMEOUT = 30000;
@@ -17,17 +17,13 @@ export const createClient = (config?: AxiosRequestConfig) => {
 
   axiosInstance.interceptors.response.use(
     (response) => {
-      if (response.data) {
-        response.data = camelcaseKeys(response.data);
-      }
       return response;
     },
     (error) => {
       console.error(error);
 
-      if (error.status === 401) {
-        // 로그인 유저 정보 삭제 로직 추가
-        window.location.href = '/login';
+      if (error.status === 401 || error.response.status === 401) {
+        handleGoLogin();
         return;
       }
 

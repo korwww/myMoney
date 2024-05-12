@@ -5,7 +5,6 @@ import 'express-async-errors';
 import 'reflect-metadata';
 import { usersRouter } from './routes/users.route';
 import { CORS_ALLOWED_ORIGIN } from './settings';
-import { convertToCamelCase } from './middlewares/convertToCamelCase';
 import { reviewsRouter } from './routes/reviews.route';
 
 const app: Express = express();
@@ -20,7 +19,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(convertToCamelCase);
+
 app.use('/users', usersRouter);
 app.use('/reviews', reviewsRouter);
 

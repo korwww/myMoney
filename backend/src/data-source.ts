@@ -1,4 +1,6 @@
 import { DataSource } from 'typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
 import {
   DB_DATABASE,
   DB_HOST,
@@ -19,4 +21,5 @@ export const AppDataSource = new DataSource({
   database: DB_DATABASE,
   entities: [User, Like, Review],
   synchronize: true,
+  namingStrategy: new SnakeNamingStrategy(),
 });
