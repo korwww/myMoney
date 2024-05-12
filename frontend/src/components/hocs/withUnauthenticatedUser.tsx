@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useAuthStore from '@/store/auth.store';
@@ -9,10 +9,13 @@ export function withUnauthenticatedUser(WrappedComponent: React.ComponentType) {
     const { isLoggedIn } = useAuthStore();
     const navigate = useNavigate();
 
-    if (isLoggedIn) {
-      navigate('/');
-      return null;
-    }
+    useEffect(() => {
+      if (isLoggedIn) {
+        navigate('/');
+      }
+    }, [isLoggedIn, navigate]);
+
+    if (isLoggedIn) return null;
 
     return <WrappedComponent />;
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useAuthStore from '@/store/auth.store';
@@ -11,10 +11,14 @@ export function withAdminAuthenticatedUser(
     const { isAdminUser } = useAuthStore();
     const navigate = useNavigate();
 
-    if (!isAdminUser) {
-      // 404 페이지로 이동
-      return null;
-    }
+    useEffect(() => {
+      if (!isAdminUser) {
+        // 404 오류 발생시키고 싶음...
+        navigate('/');
+      }
+    }, [navigate, isAdminUser]);
+
+    if (!isAdminUser) return null;
 
     return <WrappedComponent />;
   }
