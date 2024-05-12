@@ -4,7 +4,6 @@ import cors from 'cors';
 import 'express-async-errors';
 import 'reflect-metadata';
 import { CORS_ALLOWED_ORIGIN } from './settings';
-import { convertToCamelCase } from './middlewares/convertToCamelCase';
 import { usersRouter } from './routes/users.route';
 import { reviewsRouter } from './routes/reviews.route';
 import { commentsRouter } from './routes/comments.route';
@@ -22,7 +21,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(convertToCamelCase);
+
 app.use('/users', usersRouter);
 app.use('/list', reviewsRouter);
 app.use('/comments', commentsRouter);
