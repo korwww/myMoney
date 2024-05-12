@@ -12,6 +12,7 @@ import JoinStep3Password from '@/pages/Join/JoinStep3Password';
 import AdminLogin from '@/pages/Admin/AdminLogin';
 import ReportedUsersDashboard from '@/pages/Admin/ReportedUsersDashboard';
 import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard';
+import NotFoundError from './components/Error/NotFoundError';
 
 export function Router() {
   return (
@@ -41,6 +42,8 @@ export function Router() {
           <Route path="step2" element={<JoinStep2Nickname />} />
           <Route path="step3" element={<JoinStep3Password />} />
         </Route>
+
+        <Route path="*" element={<NotFoundError />} />
       </Routes>
     </BrowserRouter>
   );
