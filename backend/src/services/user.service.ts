@@ -12,7 +12,7 @@ import {
   getUserSuspensionStatus,
 } from '../utils/authUtils';
 
-export const loginUser = async (email: string, password: string) => {
+export const login = async (email: string, password: string) => {
   const user = await findUserByEmail(email);
   if (!user) throw new Error(ERROR_MESSAGE.USER_NOT_FOUND);
 
@@ -41,7 +41,7 @@ export const checkDuplicateNickname = async (nickname: string) => {
   if (user) throw new Error(ERROR_MESSAGE.DUPLICATE_NICKNAME);
 };
 
-export const joinUser = async (
+export const join = async (
   email: string,
   password: string,
   nickname: string,
