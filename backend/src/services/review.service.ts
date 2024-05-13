@@ -1,5 +1,11 @@
 import { IReviewQueryParams } from '../controllers/reviews.controller';
-import { allReviews } from '../models/review.model';
+import { AppDataSource } from '../data-source';
+import { Category } from '../entity/category.entity';
+import { ReviewImg } from '../entity/review_img.entity';
+import { Review } from '../entity/reviews.entity';
+import { User } from '../entity/users.entity';
+import { allReviews, createNewReview } from '../models/review.model';
+import { findUserById } from '../models/user.model';
 
 export const serviceReviewList = async ({
   categoryId,
@@ -32,4 +38,24 @@ const makePagenation = () => {
 
 const search = () => {
   //검색
+};
+
+
+
+
+export const create = async (
+  id: number,
+  title: string,
+  content: string,
+  categoryId: number,
+  stars: number,
+  receiptImg: string,
+  reviewImg: string[]
+) => {
+  const categoryRepository = AppDataSource.getRepository(Category);
+
+  const user = await findUserById(id);
+  const category = await categoryRepository.findOneBy({ id: categoryId });
+
+  await createNewReview({ user, title, content, category, stars, receiptImg, reviewImg });
 };

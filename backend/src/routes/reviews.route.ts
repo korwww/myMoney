@@ -1,5 +1,6 @@
 import express from 'express';
 import { createReview, getReviews } from '../controllers/reviews.controller';
+import { authentication } from '../middlewares/authentication';
 
 const router = express.Router();
 
@@ -9,6 +10,6 @@ router.route('/').get(getReviews).post();
 
 router.route('/:id').get().patch().delete();
 
-router.route('/').post(createReview);
+router.post('/', authentication, createReview);
 
 export { router as reviewsRouter };
