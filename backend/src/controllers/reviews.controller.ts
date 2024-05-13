@@ -1,20 +1,19 @@
-import { RequestHandler } from 'express';
+import { Request, Response } from 'express';
 import { serviceReviewList } from '../services/review.service';
 
 export interface IReviewQueryParams {
-  categoryId?: string;
+  categoryId?: number;
   isVerified?: boolean;
   query?: string;
   liked?: boolean;
   best?: boolean;
   myReviews?: boolean;
 }
+
 //request, response를 담당
-export const getReviews: RequestHandler<{}, {}, {}, IReviewQueryParams> = (
-  req,
-  res,
-) => {
-  const { categoryId, isVerified, query, liked, best, myReviews } = req.query;
+export const getReviews = (req: Request, res: Response) => {
+  const { categoryId, isVerified, query, liked, best, myReviews } =
+    req.query as IReviewQueryParams;
   try {
     serviceReviewList({
       categoryId,
