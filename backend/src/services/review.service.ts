@@ -4,8 +4,11 @@ import { Category } from '../entity/category.entity';
 import { ReviewImg } from '../entity/review_img.entity';
 import { Review } from '../entity/reviews.entity';
 import { User } from '../entity/users.entity';
-import { allReviews, createNewReview } from '../models/review.model';
+import { allReviews, createNewReview, findReviewById, updateReviewData } from '../models/review.model';
 import { findUserById } from '../models/user.model';
+
+const categoryRepository = AppDataSource.getRepository(Category);
+
 
 export const serviceReviewList = async ({
   categoryId,
@@ -52,10 +55,30 @@ export const create = async (
   receiptImg: string,
   reviewImg: string[]
 ) => {
-  const categoryRepository = AppDataSource.getRepository(Category);
-
   const user = await findUserById(id);
   const category = await categoryRepository.findOneBy({ id: categoryId });
 
   await createNewReview({ user, title, content, category, stars, receiptImg, reviewImg });
+};
+
+
+export const update = async (
+  id: number,
+  reviewId: number,
+  title: string,
+  content: string,
+  categoryId: number,
+  stars: number,
+  receiptImg: string,
+  reviewImg: string[]
+) => {
+  const user = await findUserById(id);
+  const category = await categoryRepository.findOneBy({ id: categoryId });
+
+  const review = await findReviewById(reviewId);
+  if (!review) {
+    throw new Error('Review not found');
+  }
+
+  await updateReviewData(review, { user, title, content, category, stars, receiptImg, reviewImg });
 };
