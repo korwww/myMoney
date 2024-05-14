@@ -64,6 +64,10 @@ export const allComments = async (reviewId: number): Promise<any[]> => {
   return comments;
 };
 
+export const findReviewById = async (id: number) => {
+  return await reviewRepository.findOneBy({ id });
+};
+
 export const createNewReview = async (reviewData: {
   user: any;
   title: string;
