@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-
 import { User } from '@/assets/icons/User.tsx';
 import { MagnifyingGlass } from '@/assets/icons/MagnifyingGlass.tsx';
 import { Plus } from '@/assets/icons/Plus.tsx';
@@ -43,13 +41,21 @@ export default function Navigation() {
   ];
 
   const location = useLocation();
-
+  
   return (
     <NavStyle>
       <div className="navigation">
         {NAV_ITEMS.map((item, index) => (
           <Link key={item.path} to={item.path}>
-            <Icon className={index === 2 ? 'greenBg' : location.pathname === item.path ? 'active' : ''}>
+            <Icon
+              className={
+                index === 2
+                  ? 'greenBg'
+                  : location.pathname === item.path
+                    ? 'active'
+                    : ''
+              }
+            >
               {item.icon}
             </Icon>
             {item.text && <span>{item.text}</span>}
@@ -90,22 +96,22 @@ const NavStyle = styled.div`
   }
 
   .greenBg {
-      display: flex;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: ${({ theme }) => theme.color.primary};
-      align-items: center;
-      justify-content: center;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.color.primary};
+    align-items: center;
+    justify-content: center;
 
-      svg {
-        width: 32px;
-        height: 32px;
-        path {
-          fill: #ffffff;
-        }
+    svg {
+      width: 32px;
+      height: 32px;
+      path {
+        fill: #ffffff;
       }
     }
+  }
 `;
 
 const Icon = styled.div`
@@ -125,5 +131,3 @@ const Icon = styled.div`
     height: 25px;
   }
 `;
-
-

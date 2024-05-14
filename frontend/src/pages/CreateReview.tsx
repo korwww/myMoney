@@ -2,12 +2,16 @@ import CategorySelector from '@/components/CreateReview/CategorySelect';
 import CreateContent from '@/components/CreateReview/CreateContent';
 import PhotoUpload from '@/components/CreateReview/PhotoUpload';
 import StarRating from '@/components/CreateReview/StarRating';
+import ReceiptUpload from '@/components/CreateReview/ReceiptUpload';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
+import { useReview } from '@/hooks/useReview';
 import Header from '@/layout/Header';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { IReview } from '@/models/review.model';
+import { useNavigate } from 'react-router-dom';
+import useAuthStore from '@/store/auth.store';
 
 const categoryOptions = [
   '디지털',
@@ -21,50 +25,54 @@ const categoryOptions = [
   '기타',
 ];
 
-interface FormData {
-  review_img: FileList | null;
-  receipt_img: FileList | null;
-  category_id: number;
-  title: string;
-  content: string;
-}
-
-interface PhotoItem {
-  base64: string;
-}
-
 function CreateReview() {
   const [ratingIndex, setRatingIndex] = useState<number>(3);
   const [categoryIndex, setCategoryIndex] = useState<number>(0);
-  const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-  });
-  const [photoToAddList, setPhotoToAddList] = useState<PhotoItem[]>([]);
-  const { register, handleSubmit } = useForm<FormData>();
+  const [receiptImg, setReceiptImg] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [photoToAddList, setPhotoToAddList] = useState<string[]>([]);
 
-  const onSubmit = () => {
-    const data = {
-      ...formData,
-      category_id: ratingIndex,
-      review_img: photoToAddList,
-      receipt_img: '', // Placeholder for receipt_img
+  const { addToReview } = useReview();
+  const navigate = useNavigate();
+  const {isLoggedIn} = useAuthStore();
+
+  useEffect(() => {
+    if (!isLoggedIn &&'/create'.includes(location.pathname)) {
+      alert('로그인이 필요합니다.')
+      navigate('/login');
+    }
+  }, [isLoggedIn, location.pathname]);
+
+  const isFormValid =
+    title.trim() !== '' &&
+    content.trim() !== '' &&
+    photoToAddList.length > 0 &&
+    receiptImg !== '';
+
+  const handleSubmit = () => {
+    const data: IReview = {
+      title,
+      content,
+      stars: ratingIndex,
+      categoryId: categoryIndex,
+      reviewImg: photoToAddList,
+      receiptImg,
     };
-    console.log('제출되는 데이터:', data);
+
+    console.log('data', data);
+    //addToReview(data);
   };
+
 
   return (
     <>
       <Header showBackButton={true} title="리뷰 작성" />
 
       <CreateReviewStyled>
-        <PhotoUpload setPhotoToAddList={setPhotoToAddList} />
+        <PhotoUpload photoToAddList={photoToAddList} setPhotoToAddList={setPhotoToAddList} />
 
-        <ButtonContainer>
-          <Button size="medium" scheme="disabled" $fullWidth={true}>
-            영수증 리뷰 인증
-          </Button>
-        </ButtonContainer>
+        <ReceiptUpload receiptImg={receiptImg}  setReceiptImg={setReceiptImg} />
 
         <StarRating ratingIndex={ratingIndex} setRatingIndex={setRatingIndex} />
 
@@ -79,20 +87,20 @@ function CreateReview() {
           $inputType="text"
           type="text"
           placeholder="제목을 입력해주세요"
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          onChange={(e) => setTitle(e.target.value)}
         />
 
         <Title>내용</Title>
-        <CreateContent
-          onChange={(value) => setFormData({ ...formData, content: value })}
-        />
+        <CreateContent onChange={setContent} />
 
         <ButtonContainer>
           <Button
             size="large"
             scheme="primary"
             $fullWidth={true}
-            onClick={handleSubmit(onSubmit)}
+            type="submit"
+            disabled={!isFormValid}
+            onClick={handleSubmit}
           >
             작성완료
           </Button>
