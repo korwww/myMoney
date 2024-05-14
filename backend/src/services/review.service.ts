@@ -4,11 +4,10 @@ import { Category } from '../entity/category.entity';
 import { ReviewImg } from '../entity/review_img.entity';
 import { Review } from '../entity/reviews.entity';
 import { User } from '../entity/users.entity';
-import { allReviews, createNewReview, findReviewById, updateReviewData } from '../models/review.model';
+import { allReviews, createNewReview, findReviewById, updateReviewData, allComments, reviewDetails} from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
 const categoryRepository = AppDataSource.getRepository(Category);
-
 
 export const serviceReviewList = async ({
   categoryId,
@@ -44,6 +43,19 @@ const search = () => {
 };
 
 
+export const serviceReviewDetails = async (reviewId: number) => {
+  const review = await reviewDetails(reviewId);
+
+  if (!review) {
+    return null;
+  }
+
+  const comments = await allComments(reviewId);
+
+  return {
+    ...review,
+    comments,
+  };
 
 
 export const create = async (

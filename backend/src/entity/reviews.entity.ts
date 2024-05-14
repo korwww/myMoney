@@ -4,10 +4,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './users.entity';
+import { Like } from './likes.entity';
+import { Comment } from './comments.entity';
 import { Category } from './category.entity';
+
 
 @Entity('reviews')
 export class Review {
@@ -15,12 +19,17 @@ export class Review {
   id!: number;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
   user!: User;
 
   @ManyToOne(() => Category)
   @JoinColumn({ name: 'categoryId' })
   category!: Category;
+
+  @OneToMany(() => Like, (like) => like.review)
+  likes!: Like[];
+
+  @OneToMany(() => Comment, (comment) => comment.review)
+  comments!: Comment[];
 
   @Column({ comment: '제목', type: 'varchar', length: 100 })
   title!: string;
@@ -39,7 +48,7 @@ export class Review {
   @CreateDateColumn({ comment: '작성 날짜', type: 'timestamp' })
   createdAt!: Date;
 
-  @Column({ comment: '인증 여부', type: 'boolean', default: false })
+  @Column({ comment: '인증 여부', type: 'boolean', default: () => 'false' })
   verified!: boolean;
 
   @Column({ comment: '인증용 사진', type: 'text' })
