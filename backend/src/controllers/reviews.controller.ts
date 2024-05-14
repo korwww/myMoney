@@ -3,7 +3,7 @@ import {
   IPagination,
   IResponseReview,
   getReviewList,
-  makePagination,
+  createPagination,
 } from '../services/review.service';
 import { Review } from '../entity/reviews.entity';
 
@@ -14,6 +14,8 @@ export interface IReviewQueryParams {
   liked?: boolean;
   best?: boolean;
   myReviews?: boolean;
+  currentPage?: number;
+  limit?: number;
 }
 
 export interface IResponseData {
@@ -22,8 +24,16 @@ export interface IResponseData {
 }
 
 export const getReviews = async (req: Request, res: Response) => {
-  const { categoryId, isVerified, query, liked, best, myReviews } =
-    req.query as IReviewQueryParams;
+  const {
+    categoryId,
+    isVerified,
+    query,
+    liked,
+    best,
+    myReviews,
+    currentPage = 1,
+    limit,
+  } = req.query as IReviewQueryParams;
 
   let responseData: IResponseData = {};
 
@@ -38,8 +48,7 @@ export const getReviews = async (req: Request, res: Response) => {
     });
     responseData.reviews = reviews;
 
-    const pagination: { currentPage: number; totalCount: number } =
-      await makePagination();
+    const pagination = await createPagination(currentPage);
     responseData.pagination = pagination;
 
     return res.status(200).json(responseData);

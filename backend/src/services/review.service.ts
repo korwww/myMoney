@@ -25,7 +25,9 @@ export const getReviewList = async ({
 
 const selectBestReviews = () => {};
 
-export const createPagination = async (currentPage: number) => {
+export const createPagination = async (
+  currentPage: number,
+): Promise<IPagination> => {
   const totalCount = await countAllReviews();
   return { currentPage, totalCount };
 };
