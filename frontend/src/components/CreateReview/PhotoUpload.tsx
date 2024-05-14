@@ -1,40 +1,32 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { Camera } from '@/assets/icons/Camera';
 import { convertToBase64 } from '@/utils/base64';
 import { X } from '@/assets/icons/X';
 import Icon from '../common/Icon';
 
-interface PhotoItem {
-  base64: string;
-}
-
 interface PhotoUploadProps {
-  setPhotoToAddList: React.Dispatch<React.SetStateAction<PhotoItem[]>>;
+  photoToAddList: string[];
+  setPhotoToAddList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function PhotoUpload({ setPhotoToAddList }: PhotoUploadProps) {
+function PhotoUpload({ photoToAddList, setPhotoToAddList }: PhotoUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [previewURLs, setPreviewURLs] = useState<string[]>([]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
     if (files) {
-      const base64Array: string[] = [];
-      const previews: string[] = [];
+      const imageArray: string[] = [];
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const base64 = await convertToBase64(file);
-        const withoutPrefix = base64.split(',')[1];
-        base64Array.push(withoutPrefix);
-        previews.push(base64);
+        imageArray.push(base64);
       }
-      setPreviewURLs((prevURLs) => [...prevURLs, ...previews]);
       setPhotoToAddList((prevList) => [
         ...prevList,
-        ...base64Array.map((base64) => ({ base64 })),
+        ...imageArray,
       ]);
     }
   };
@@ -46,12 +38,11 @@ function PhotoUpload({ setPhotoToAddList }: PhotoUploadProps) {
   };
 
   const handleRemovePhoto = (index: number) => {
-    setPreviewURLs((prevURLs) => prevURLs.filter((_, i) => i !== index));
     setPhotoToAddList((prevList) => prevList.filter((_, i) => i !== index));
   };
 
   const renderPhotoPreviews = () => {
-    return previewURLs.map((url: string, index: number) => (
+    return photoToAddList.map((url: string, index: number) => (
       <PhotoPreview key={index}>
         <CloseButton onClick={() => handleRemovePhoto(index)}>
           <Icon width={12} fill="white" icon={<X />} />
@@ -134,3 +125,4 @@ const CloseButton = styled.button`
   border-radius: 50%;
   cursor: pointer;
 `;
+

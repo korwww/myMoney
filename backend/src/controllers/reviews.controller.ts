@@ -44,39 +44,46 @@ export const getReviews: RequestHandler<{}, {}, {}, IReviewQueryParams> = (
 };
 
 export const createReview = async (req: CustomRequest, res: Response) => {
+  const { id } = req.user!;
+
+  if (!id) {
+    throw new Error(ERROR_MESSAGE.INVALID_USER);
+  }
+
   try {
     const { title, content, categoryId, stars, receiptImg, reviewImg } =
       req.body;
 
-    const { id } = req.user!;
-    if (!id) {
-      throw new Error(ERROR_MESSAGE.INVALID_USER);
-    }
-
     await create(id, title, content, categoryId, stars, receiptImg, reviewImg);
-
     res.status(201).send({ message: 'Created' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: 'Internal Server Error' });
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 };
 
 export const updateReview = async (req: CustomRequest, res: Response) => {
+  const { id } = req.user!;
+
+  if (!id) {
+    throw new Error(ERROR_MESSAGE.INVALID_USER);
+  }
   try {
-    const { id } = req.user!;
-    if (!id) {
-      throw new Error(ERROR_MESSAGE.INVALID_USER);
-    }
-
-    const { title, content, categoryId, stars, receiptImg, reviewImg } = req.body;
     const reviewId = parseInt(req.params.id);
+    const { title, content, categoryId, stars, receiptImg, reviewImg } =
+      req.body;
 
-    await update(id, reviewId, title, content, categoryId, stars, receiptImg, reviewImg);
-
-    res.status(200).send({ message: 'success'});
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: 'Internal Server Error' });
+    await update(
+      id,
+      reviewId,
+      title,
+      content,
+      categoryId,
+      stars,
+      receiptImg,
+      reviewImg,
+    );
+    res.status(200).send({ message: 'success' });
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 };
