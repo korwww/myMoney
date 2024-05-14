@@ -1,4 +1,5 @@
 import { IReviewQueryParams } from '../controllers/reviews.controller';
+import { Review } from '../entity/reviews.entity';
 import { allReviews } from '../models/review.model';
 
 export const serviceReviewList = async ({
@@ -8,7 +9,7 @@ export const serviceReviewList = async ({
   liked,
   best,
   myReviews,
-}: IReviewQueryParams) => {
+}: IReviewQueryParams): Promise<Review[]> => {
   return await allReviews({
     categoryId,
     isVerified,
@@ -21,7 +22,9 @@ export const serviceReviewList = async ({
 
 const selectBestReviews = () => {};
 
-const makePagenation = () => {};
+export const makePagination = async () => {
+  return { currentPage: 1, totalCount: 3 };
+};
 
 const search = () => {};
 

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { serviceReviewList } from '../services/review.service';
+import { serviceReviewList, makePagination } from '../services/review.service';
+import { Review } from '../entity/reviews.entity';
 
 export interface IReviewQueryParams {
   categoryId?: number;
@@ -10,29 +11,32 @@ export interface IReviewQueryParams {
   myReviews?: boolean;
 }
 
-export const getReviews = (req: Request, res: Response) => {
+export const getReviews = async (req: Request, res: Response) => {
   const { categoryId, isVerified, query, liked, best, myReviews } =
     req.query as IReviewQueryParams;
+
+  let responseData: {
+    reviews?: Review[];
+    pagination?: { currentPage: number; totalCount: number };
+  } = {};
+
   try {
-    serviceReviewList({
+    const reviews: Review[] = await serviceReviewList({
       categoryId,
       isVerified,
       query,
       liked,
       best,
       myReviews,
-    }).then(
-      (responseData) => {
-        return res
-          .status(200)
-          .json({ reviews: responseData, pagination: 'pagenation' });
-      },
-      (err) => {
-        throw err;
-      },
-    );
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: '오류' });
+    });
+    responseData.reviews = reviews;
+
+    const pagination: { currentPage: number; totalCount: number } =
+      await makePagination();
+    responseData.pagination = pagination;
+
+    return res.status(200).json(responseData);
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 };
