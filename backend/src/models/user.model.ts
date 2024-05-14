@@ -21,6 +21,10 @@ export const findUserByNickname = async (nickname: string) => {
   return await userRepository.findOneBy({ nickname });
 };
 
+export const findUserById = async (id: number) => {
+  return await userRepository.findOneBy({ id });
+};
+
 export const createUser = async (userData: {
   email: string;
   password: string;

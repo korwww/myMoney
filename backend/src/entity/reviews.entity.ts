@@ -11,7 +11,7 @@ import { User } from './users.entity';
 import { Like } from './likes.entity';
 import { Comment } from './comments.entity';
 import { Category } from './category.entity';
-// import { Category } from './category.entity';
+
 
 @Entity('reviews')
 export class Review {
@@ -22,6 +22,7 @@ export class Review {
   user!: User;
 
   @ManyToOne(() => Category)
+  @JoinColumn({ name: 'categoryId' })
   category!: Category;
 
   @OneToMany(() => Like, (like) => like.review)
