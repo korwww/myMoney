@@ -36,7 +36,7 @@ export const reviewDetails = async (reviewId: number): Promise<any> => {
       'review.verified AS verified',
       'review.receiptImg AS reviewReceiptImg',
     ])
-    .addSelect('COUNT(like.id)', 'likesCount')
+    .addSelect('COUNT(like.id)', 'likes')
     .where('review.id = :reviewId', { reviewId })
     .groupBy('review.id')
     .getRawOne();
