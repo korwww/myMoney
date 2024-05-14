@@ -5,6 +5,7 @@ import AlertText from '@/components/common/AlertText';
 import Checkbox from './Checkbox';
 import Button from '../common/Button';
 import { IUserLogin } from '@/models/user.model';
+import Input from '../common/Input';
 import {
   FindPassword,
   FormStyle,
@@ -12,7 +13,6 @@ import {
   InputGroup,
   OptionStyle,
 } from './LoginForm.style';
-import Input from '../common/Input';
 
 interface ILoginFormProps {
   onSubmit: () => void;

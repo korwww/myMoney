@@ -11,6 +11,8 @@ import {
 import { User } from './entity/users.entity';
 import { Like } from './entity/likes.entity';
 import { Review } from './entity/reviews.entity';
+import { Comment } from './entity/comments.entity';
+import { Report } from './entity/report_content.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mariadb',
@@ -19,7 +21,7 @@ export const AppDataSource = new DataSource({
   username: DB_USERNAME,
   password: DB_PASSWORD,
   database: DB_DATABASE,
-  entities: [User, Like, Review],
+  entities: [User, Like, Review, Comment, Report],
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
 });
