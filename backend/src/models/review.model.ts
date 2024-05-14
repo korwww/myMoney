@@ -28,3 +28,7 @@ export const getReviewImages = async (reviewId: number): Promise<string[]> => {
   });
   return reviewImages.map((img) => img.image);
 };
+
+export const countAllReviews = async (): Promise<number> => {
+  return await reviewRepository.count();
+};

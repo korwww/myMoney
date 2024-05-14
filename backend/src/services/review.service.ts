@@ -1,6 +1,6 @@
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { Review } from '../entity/reviews.entity';
-import { getAllReviews } from '../models/review.model';
+import { countAllReviews, getAllReviews } from '../models/review.model';
 
 export interface IPagination {
   currentPage: number;
@@ -25,8 +25,9 @@ export const getReviewList = async ({
 
 const selectBestReviews = () => {};
 
-export const makePagination = async () => {
-  return { currentPage: 1, totalCount: 3 };
+export const createPagination = async (currentPage: number) => {
+  const totalCount = await countAllReviews();
+  return { currentPage, totalCount };
 };
 
 const search = () => {};
