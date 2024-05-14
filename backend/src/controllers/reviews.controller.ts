@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { serviceReviewList, makePagination } from '../services/review.service';
+import { getReviewList, makePagination } from '../services/review.service';
 import { Review } from '../entity/reviews.entity';
 
 export interface IReviewQueryParams {
@@ -21,7 +21,7 @@ export const getReviews = async (req: Request, res: Response) => {
   } = {};
 
   try {
-    const reviews: Review[] = await serviceReviewList({
+    const reviews: Review[] = await getReviewList({
       categoryId,
       isVerified,
       query,
