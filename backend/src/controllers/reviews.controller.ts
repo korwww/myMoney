@@ -10,7 +10,6 @@ export interface IReviewQueryParams {
   myReviews?: boolean;
 }
 
-//request, response를 담당
 export const getReviews = (req: Request, res: Response) => {
   const { categoryId, isVerified, query, liked, best, myReviews } =
     req.query as IReviewQueryParams;
@@ -33,7 +32,6 @@ export const getReviews = (req: Request, res: Response) => {
       },
     );
   } catch (err) {
-    //공통 에러 핸들러 필요
     console.log(err);
     return res.status(500).json({ message: '오류' });
   }
