@@ -1,5 +1,5 @@
 import { IReviewQueryParams } from '../controllers/reviews.controller';
-import { allReviews } from '../models/review.model';
+import { allComments, allReviews, reviewDetails } from '../models/review.model';
 
 export const serviceReviewList = async ({
   categoryId,
@@ -32,4 +32,19 @@ const makePagenation = () => {
 
 const search = () => {
   //검색
+};
+
+export const serviceReviewDetails = async (reviewId: number) => {
+  const review = await reviewDetails(reviewId);
+
+  if (!review) {
+    return null;
+  }
+
+  const comments = await allComments(reviewId);
+
+  return {
+    ...review,
+    comments,
+  };
 };

@@ -1,5 +1,8 @@
 import { RequestHandler } from 'express';
-import { serviceReviewList } from '../services/review.service';
+import {
+  serviceReviewDetails,
+  serviceReviewList,
+} from '../services/review.service';
 
 export interface IReviewQueryParams {
   categoryId?: string;
@@ -39,3 +42,18 @@ export const getReviews: RequestHandler<{}, {}, {}, IReviewQueryParams> = (
     return res.status(500).json({ message: '오류' });
   }
 };
+
+export const getReviewDetails: RequestHandler<{ id: number }> = (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    serviceReviewDetails(id).then((responseData) => {
+      return res.status(200).json(responseData);
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: '개별 리뷰 조회 오류' });
+  }
+};
+
+export const deleteReview: RequestHandler<{ id: string }> = (req, res) => {};
