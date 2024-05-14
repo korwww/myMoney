@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { SALT_ROUNDS, TOKEN_PRIVATE_KEY } from '../settings';
 import { IUserInfo } from '../middlewares/authentication';
-import { IUser } from '../models/user.model';
+import { IUserWithReportInfo } from '../models/user.model';
 
 export const hashPassword = async (password: string) => {
   return await bcrypt.hash(password, SALT_ROUNDS);
@@ -17,18 +17,59 @@ export const comparePassword = async (
 };
 
 export const generateToken = (loginUser: IUserInfo) => {
-  const { email, id } = loginUser;
-  return jwt.sign({ email, id }, TOKEN_PRIVATE_KEY!, {
+  const { email, id, isAdmin } = loginUser;
+  return jwt.sign({ email, id, isAdmin }, TOKEN_PRIVATE_KEY!, {
     expiresIn: '10h',
   });
 };
 
-export const getUserSuspensionStatus = (user: IUser) => {
-  const userExpirationDate = new Date(user.expiredDate);
-  const currentDate = new Date();
+// 정지 종료일 계산
+export const calcSuspensionEndDate = (count: number, date: string) => {
+  let suspensionEndDate = new Date(date);
 
-  const timeDiff = userExpirationDate.getTime() - currentDate.getTime();
-  const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  switch (count) {
+    case 5:
+      suspensionEndDate.setMonth(suspensionEndDate.getFullYear() + 100);
+      break; // 영구정지
+    case 4:
+    case 3:
+      suspensionEndDate.setMonth(suspensionEndDate.getMonth() + 1);
+      break; // 한 달 후
+    case 1:
+    case 2:
+      suspensionEndDate.setDate(suspensionEndDate.getDate() + 1);
+      break; // 하루 후
+  }
 
-  return { isSuspended: userExpirationDate > currentDate, daysLeft };
+  const remainingMilliseconds =
+    suspensionEndDate.getTime() - new Date().getTime();
+  const remainingSeconds = Math.ceil(remainingMilliseconds / 1000);
+
+  return remainingSeconds;
+};
+
+export interface ISuspendedUser {
+  email: string;
+  reportCount: number;
+  isSuspended: boolean;
+  suspensionRemainingDays: number;
+}
+
+export const suspendedUser = (user: IUserWithReportInfo) => {
+  const parseIntReportCount = parseInt(user.reportCount);
+  const { reportReason, reportedDate } = user;
+
+  const remainingDays = calcSuspensionEndDate(
+    parseIntReportCount,
+    reportedDate!,
+  );
+
+  const suspendedUser = {
+    email: user.email,
+    reportCount: parseIntReportCount,
+    isSuspended: true,
+    reportReason,
+    suspensionRemainingDays: remainingDays,
+  };
+  return { suspendedUser };
 };

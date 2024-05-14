@@ -4,28 +4,28 @@ import {
   findUserByEmail,
   findUserByNickname,
   createUser as createNewUser,
+  findUserWithReportInfo,
+  IUserWithReportInfo,
 } from '../models/user.model';
 import {
   hashPassword,
   comparePassword,
   generateToken,
-  getUserSuspensionStatus,
+  suspendedUser,
+  ISuspendedUser,
 } from '../utils/authUtils';
 
 export const login = async (email: string, password: string) => {
-  const user = await findUserByEmail(email);
+  const user = await findUserWithReportInfo(email);
   if (!user) throw new Error(ERROR_MESSAGE.USER_NOT_FOUND);
-
-  const { isSuspended, daysLeft } = getUserSuspensionStatus(user);
-  if (isSuspended)
-    return {
-      user,
-      isSuspended,
-      suspensionRemainingDays: daysLeft,
-    };
 
   const isPasswordMatch = await comparePassword(password, user.password);
   if (!isPasswordMatch) throw new Error(ERROR_MESSAGE.NOT_MATCHED_PASSWORD);
+
+  // 정지된 유저 처리
+  if (parseInt(user.reportCount) > 0 && user.reportedDate) {
+    return suspendedUser(user);
+  }
 
   const token = generateToken(user);
   return { user, token, isAdmin: !!user.isAdmin };
@@ -51,7 +51,12 @@ export const join = async (
 };
 
 export const getUserInfo = async (email: string) => {
-  const user = await findUserByEmail(email);
+  const user = await findUserWithReportInfo(email);
   if (!user) throw new Error(ERROR_MESSAGE.USER_NOT_FOUND);
+
+  if (parseInt(user.reportCount) > 0 && user.reportedDate) {
+    return suspendedUser(user);
+  }
+
   return { user };
 };

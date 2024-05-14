@@ -14,22 +14,22 @@ export const loginUser = async (req: CustomRequest, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const { user, token, isAdmin, isSuspended, suspensionRemainingDays } =
-      await login(email, password);
+    const loginResult = await login(email, password);
 
-    if (isSuspended) {
+    // 사용자가 차단된 경우
+    if ('suspendedUser' in loginResult) {
       return res.status(403).send({
         message: 'User is suspended',
-        isSuspended,
-        suspensionRemainingDays,
-        reportCount: user.reportCount,
+        ...loginResult.suspendedUser,
       });
     }
+
+    const { isAdmin, token, user } = loginResult;
 
     res
       .status(200)
       .cookie('access-token', token, { httpOnly: true })
-      .send({ message: 'success', isAdmin: !!isAdmin });
+      .send({ message: 'success', isAdmin, email: user.email });
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -89,12 +89,22 @@ export const userInfo = async (req: CustomRequest, res: Response) => {
 
   try {
     // 사용자 ID를 사용하여 데이터베이스에서 사용자 정보를 조회
-    const { user } = await getUserInfo(email);
+    const userInfoResult = await getUserInfo(email);
 
-    // 사용자의 이메일과 닉네임을 응답으로 반환
+    // 사용자가 차단된 경우
+    if ('suspendedUser' in userInfoResult) {
+      return res.status(403).send({
+        message: 'User is suspended',
+        ...userInfoResult.suspendedUser,
+      });
+    }
+
+    const { user } = userInfoResult;
+
     res.status(200).send({
       email: user.email,
       nickname: user.nickname,
+      reportCount: user.reportCount,
     });
   } catch (error: any) {
     throw new Error(error.message);

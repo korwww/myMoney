@@ -5,6 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Report } from './report_content.entity';
 
 @Entity('users')
 export class User {
@@ -20,22 +21,12 @@ export class User {
   @Column({ comment: '닉네임', unique: true, nullable: false })
   nickname!: string;
 
-  @CreateDateColumn({
-    comment: '정지 종료 날짜',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP()',
-  })
-  expiredDate!: Date;
-
   @Column({
     comment: '관리자, 일반 유저 구분',
     default: false,
   })
   isAdmin!: boolean;
 
-  @Column({
-    comment: '신고 횟수',
-    default: 0,
-  })
-  reportCount!: number;
+  @OneToMany(() => Report, (report) => report.user)
+  reports!: Report[];
 }
