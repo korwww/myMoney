@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { getReviewList, makePagination } from '../services/review.service';
+import {
+  IPagination,
+  IResponseReview,
+  getReviewList,
+  makePagination,
+} from '../services/review.service';
 import { Review } from '../entity/reviews.entity';
 
 export interface IReviewQueryParams {
@@ -11,17 +16,19 @@ export interface IReviewQueryParams {
   myReviews?: boolean;
 }
 
+export interface IResponseData {
+  reviews?: IResponseReview[];
+  pagination?: IPagination;
+}
+
 export const getReviews = async (req: Request, res: Response) => {
   const { categoryId, isVerified, query, liked, best, myReviews } =
     req.query as IReviewQueryParams;
 
-  let responseData: {
-    reviews?: Review[];
-    pagination?: { currentPage: number; totalCount: number };
-  } = {};
+  let responseData: IResponseData = {};
 
   try {
-    const reviews: Review[] = await getReviewList({
+    const reviews: IResponseReview[] = await getReviewList({
       categoryId,
       isVerified,
       query,
