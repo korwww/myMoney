@@ -13,6 +13,7 @@ export const getStatusCode = (errorMessage: string | undefined): number => {
       return 409;
     case ERROR_MESSAGE.USER_NOT_FOUND:
       return 404;
+    case ERROR_MESSAGE.DENIED:
     case ERROR_MESSAGE.USER_IS_SUSPENDED:
       return 403;
     default:

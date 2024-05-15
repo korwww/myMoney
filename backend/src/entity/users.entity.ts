@@ -24,13 +24,6 @@ export class User {
   @Column({ comment: '닉네임', unique: true, nullable: false })
   nickname!: string;
 
-  @CreateDateColumn({
-    comment: '정지 종료 날짜',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP()',
-  })
-  expiredDate!: Date;
-
   @Column({
     comment: '관리자, 일반 유저 구분',
     default: false,

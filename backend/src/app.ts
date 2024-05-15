@@ -2,14 +2,14 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { QueryError } from 'mysql2';
 import 'express-async-errors';
 import 'reflect-metadata';
+
 import { CORS_ALLOWED_ORIGIN } from './settings';
+import { getStatusCode } from './utils/getStatusCode';
 import { usersRouter } from './routes/users.route';
 import { reviewsRouter } from './routes/reviews.route';
-import { ERROR_MESSAGE } from './constance/errorMessage';
-import { getStatusCode } from './utils/getStatusCode';
+import { reportsRouter } from './routes/reports.route';
 import { commentsRouter } from './routes/comments.route';
 import { likeRouter } from './routes/likes.route';
 
@@ -28,6 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/users', usersRouter);
+app.use('/reviews', reviewsRouter);
+app.use('/reports', reportsRouter);
 app.use('/list', reviewsRouter);
 app.use('/comments', commentsRouter);
 app.use('/likes', likeRouter);

@@ -8,5 +8,7 @@ export const ERROR_MESSAGE = {
   SESSION_EXPIRED: 'Session expired',
   INVALID_TOKEN: 'Invalid token',
   INVALID_USER: 'Invalid user',
+  INVALID_DATA: 'Invalid data',
   TOKEN_NOT_FOUND: 'Token Not found',
+  DENIED: 'Permission denied',
 };

@@ -1,4 +1,6 @@
 import { DataSource } from 'typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
 import {
   DB_DATABASE,
   DB_HOST,
@@ -8,15 +10,11 @@ import {
 } from './settings';
 import { User } from './entity/users.entity';
 import { Review } from './entity/reviews.entity';
-
-import { Category } from './entity/category.entity';
-import { Report } from './entity/report_content.entity';
-import { Like } from './entity/likes.entity';
 import { Comment } from './entity/comments.entity';
-
+import { Report } from './entity/report_content.entity';
+import { Category } from './entity/category.entity';
+import { Like } from './entity/likes.entity';
 import { ReviewImg } from './entity/review_img.entity';
-
-
 
 export const AppDataSource = new DataSource({
   type: 'mariadb',
@@ -27,4 +25,5 @@ export const AppDataSource = new DataSource({
   database: DB_DATABASE,
   entities: [User, Like, Review, Category, Report, Comment, ReviewImg],
   synchronize: true,
+  namingStrategy: new SnakeNamingStrategy(),
 });
