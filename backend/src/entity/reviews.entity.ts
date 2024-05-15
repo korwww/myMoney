@@ -4,10 +4,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './users.entity';
 import { Category } from './category.entity';
+import { ReviewImg } from './review_img.entity';
+import { Like } from './likes.entity';
 
 @Entity('reviews')
 export class Review {
@@ -44,4 +47,10 @@ export class Review {
 
   @Column({ comment: '인증용 사진', type: 'text' })
   receiptImg!: string;
+
+  @OneToMany(() => ReviewImg, (reviewImg) => reviewImg.review)
+  reviewImg!: ReviewImg[];
+
+  @OneToMany(() => Like, (like) => like.review)
+  likes!: number;
 }

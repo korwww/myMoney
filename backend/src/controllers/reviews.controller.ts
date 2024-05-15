@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
 import {
-  IPagination,
-  IResponseReview,
+  IResponsePagination,
   getReviewList,
   createPagination,
+  IResponseReview,
 } from '../services/review.service';
-import { Review } from '../entity/reviews.entity';
 
 export interface IReviewQueryParams {
   categoryId?: number;
@@ -20,10 +19,10 @@ export interface IReviewQueryParams {
 
 export interface IResponseData {
   reviews?: IResponseReview[];
-  pagination?: IPagination;
+  pagination?: IResponsePagination;
 }
 
-export const getReviews = async (req: Request, res: Response) => {
+export const getReviewsWithPagination = async (req: Request, res: Response) => {
   const {
     categoryId,
     isVerified,
@@ -32,7 +31,7 @@ export const getReviews = async (req: Request, res: Response) => {
     best,
     myReviews,
     currentPage = 1,
-    limit,
+    limit = 1000,
   } = req.query as IReviewQueryParams;
 
   let responseData: IResponseData = {};
@@ -45,14 +44,23 @@ export const getReviews = async (req: Request, res: Response) => {
       liked,
       best,
       myReviews,
+      currentPage,
+      limit,
     });
     responseData.reviews = reviews;
 
-    const pagination = await createPagination(currentPage);
+    const pagination = await createPagination(
+      currentPage,
+      limit,
+      reviews.length,
+    );
     responseData.pagination = pagination;
 
     return res.status(200).json(responseData);
   } catch (error: any) {
-    throw new Error(error.message);
+    return res.status(500).json({
+      status: 500,
+      message: 'Internal Server Error',
+    });
   }
 };
