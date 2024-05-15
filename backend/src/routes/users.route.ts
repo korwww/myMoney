@@ -1,6 +1,6 @@
 import express from 'express';
-import { authentication } from '../middlewares/authentication';
 
+import { authentication } from '../middlewares/authentication';
 import {
   checkedDuplicateEmail,
   checkedDuplicateNickname,

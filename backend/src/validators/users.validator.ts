@@ -1,5 +1,6 @@
 import { body } from 'express-validator';
 import { validator } from './validator';
+import { bannedWordsRegex } from '../constance/bannedWord';
 
 const validateEmail = body('email')
   .trim()
@@ -11,7 +12,14 @@ const validateEmail = body('email')
 const validateNickname = body('nickname')
   .trim()
   .notEmpty()
-  .withMessage('Nickname is required');
+  .withMessage('Nickname is required')
+  .custom((nickname) => {
+    if (bannedWordsRegex.test(nickname)) {
+      return false;
+    }
+    return true;
+  })
+  .withMessage('Nickname includes banned words');
 
 const validatePassword = body('password')
   .trim()
