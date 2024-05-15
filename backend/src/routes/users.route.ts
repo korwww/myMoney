@@ -9,14 +9,24 @@ import {
   logoutUser,
   userInfo,
 } from '../controllers/user.controller';
+import {
+  validateCheckedEmail,
+  validateCheckedNickname,
+  validateJoin,
+  validateLogin,
+} from '../validators/users.validator';
 
 const router = express.Router();
 
-router.post('/login', loginUser);
+router.post('/login', validateLogin, loginUser);
 router.post('/logout', logoutUser);
-router.post('/checked_email', checkedDuplicateEmail);
-router.post('/checked_nickname', checkedDuplicateNickname);
-router.post('/join', joinUser);
+router.post('/checked_email', validateCheckedEmail, checkedDuplicateEmail);
+router.post(
+  '/checked_nickname',
+  validateCheckedNickname,
+  checkedDuplicateNickname,
+);
+router.post('/join', validateJoin, joinUser);
 router.get('/me', authentication, userInfo);
 
 export { router as usersRouter };

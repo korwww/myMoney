@@ -22,7 +22,7 @@ export class Report {
   @CreateDateColumn({ comment: '신고한 날짜' })
   createdAt!: Date;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.reportContents)
   @JoinColumn({ name: 'reported_user_id' })
   user!: User;
 }
