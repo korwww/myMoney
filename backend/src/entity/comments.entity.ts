@@ -5,7 +5,6 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { User } from './users.entity';
 import { Review } from './reviews.entity';
@@ -15,12 +14,12 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (user) => user.comments)
+  @JoinColumn({ name: 'userId' })
   user!: User;
 
-  @ManyToOne(() => Review)
-  @JoinColumn({ name: 'review_id' })
+  @ManyToOne(() => Review, (review) => review.comments)
+  @JoinColumn({ name: 'reviewId' })
   review!: Review;
 
   @Column({ comment: '댓글 내용', type: 'varchar', length: 100 })
