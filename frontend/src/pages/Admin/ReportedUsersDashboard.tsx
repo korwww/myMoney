@@ -3,13 +3,8 @@ import AdminContent from '@/components/Admin/AdminContent';
 import AdminTable, { TableHeadItem } from '@/components/Admin/AdminTable';
 import Button from '@/components/common/Button';
 import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthenticatedUser';
-
-interface ReportUserTd {
-  email: string;
-  reason: '광고용 후기' | '부적절한 단어 사용';
-  count: number;
-  state: '정지 종료' | '정지';
-}
+import { useAdmin } from '@/hooks/useAdmin';
+import { ISuspendedUsers } from '@/models/admin.model';
 
 const tableHead: TableHeadItem[] = [
   { name: 'No', $widthRatio: 40 },
@@ -20,45 +15,51 @@ const tableHead: TableHeadItem[] = [
   { name: '', $widthRatio: 135 },
 ];
 
-const tableBody: ReportUserTd[] = [
-  {
-    email: 'myMoney@gmail.com',
-    reason: '광고용 후기',
-    count: 3,
-    state: '정지 종료',
-  },
-  {
-    email: 'prgms@gmail.com',
-    reason: '부적절한 단어 사용',
-    count: 1,
-    state: '정지',
-  },
-];
-
 function ReportedUsersDashboard() {
+  const { isLoadingSuspendedUsers, suspendedUsers, fetchCancelReport } =
+    useAdmin();
+
+  const transformedData = (users: ISuspendedUsers[]) => {
+    return users.map((data: ISuspendedUsers) => ({
+      ...data,
+      status: data.isSuspended ? '정지' : '정지 종료',
+    }));
+  };
+
+  const handleCancelReport = (reportId: number) => {
+    fetchCancelReport(reportId);
+  };
   return (
     <AdminLayout>
-      <AdminContent title="신고된 유저 관리">
-        <AdminTable tableHead={tableHead}>
-          {tableBody.map((report, idx) => (
-            <tr key={idx}>
-              <td>{idx + 1}</td>
-              <td>{report.email}</td>
-              <td>{report.reason}</td>
-              <td>{report.count}</td>
-              <td>{report.state}</td>
-              <td>
-                <Button
-                  scheme="primary"
-                  size="small"
-                  disabled={report.state === '정지 종료'}
-                >
-                  정지해제
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </AdminTable>
+      <AdminContent
+        title="신고된 유저 관리"
+        isLoading={isLoadingSuspendedUsers}
+      >
+        {!suspendedUsers.length && <p>신고된 유저가 없습니다.</p>}
+
+        {suspendedUsers.length > 0 && (
+          <AdminTable tableHead={tableHead}>
+            {transformedData(suspendedUsers).map((report, idx) => (
+              <tr key={idx}>
+                <td>{idx + 1}</td>
+                <td>{report.reportedUserEmail}</td>
+                <td>{report.reportReason}</td>
+                <td>{report.reportCount}</td>
+                <td>{report.status}</td>
+                <td>
+                  <Button
+                    scheme="primary"
+                    size="small"
+                    disabled={report.status === '정지 종료'}
+                    onClick={() => handleCancelReport(report.reportId)}
+                  >
+                    정지해제
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </AdminTable>
+        )}
       </AdminContent>
     </AdminLayout>
   );
