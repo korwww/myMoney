@@ -1,4 +1,10 @@
-import { Entity, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Review } from './reviews.entity';
 
 @Entity('review_img')
@@ -6,10 +12,13 @@ export class ReviewImg {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => Review)
-  @JoinColumn({ name: 'review_id' })
+  @ManyToOne(() => Review, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'reviewId' })
   review!: Review;
 
   @Column({ comment: '사진 데이터', type: 'text' })
   image!: string;
+
+  @Column({ comment: '확장자', type: 'varchar' })
+  extension!: string;
 }

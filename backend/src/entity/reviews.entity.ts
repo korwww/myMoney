@@ -12,13 +12,13 @@ import { Like } from './likes.entity';
 import { Comment } from './comments.entity';
 import { Category } from './category.entity';
 
-
 @Entity('reviews')
 export class Review {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'userId' })
   user!: User;
 
   @ManyToOne(() => Category)

@@ -1,10 +1,10 @@
 import express from 'express';
 import {
   getReviews,
-  deleteReview,
   getReviewDetails,
   createReview,
-  updateReview
+  updateReview,
+  deleteReview,
 } from '../controllers/reviews.controller';
 import { authentication } from '../middlewares/authentication';
 
@@ -14,11 +14,13 @@ router.use(express.json());
 
 router.route('/').get(getReviews).post();
 
-router.route('/:id').get(getReviewDetails).patch().delete();
+router
+  .route('/:id')
+  .get(getReviewDetails)
+  .patch()
+  .delete(authentication, deleteReview);
 
 router.post('/', authentication, createReview);
 router.patch('/:id', authentication, updateReview);
 
-
 export { router as reviewsRouter };
-
