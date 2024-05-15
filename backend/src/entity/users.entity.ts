@@ -5,7 +5,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Comment } from './comments.entity';
 import { Report } from './report_content.entity';
+import { Review } from './reviews.entity';
+import { Like } from './likes.entity';
 
 @Entity('users')
 export class User {
@@ -27,6 +30,21 @@ export class User {
   })
   isAdmin!: boolean;
 
-  @OneToMany(() => Report, (report) => report.user)
-  reports!: Report[];
+  @Column({
+    comment: '신고 횟수',
+    default: 0,
+  })
+  reportCount!: number;
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments!: Comment[];
+
+  @OneToMany(() => Report, (reportContent) => reportContent.user)
+  reportContents!: Report[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews!: Review[];
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes!: Like[];
 }
