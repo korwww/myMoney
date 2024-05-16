@@ -40,7 +40,7 @@ export const getReviewsWithPagination = async (
     best,
     myReviews,
     currentPage = 1,
-    limit = 1000,
+    limit = 10,
   } = req.query as IReviewQueryParams;
 
   let responseData: IResponseData = {};
@@ -69,6 +69,7 @@ export const getReviewsWithPagination = async (
 
     return res.status(200).json(responseData);
   } catch (error: any) {
+    console.log(error);
     return res.status(500).json({
       status: 500,
       message: 'Internal Server Error',

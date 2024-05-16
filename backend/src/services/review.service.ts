@@ -8,6 +8,7 @@ import {
   allComments,
   reviewDetails,
   getReviews,
+  getReviewImages,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -43,7 +44,7 @@ export const getReviewList = async ({
   limit,
   userId,
 }: IReviewQueryParams): Promise<IResponseReview[]> => {
-  const reviews = await getReviews({
+  let reviews = await getReviews({
     categoryId,
     isVerified,
     query,
@@ -55,19 +56,22 @@ export const getReviewList = async ({
     userId,
   });
 
-  return reviews.map((review) => ({
-    id: review.id,
-    categoryId: review.categoryId,
-    userId: review.userId,
-    userName: review.userName,
-    title: review.title,
-    content: review.content,
-    stars: review.stars,
-    createdAt: review.createdAt.toISOString(),
-    verified: review.verified ? 1 : 0,
-    reviewImgs: review.reviewImgs && [],
-    likes: review.likes,
-  }));
+  reviews = await Promise.all(
+    reviews.map(async (review) => ({
+      id: review.id,
+      categoryId: review.categoryId,
+      userId: review.userId,
+      userName: review.userName,
+      title: review.title,
+      content: review.content,
+      stars: review.stars,
+      createdAt: review.createdAt.toString(),
+      verified: review.verified ? 1 : 0,
+      reviewImgs: await getReviewImages(review.id),
+      likes: review.likes,
+    })),
+  );
+  return reviews;
 };
 
 const selectBestReviews = () => {};

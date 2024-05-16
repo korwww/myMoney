@@ -23,7 +23,7 @@ export class Review {
   user!: User;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'categoryId' })
+  @JoinColumn({ name: 'category_id' })
   category!: Category;
 
   @OneToMany(() => Like, (like) => like.review)
@@ -56,5 +56,5 @@ export class Review {
   receiptImg!: string;
 
   @OneToMany(() => ReviewImg, (reviewImg) => reviewImg.review)
-  reviewImg!: ReviewImg[];
+  reviewImgs!: ReviewImg[];
 }
