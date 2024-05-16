@@ -7,10 +7,6 @@ import {
 } from '../services/comment.service';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 
-export const findAll = async (req: CustomRequest, res: Response) => {
-  res.status(200).send('댓글 조회');
-};
-
 export const addComment = async (req: CustomRequest, res: Response) => {
   if (!req.user) {
     throw new Error(ERROR_MESSAGE.INVALID_USER);
