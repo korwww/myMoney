@@ -1,18 +1,17 @@
 import { ERROR_MESSAGE } from '../constance/errorMessage';
-import { createLike, deleteLike, findReview } from '../models/like.model';
+import { createLike, deleteLike } from '../models/like.model';
 import { ILikeProps } from '../models/like.model';
+import { findReviewById } from '../models/review.model';
 
 export const serviceAddLike = async ({ reviewId, userId }: ILikeProps) => {
-  const isReview = await findReview(reviewId);
+  const isReview = await findReviewById(reviewId);
   if (!isReview) {
     throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
   }
 
-  const result = await createLike({ reviewId, userId });
-  return result;
+  return await createLike({ reviewId, userId });
 };
 
 export const serviceCancelLike = async ({ reviewId, userId }: ILikeProps) => {
-  const result = await deleteLike({ reviewId, userId });
-  return result;
+  return await deleteLike({ reviewId, userId });
 };

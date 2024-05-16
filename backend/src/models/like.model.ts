@@ -11,10 +11,8 @@ export interface ILikeProps {
 }
 
 export const findReview = async (reviewId: number) => {
-  const review = await reviewRepository.findOne({
-    where: {
-      id: reviewId,
-    },
+  const review = await reviewRepository.findOneBy({
+    id: reviewId,
   });
 
   return review;
@@ -51,7 +49,7 @@ export const deleteLike = async ({ reviewId, userId }: ILikeProps) => {
   const like = await isLike({ reviewId, userId });
 
   if (!like) {
-    throw new Error(ERROR_MESSAGE.LIKE_NOT_EXISTS);
+    throw new Error(ERROR_MESSAGE.LIKE_NOT_FOUND);
   }
 
   const result = await likeRepository.remove(like);
