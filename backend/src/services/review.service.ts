@@ -8,6 +8,7 @@ import {
   allComments,
   reviewDetails,
   getReviews,
+  approve,
   deleteReviewById,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
@@ -154,4 +155,8 @@ export const update = async (
     receiptImg,
     reviewImg,
   });
+};
+
+export const approveReview = async (reviewId: number) => {
+  return await approve(reviewId);
 };
