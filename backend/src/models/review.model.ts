@@ -7,6 +7,20 @@ import { Review } from '../entity/reviews.entity';
 const reviewRepository = AppDataSource.getRepository(Review);
 const reviewImgRepository = AppDataSource.getRepository(ReviewImg);
 
+interface IQueryResult {
+  id: number;
+  categoryId: number;
+  userId: number;
+  userName: string;
+  title: string;
+  content: string;
+  stars: number;
+  createdAt: Date;
+  verified: boolean;
+  reviewImgs: string[];
+  likes: number;
+}
+
 export const getReviews = async ({
   categoryId,
   isVerified,
@@ -17,7 +31,7 @@ export const getReviews = async ({
   currentPage = 1,
   limit,
   userId,
-}: IReviewQueryParams): Promise<Review[]> => {
+}: IReviewQueryParams): Promise<IQueryResult[]> => {
   const queryBuilder = reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.user', 'user')
@@ -34,12 +48,7 @@ export const getReviews = async ({
       'review.createdAt AS createdAt',
       'review.verified AS verified',
     ])
-    .addSelect((subQuery) => {
-      return subQuery
-        .select('img.image', 'image')
-        .from(ReviewImg, 'img')
-        .where('img.reviewId = review.id');
-    }, 'reviewImg')
+    .addSelect('review_img.image', 'reviewImgs')
     .addSelect((subQuery) => {
       return subQuery
         .select('COUNT(like.id)', 'likes')
@@ -84,8 +93,21 @@ export const getReviews = async ({
   if (currentPage && limit) {
     queryBuilder.skip((currentPage - 1) * limit);
   }
+  const reviews: IQueryResult[] = await queryBuilder.getRawMany();
 
-  return await queryBuilder.getMany();
+  for (const review of reviews) {
+    review.reviewImgs = await getReviewImages(review.id);
+  }
+
+  return reviews;
+};
+
+const getReviewImages = async (reviewId: number): Promise<string[]> => {
+  const images = await reviewImgRepository.find({
+    where: { review: { id: reviewId } },
+    select: ['image'],
+  });
+  return images.map((img) => img.image);
 };
 
 export const reviewDetails = async (reviewId: number): Promise<any> => {

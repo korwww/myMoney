@@ -1,17 +1,15 @@
-import { Request, Response, RequestHandler } from 'express';
+import { Response, RequestHandler } from 'express';
 import {
   IResponsePagination,
   getReviewList,
   createPagination,
   IResponseReview,
   create,
-  serviceReviewList,
   update,
-  serviceReviewDetails
+  serviceReviewDetails,
 } from '../services/review.service';
 import { CustomRequest } from '../middlewares/authentication';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
-
 
 export interface IReviewQueryParams {
   categoryId?: number;
@@ -78,11 +76,10 @@ export const getReviewsWithPagination = async (
   }
 };
 
-
 export const getReviewDetails: RequestHandler<{ id: number }> = (req, res) => {
   const id = Number(req.params.id);
 
-  try { 
+  try {
     serviceReviewDetails(id).then((responseData) => {
       return res.status(200).json(responseData);
     });
@@ -93,7 +90,6 @@ export const getReviewDetails: RequestHandler<{ id: number }> = (req, res) => {
 };
 
 export const deleteReview: RequestHandler<{ id: string }> = (req, res) => {};
-
 
 export const createReview = async (req: CustomRequest, res: Response) => {
   const { id } = req.user!;
@@ -139,4 +135,3 @@ export const updateReview = async (req: CustomRequest, res: Response) => {
     throw new Error(error.message);
   }
 };
-

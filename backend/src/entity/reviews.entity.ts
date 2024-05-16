@@ -13,7 +13,6 @@ import { ReviewImg } from './review_img.entity';
 import { Like } from './likes.entity';
 import { Comment } from './comments.entity';
 
-
 @Entity('reviews')
 export class Review {
   @PrimaryGeneratedColumn()
@@ -58,7 +57,4 @@ export class Review {
 
   @OneToMany(() => ReviewImg, (reviewImg) => reviewImg.review)
   reviewImg!: ReviewImg[];
-
-  @OneToMany(() => Like, (like) => like.review)
-  likes!: number;
 }
