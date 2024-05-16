@@ -71,7 +71,8 @@ export const useAuth = () => {
       return true;
     },
     onError: (error: any) => {
-      if (error.response.data.message === 'Duplicate nickname') {
+      const { message } = error.response.data;
+      if (message === 'Duplicate nickname') {
         setErrorMessage('이미 사용중인 닉네임입니다.');
       }
     },
@@ -134,12 +135,20 @@ export const useAuth = () => {
       }
     },
     throwOnError: (error) => {
-      if (error.response.status === 400) return false;
+      if (
+        error.response.status === 400 ||
+        error.response.data.message === 'User not found'
+      )
+        return false;
       return true;
     },
     onError: (error: any) => {
-      if (error.response.data.message === 'Not Matched Password')
+      const { message } = error.response.data;
+      if (message === 'Not Matched Password')
         setErrorMessage('비밀번호가 틀렸습니다.');
+      if (message === 'User not found') {
+        setErrorMessage('존재하지 않는 이메일입니다.');
+      }
       throw error;
     },
   });
