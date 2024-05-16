@@ -60,3 +60,20 @@ export const createReport = async ({
 
   return await reportRepository.save(report);
 };
+
+export const checkDuplicateReport = async ({
+  reportedUserId,
+  reporterUserId,
+}: {
+  reportedUserId: number;
+  reporterUserId: number;
+}) => {
+  const report = await reportRepository.find({
+    where: {
+      user: { id: reportedUserId },
+      reporterUserId: reporterUserId,
+    },
+  });
+
+  return report.length > 0;
+};

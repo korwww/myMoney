@@ -1,5 +1,7 @@
+import { ERROR_MESSAGE } from '../constance/errorMessage';
 import {
   ICreateReviewProps,
+  checkDuplicateReport,
   createReport,
   deleteReport,
   findSuspendedUsers,
@@ -27,6 +29,13 @@ export const serviceCreateReport = async ({
   reporterUserId,
   reason,
 }: ICreateReviewProps) => {
+  const isDuplicateReport = await checkDuplicateReport({
+    reportedUserId,
+    reporterUserId,
+  });
+  if (isDuplicateReport) {
+    throw new Error(ERROR_MESSAGE.DUPLICATE_REPORT);
+  }
   return await createReport({
     reportedUserId,
     reporterUserId,
