@@ -4,6 +4,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import {
   DB_DATABASE,
   DB_HOST,
+  DB_LOGGING,
   DB_PASSWORD,
   DB_PORT,
   DB_USERNAME,
@@ -26,4 +27,5 @@ export const AppDataSource = new DataSource({
   entities: [User, Like, Review, Category, Report, Comment, ReviewImg],
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
+  logging: DB_LOGGING,
 });
