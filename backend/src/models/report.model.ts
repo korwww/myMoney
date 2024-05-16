@@ -13,7 +13,7 @@ export interface ICreateReviewProps {
 }
 
 export const findSuspendedUsers = async () => {
-  const users = userRepository
+  const users = await userRepository
     .createQueryBuilder('user')
     .select([
       'user.id AS reportedUserId',
@@ -30,7 +30,7 @@ export const findSuspendedUsers = async () => {
       'report_content',
       'report_content.reported_user_id = user.id',
     )
-    .groupBy('user.id')
+    .groupBy('user.id, report_content.id')
     .having('reportCount > 0')
     .getRawMany();
 
