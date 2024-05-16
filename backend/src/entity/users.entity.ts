@@ -5,6 +5,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Comment } from './comments.entity';
+import { Report } from './report_content.entity';
+import { Review } from './reviews.entity';
+import { Like } from './likes.entity';
 
 @Entity('users')
 export class User {
@@ -20,13 +24,6 @@ export class User {
   @Column({ comment: '닉네임', unique: true, nullable: false })
   nickname!: string;
 
-  @CreateDateColumn({
-    comment: '정지 종료 날짜',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP()',
-  })
-  expiredDate!: Date;
-
   @Column({
     comment: '관리자, 일반 유저 구분',
     default: false,
@@ -38,4 +35,16 @@ export class User {
     default: 0,
   })
   reportCount!: number;
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments!: Comment[];
+
+  @OneToMany(() => Report, (reportContent) => reportContent.user)
+  reportContents!: Report[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews!: Review[];
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes!: Like[];
 }

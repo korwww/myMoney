@@ -1,5 +1,12 @@
 import express from 'express';
-import { getReviewsWithPagination } from '../controllers/reviews.controller';
+import {
+  getReviews,
+  deleteReview,
+  getReviewDetails,
+  createReview,
+  updateReview,
+  getReviewsWithPagination
+} from '../controllers/reviews.controller';
 import { authentication } from '../middlewares/authentication';
 
 const router = express.Router();
@@ -8,6 +15,11 @@ router.use(express.json());
 
 router.route('/').get(authentication, getReviewsWithPagination).post();
 
-router.route('/:id').get().patch().delete();
+router.route('/:id').get(getReviewDetails).patch().delete();
+
+router.post('/', authentication, createReview);
+router.patch('/:id', authentication, updateReview);
+
 
 export { router as reviewsRouter };
+

@@ -13,7 +13,6 @@ function CategorySelector({
   categoryIndex,
   setCategoryIndex,
 }: CategorySelectorProps) {
-  
   const handleSelectCategory = (index: number) => {
     setCategoryIndex(index);
   };
@@ -24,8 +23,10 @@ function CategorySelector({
 
       <Dropdown
         toggleButton={<CaretDown />}
-        $position="right"
-        $positionValue={40}
+        $positionLnR="right"
+        $positionValue={-10}
+        $positionTopValue={32}
+        $width={150}
       >
         <ul>
           {categoryOptions.map((option, index) => (

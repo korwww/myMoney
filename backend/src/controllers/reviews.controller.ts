@@ -1,11 +1,17 @@
-import { Request, Response } from 'express';
+import { Request, Response, RequestHandler } from 'express';
 import {
   IResponsePagination,
   getReviewList,
   createPagination,
   IResponseReview,
+  create,
+  serviceReviewList,
+  update,
+  serviceReviewDetails
 } from '../services/review.service';
 import { CustomRequest } from '../middlewares/authentication';
+import { ERROR_MESSAGE } from '../constance/errorMessage';
+
 
 export interface IReviewQueryParams {
   categoryId?: number;
@@ -71,3 +77,66 @@ export const getReviewsWithPagination = async (
     });
   }
 };
+
+
+export const getReviewDetails: RequestHandler<{ id: number }> = (req, res) => {
+  const id = Number(req.params.id);
+
+  try { 
+    serviceReviewDetails(id).then((responseData) => {
+      return res.status(200).json(responseData);
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: '개별 리뷰 조회 오류' });
+  }
+};
+
+export const deleteReview: RequestHandler<{ id: string }> = (req, res) => {};
+
+
+export const createReview = async (req: CustomRequest, res: Response) => {
+  const { id } = req.user!;
+
+  if (!id) {
+    throw new Error(ERROR_MESSAGE.INVALID_USER);
+  }
+
+  try {
+    const { title, content, categoryId, stars, receiptImg, reviewImg } =
+      req.body;
+
+    await create(id, title, content, categoryId, stars, receiptImg, reviewImg);
+    res.status(201).send({ message: 'Created' });
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const updateReview = async (req: CustomRequest, res: Response) => {
+  const { id } = req.user!;
+
+  if (!id) {
+    throw new Error(ERROR_MESSAGE.INVALID_USER);
+  }
+  try {
+    const reviewId = parseInt(req.params.id);
+    const { title, content, categoryId, stars, receiptImg, reviewImg } =
+      req.body;
+
+    await update(
+      id,
+      reviewId,
+      title,
+      content,
+      categoryId,
+      stars,
+      receiptImg,
+      reviewImg,
+    );
+    res.status(200).send({ message: 'success' });
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+

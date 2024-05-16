@@ -11,6 +11,8 @@ import { User } from './users.entity';
 import { Category } from './category.entity';
 import { ReviewImg } from './review_img.entity';
 import { Like } from './likes.entity';
+import { Comment } from './comments.entity';
+
 
 @Entity('reviews')
 export class Review {
@@ -22,8 +24,14 @@ export class Review {
   user!: User;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
+  @JoinColumn({ name: 'categoryId' })
   category!: Category;
+
+  @OneToMany(() => Like, (like) => like.review)
+  likes!: Like[];
+
+  @OneToMany(() => Comment, (comment) => comment.review)
+  comments!: Comment[];
 
   @Column({ comment: '제목', type: 'varchar', length: 100 })
   title!: string;
@@ -42,7 +50,7 @@ export class Review {
   @CreateDateColumn({ comment: '작성 날짜', type: 'timestamp' })
   createdAt!: Date;
 
-  @Column({ comment: '인증 여부', type: 'boolean', default: false })
+  @Column({ comment: '인증 여부', type: 'boolean', default: () => 'false' })
   verified!: boolean;
 
   @Column({ comment: '인증용 사진', type: 'text' })

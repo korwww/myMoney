@@ -1,23 +1,17 @@
-import {
-  Entity,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './users.entity';
 import { Review } from './reviews.entity';
 
 @Entity('likes')
 export class Like {
   @PrimaryGeneratedColumn()
-  id: number | undefined;
+  id!: number;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user!: User;
 
   @ManyToOne(() => Review)
-  @JoinColumn({ name: 'review_id' })
+  @JoinColumn({ name: 'reviewId' })
   review!: Review;
 }

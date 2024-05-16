@@ -2,13 +2,13 @@ import { NextFunction, Response, Request } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { TOKEN_PRIVATE_KEY } from '../settings';
-import { getUserSuspensionStatus } from '../utils/authUtils';
 import { getUserInfo } from '../services/user.service';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 
 export interface IUserInfo {
   email: string;
   id: number;
+  isAdmin: boolean;
 }
 
 export interface CustomRequest extends Request {
@@ -43,27 +43,25 @@ export const authentication = async (
   }
 
   const { email } = decodedToken as IUserInfo;
-  const { user } = await getUserInfo(email);
+  const userInfoResult = await getUserInfo(email);
 
-  if (!user) {
-    throw new Error(ERROR_MESSAGE.USER_NOT_FOUND);
+  // 사용자가 차단된 경우
+  if ('suspendedUser' in userInfoResult) {
+    return res.status(403).send({
+      message: 'User is suspended',
+      ...userInfoResult.suspendedUser,
+    });
   }
 
-  // 계정이 정지된 유저인지 확인
-  const { isSuspended, daysLeft } = getUserSuspensionStatus(user);
-  if (isSuspended) {
-    return res.status(403).send({
-      message: ERROR_MESSAGE.USER_IS_SUSPENDED,
-      email: user.email,
-      reportCount: user.expiredDate,
-      isSuspended,
-      suspensionRemainingDays: daysLeft,
-    });
+  const { user } = userInfoResult;
+  if (!user) {
+    throw new Error(ERROR_MESSAGE.USER_NOT_FOUND);
   }
 
   req.user = {
     email: user.email,
     id: user.id,
+    isAdmin: user.isAdmin,
   };
 
   next();
