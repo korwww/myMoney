@@ -1,7 +1,6 @@
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { AppDataSource } from '../data-source';
 import { Comment } from '../entity/comments.entity';
-import { reviewRepository } from './review.model';
 
 const commentRepository = AppDataSource.getRepository(Comment);
 

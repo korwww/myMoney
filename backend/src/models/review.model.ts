@@ -111,7 +111,7 @@ const getReviewImages = async (reviewId: number): Promise<string[]> => {
   return images.map((img) => img.image);
 };
 
-export const reviewDetails = async (reviewId: number): Promise<any> => {
+export const findReviewDetails = async (reviewId: number): Promise<any> => {
   const review = await reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.user', 'user')
@@ -153,16 +153,30 @@ export const allComments = async (reviewId: number): Promise<any[]> => {
     .where('review.id = :reviewId', { reviewId })
     .getRawMany();
 
+  if (!comments) return [];
+
   return comments;
 };
 
-export const deleteReviewById = async (reviewId: number, userId: number) => {
+export const deleteReview = async (reviewId: number, userId: number) => {
+  const review = await reviewRepository.findOne({
+    where: {
+      id: reviewId,
+      user: { id: userId },
+    },
+    relations: ['user'],
+  });
+
+  if (!review) {
+    throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
+  }
+
   const result = await reviewRepository
     .createQueryBuilder()
     .delete()
     .from(Review)
     .where('id = :reviewId', { reviewId })
-    .andWhere('userId = :userId', { userId })
+    .andWhere('user_id = :userId', { userId })
     .execute();
 
   return result;
