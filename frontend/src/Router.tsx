@@ -24,7 +24,6 @@ export function Router() {
         <Route path="/list" element={<ReviewList />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
-
         {/* 관리자 페이지 */}
         <Route path="/admin">
           <Route index element={<AdminLogin />} />
@@ -34,7 +33,6 @@ export function Router() {
             element={<UnverifiedReviewsDashboard />}
           />
         </Route>
-
         {/* 회원가입 */}
         <Route path="/join">
           <Route index element={<JoinStep1Email />} />
@@ -42,7 +40,6 @@ export function Router() {
           <Route path="step2" element={<JoinStep2Nickname />} />
           <Route path="step3" element={<JoinStep3Password />} />
         </Route>
-
         <Route path="*" element={<NotFoundError />} />
       </Routes>
     </BrowserRouter>

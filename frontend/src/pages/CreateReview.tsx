@@ -35,11 +35,11 @@ function CreateReview() {
 
   const { addToReview } = useReview();
   const navigate = useNavigate();
-  const {isLoggedIn} = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
 
   useEffect(() => {
-    if (!isLoggedIn &&'/create'.includes(location.pathname)) {
-      alert('로그인이 필요합니다.')
+    if (!isLoggedIn && '/create'.includes(location.pathname)) {
+      alert('로그인이 필요합니다.');
       navigate('/login');
     }
   }, [isLoggedIn, location.pathname]);
@@ -64,15 +64,17 @@ function CreateReview() {
     //addToReview(data);
   };
 
-
   return (
     <>
       <Header showBackButton={true} title="리뷰 작성" />
 
       <CreateReviewStyled>
-        <PhotoUpload photoToAddList={photoToAddList} setPhotoToAddList={setPhotoToAddList} />
+        <PhotoUpload
+          photoToAddList={photoToAddList}
+          setPhotoToAddList={setPhotoToAddList}
+        />
 
-        <ReceiptUpload receiptImg={receiptImg}  setReceiptImg={setReceiptImg} />
+        <ReceiptUpload receiptImg={receiptImg} setReceiptImg={setReceiptImg} />
 
         <StarRating ratingIndex={ratingIndex} setRatingIndex={setRatingIndex} />
 

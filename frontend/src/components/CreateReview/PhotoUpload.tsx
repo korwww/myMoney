@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { Camera } from '@/assets/icons/Camera';
+import { Camera } from '@/api/assets/icons/Camera';
 import { convertToBase64 } from '@/utils/base64';
-import { X } from '@/assets/icons/X';
+import { X } from '@/api/assets/icons/X';
 import Icon from '../common/Icon';
 
 interface PhotoUploadProps {
@@ -24,10 +24,7 @@ function PhotoUpload({ photoToAddList, setPhotoToAddList }: PhotoUploadProps) {
         const base64 = await convertToBase64(file);
         imageArray.push(base64);
       }
-      setPhotoToAddList((prevList) => [
-        ...prevList,
-        ...imageArray,
-      ]);
+      setPhotoToAddList((prevList) => [...prevList, ...imageArray]);
     }
   };
 
@@ -125,4 +122,3 @@ const CloseButton = styled.button`
   border-radius: 50%;
   cursor: pointer;
 `;
-

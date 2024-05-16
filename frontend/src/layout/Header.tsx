@@ -1,5 +1,5 @@
-import { CaretLeft } from '@/assets/icons/CaretLeft';
-import { TextLogo } from '@/assets/icons/textLogo';
+import { CaretLeft } from '@/api/assets/icons/CaretLeft';
+import { TextLogo } from '@/api/assets/icons/textLogo';
 import styled from 'styled-components';
 
 interface HeaderProps {

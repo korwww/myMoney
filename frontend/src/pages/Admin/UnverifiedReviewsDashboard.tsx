@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AdminContent from '@/components/Admin/AdminContent';
 import AdminLayout from '@/components/Admin/AdminLayout';
 import AdminTable, { TableHeadItem } from '@/components/Admin/AdminTable';
-import { Image } from '@/assets/icons/Image';
+import { Image } from '@/api/assets/icons/Image';
 import Icon from '@/components/common/Icon';
 import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthenticatedUser';
 
