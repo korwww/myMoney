@@ -10,6 +10,7 @@ export const getStatusCode = (errorMessage: string | undefined): number => {
       return 401;
     case ERROR_MESSAGE.DUPLICATE_EMAIL:
     case ERROR_MESSAGE.DUPLICATE_NICKNAME:
+    case ERROR_MESSAGE.DUPLICATE_REPORT:
       return 409;
     case ERROR_MESSAGE.USER_NOT_FOUND:
       return 404;

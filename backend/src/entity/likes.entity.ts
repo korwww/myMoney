@@ -11,7 +11,7 @@ export class Like {
   @JoinColumn({ name: 'userId' })
   user!: User;
 
-  @ManyToOne(() => Review)
+  @ManyToOne(() => Review, (review) => review.likes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'reviewId' })
   review!: Review;
 }

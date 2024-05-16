@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Like } from '../entity/likes.entity';
@@ -139,7 +140,6 @@ export const reviewDetails = async (reviewId: number): Promise<any> => {
 };
 
 export const allComments = async (reviewId: number): Promise<any[]> => {
-  const reviewRepository = AppDataSource.getRepository(Review);
   const comments = await reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.comments', 'comment')
@@ -154,6 +154,18 @@ export const allComments = async (reviewId: number): Promise<any[]> => {
     .getRawMany();
 
   return comments;
+};
+
+export const deleteReviewById = async (reviewId: number, userId: number) => {
+  const result = await reviewRepository
+    .createQueryBuilder()
+    .delete()
+    .from(Review)
+    .where('id = :reviewId', { reviewId })
+    .andWhere('userId = :userId', { userId })
+    .execute();
+
+  return result;
 };
 
 export const findReviewById = async (id: number) => {
@@ -234,4 +246,15 @@ const saveReviewImages = async (review: Review, reviewImg: string[]) => {
 const updateReviewImages = async (review: Review, reviewImg: string[]) => {
   await reviewImgRepository.delete({ review });
   await saveReviewImages(review, reviewImg);
+};
+
+// 미인증 후기 인증처리하기
+export const approve = async (reviewId: number) => {
+  let review = await reviewRepository.findOneBy({ id: reviewId });
+  if (!review) {
+    throw new Error(ERROR_MESSAGE.INVALID_DATA);
+  }
+
+  review.verified = true;
+  return await reviewRepository.save(review);
 };

@@ -8,6 +8,8 @@ import {
   allComments,
   reviewDetails,
   getReviews,
+  approve,
+  deleteReviewById,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -97,6 +99,12 @@ export const serviceReviewDetails = async (reviewId: number) => {
   };
 };
 
+export const deleteOne = async (reviewId: number, userId: number) => {
+  const result = await deleteReviewById(reviewId, userId);
+
+  return result.affected ? true : false;
+};
+
 export const create = async (
   id: number,
   title: string,
@@ -147,4 +155,8 @@ export const update = async (
     receiptImg,
     reviewImg,
   });
+};
+
+export const approveReview = async (reviewId: number) => {
+  return await approve(reviewId);
 };
