@@ -8,6 +8,6 @@ export const DB_PORT = parseInt(process.env.DB_PORT || '3306');
 export const DB_DATABASE = process.env.DB_DATABASE;
 export const DB_USERNAME = process.env.DB_USERNAME;
 export const DB_PASSWORD = process.env.DB_PASSWORD;
-export const DB_LOGGING = !!process.env.DB_LOGGING || true;
+export const DB_LOGGING = !!process.env.DB_LOGGING || false;
 export const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS!, 10) || 10;
 export const TOKEN_PRIVATE_KEY = process.env.TOKEN_PRIVATE_KEY;
