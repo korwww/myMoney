@@ -1,5 +1,6 @@
 import {
   ICreateReviewProps,
+  createReport,
   deleteReport,
   findSuspendedUsers,
 } from '../models/report.model';
@@ -25,4 +26,10 @@ export const serviceCreateReport = async ({
   reportedUserId,
   reporterUserId,
   reason,
-}: ICreateReviewProps) => {};
+}: ICreateReviewProps) => {
+  return await createReport({
+    reportedUserId,
+    reporterUserId,
+    reason,
+  });
+};
