@@ -8,9 +8,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './users.entity';
+import { Category } from './category.entity';
+import { ReviewImg } from './review_img.entity';
 import { Like } from './likes.entity';
 import { Comment } from './comments.entity';
-import { Category } from './category.entity';
 
 @Entity('reviews')
 export class Review {
@@ -18,11 +19,11 @@ export class Review {
   id!: number;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'categoryId' })
+  @JoinColumn({ name: 'category_id' })
   category!: Category;
 
   @OneToMany(() => Like, (like) => like.review)
@@ -51,6 +52,9 @@ export class Review {
   @Column({ comment: '인증 여부', type: 'boolean', default: () => 'false' })
   verified!: boolean;
 
-  @Column({ comment: '인증용 사진', type: 'text' })
+  @Column({ comment: '인증용 사진', type: 'text', nullable: true })
   receiptImg!: string;
+
+  @OneToMany(() => ReviewImg, (reviewImg) => reviewImg.review)
+  reviewImg!: ReviewImg[];
 }

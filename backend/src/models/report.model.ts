@@ -6,8 +6,14 @@ import { ERROR_MESSAGE } from '../constance/errorMessage';
 const reportRepository = AppDataSource.getRepository(Report);
 const userRepository = AppDataSource.getRepository(User);
 
+export interface ICreateReviewProps {
+  reportedUserId: number;
+  reporterUserId: number;
+  reason: string;
+}
+
 export const findSuspendedUsers = async () => {
-  const users = userRepository
+  const users = await userRepository
     .createQueryBuilder('user')
     .select([
       'user.id AS reportedUserId',
@@ -24,7 +30,7 @@ export const findSuspendedUsers = async () => {
       'report_content',
       'report_content.reported_user_id = user.id',
     )
-    .groupBy('user.id')
+    .groupBy('user.id, report_content.id')
     .having('reportCount > 0')
     .getRawMany();
 
@@ -37,4 +43,37 @@ export const deleteReport = async (id: number) => {
     throw new Error(ERROR_MESSAGE.INVALID_DATA);
   }
   return await reportRepository.remove(report);
+};
+
+export const createReport = async ({
+  reportedUserId,
+  reporterUserId,
+  reason,
+}: ICreateReviewProps) => {
+  const reportedUser = await userRepository.findOneBy({ id: reportedUserId });
+  if (!reportedUser) throw new Error(ERROR_MESSAGE.INVALID_USER);
+
+  const report = new Report();
+  report.reporterUserId = reporterUserId;
+  report.reason = reason;
+  report.user = reportedUser;
+
+  return await reportRepository.save(report);
+};
+
+export const checkDuplicateReport = async ({
+  reportedUserId,
+  reporterUserId,
+}: {
+  reportedUserId: number;
+  reporterUserId: number;
+}) => {
+  const report = await reportRepository.find({
+    where: {
+      user: { id: reportedUserId },
+      reporterUserId: reporterUserId,
+    },
+  });
+
+  return report.length > 0;
 };

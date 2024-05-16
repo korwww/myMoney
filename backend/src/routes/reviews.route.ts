@@ -1,10 +1,10 @@
 import express from 'express';
 import {
-  getReviews,
+  deleteReview,
   getReviewDetails,
   createReview,
   updateReview,
-  deleteReview,
+  getReviewsWithPagination,
 } from '../controllers/reviews.controller';
 import { authentication } from '../middlewares/authentication';
 
@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.route('/').get(getReviews).post();
+router.route('/').get(authentication, getReviewsWithPagination).post();
 
 router
   .route('/:id')

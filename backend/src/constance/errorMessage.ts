@@ -3,6 +3,7 @@ export const ERROR_MESSAGE = {
   NOT_MATCHED_PASSWORD: 'Not Matched Password',
   DUPLICATE_EMAIL: 'Duplicate email',
   DUPLICATE_NICKNAME: 'Duplicate nickname',
+  DUPLICATE_REPORT: 'Duplicate report',
   USER_NOT_FOUND: 'User not found',
   USER_IS_SUSPENDED: 'User is suspended',
   SESSION_EXPIRED: 'Session expired',

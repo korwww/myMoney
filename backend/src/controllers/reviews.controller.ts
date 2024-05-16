@@ -1,52 +1,79 @@
-import { RequestHandler } from 'express';
-
+import { Response, RequestHandler } from 'express';
 import {
+  IResponsePagination,
+  getReviewList,
+  createPagination,
+  IResponseReview,
   create,
-  serviceReviewList,
   update,
   serviceReviewDetails,
   deleteOne,
 } from '../services/review.service';
 import { CustomRequest } from '../middlewares/authentication';
-import { Response } from 'express';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 
 export interface IReviewQueryParams {
-  categoryId?: string;
+  categoryId?: number;
   isVerified?: boolean;
   query?: string;
   liked?: boolean;
   best?: boolean;
   myReviews?: boolean;
+  currentPage?: number;
+  limit?: number;
+  userId?: number;
 }
-//request, response를 담당
-export const getReviews: RequestHandler<{}, {}, {}, IReviewQueryParams> = (
-  req,
-  res,
+
+export interface IResponseData {
+  reviews?: IResponseReview[];
+  pagination?: IResponsePagination;
+}
+
+export const getReviewsWithPagination = async (
+  req: CustomRequest,
+  res: Response,
 ) => {
-  const { categoryId, isVerified, query, liked, best, myReviews } = req.query;
+  const {
+    categoryId,
+    isVerified,
+    query,
+    liked,
+    best,
+    myReviews,
+    currentPage = 1,
+    limit = 1000,
+  } = req.query as IReviewQueryParams;
+
+  let responseData: IResponseData = {};
+  const userId: number | undefined = req.user?.id;
+
   try {
-    serviceReviewList({
+    const reviews: IResponseReview[] = await getReviewList({
       categoryId,
       isVerified,
       query,
       liked,
       best,
       myReviews,
-    }).then(
-      (responseData) => {
-        return res
-          .status(200)
-          .json({ reviews: responseData, pagination: 'pagenation' });
-      },
-      (err) => {
-        throw err;
-      },
+      currentPage,
+      limit,
+      userId,
+    });
+    responseData.reviews = reviews;
+
+    const pagination = await createPagination(
+      currentPage,
+      limit,
+      reviews.length,
     );
-  } catch (err) {
-    //공통 에러 핸들러 필요
-    console.log(err);
-    return res.status(500).json({ message: '오류' });
+    responseData.pagination = pagination;
+
+    return res.status(200).json(responseData);
+  } catch (error: any) {
+    return res.status(500).json({
+      status: 500,
+      message: 'Internal Server Error',
+    });
   }
 };
 

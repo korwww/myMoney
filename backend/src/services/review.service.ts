@@ -1,53 +1,86 @@
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Category } from '../entity/category.entity';
-import { ReviewImg } from '../entity/review_img.entity';
-import { Review } from '../entity/reviews.entity';
-import { User } from '../entity/users.entity';
 import {
-  allReviews,
   createNewReview,
   findReviewById,
   updateReviewData,
   allComments,
   reviewDetails,
+  getReviews,
   deleteReviewById,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
 const categoryRepository = AppDataSource.getRepository(Category);
 
-export const serviceReviewList = async ({
+export interface IResponsePagination {
+  currentPage: number;
+  totalCount: number;
+}
+
+export interface IResponseReview {
+  id: number;
+  categoryId: number;
+  userId: number;
+  userName: string;
+  title: string;
+  content: string;
+  stars: number;
+  createdAt: string;
+  verified: number;
+  reviewImgs: string[];
+  likes: number;
+}
+
+export const getReviewList = async ({
   categoryId,
   isVerified,
   query,
   liked,
   best,
   myReviews,
-}: IReviewQueryParams) => {
-  //이 함수에서 response 객체 생성
-  //현재는 전체 리뷰를 조회해 직접 내보내고 있지만, 쿼리스트링에 따라 다른 형태의 reponse 객체를 만들어 controller로 보냄
-  //pagenation 제작, 베스트 리뷰 선정, 검색 처리 등등은 서비스 레이어에서 처리
-  return await allReviews({
+  currentPage,
+  limit,
+  userId,
+}: IReviewQueryParams): Promise<IResponseReview[]> => {
+  const reviews = await getReviews({
     categoryId,
     isVerified,
     query,
     liked,
     best,
     myReviews,
+    currentPage,
+    limit,
+    userId,
   });
+
+  return reviews.map((review) => ({
+    id: review.id,
+    categoryId: review.categoryId,
+    userId: review.userId,
+    userName: review.userName,
+    title: review.title,
+    content: review.content,
+    stars: review.stars,
+    createdAt: review.createdAt.toISOString(),
+    verified: review.verified ? 1 : 0,
+    reviewImgs: review.reviewImgs && [],
+    likes: review.likes,
+  }));
 };
 
-const selectBestReviews = () => {
-  //데이터베이스로부터 crud를 통해 정보를 가져오고, 이 함수에서 베스트 리뷰를 선정
-};
+const selectBestReviews = () => {};
 
-const makePagenation = () => {
-  //이 함수에서 페이지네이션 생성
-};
+export const createPagination = async (
+  currentPage: number,
+  limit: number,
+  total: number,
+): Promise<IResponsePagination> => {
+  const totalCount = Math.ceil(total / limit);
 
-const search = () => {
-  //검색
+  return { currentPage, totalCount };
 };
 
 export const serviceReviewDetails = async (reviewId: number) => {
