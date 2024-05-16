@@ -5,14 +5,12 @@ import {
   findUserByNickname,
   createUser as createNewUser,
   findUserWithReportInfo,
-  IUserWithReportInfo,
 } from '../models/user.model';
 import {
   hashPassword,
   comparePassword,
   generateToken,
   suspendedUser,
-  ISuspendedUser,
 } from '../utils/authUtils';
 
 export const login = async (email: string, password: string) => {
