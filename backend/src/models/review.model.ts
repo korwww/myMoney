@@ -140,7 +140,6 @@ export const reviewDetails = async (reviewId: number): Promise<any> => {
 };
 
 export const allComments = async (reviewId: number): Promise<any[]> => {
-  const reviewRepository = AppDataSource.getRepository(Review);
   const comments = await reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.comments', 'comment')
@@ -155,6 +154,18 @@ export const allComments = async (reviewId: number): Promise<any[]> => {
     .getRawMany();
 
   return comments;
+};
+
+export const deleteReviewById = async (reviewId: number, userId: number) => {
+  const result = await reviewRepository
+    .createQueryBuilder()
+    .delete()
+    .from(Review)
+    .where('id = :reviewId', { reviewId })
+    .andWhere('userId = :userId', { userId })
+    .execute();
+
+  return result;
 };
 
 export const findReviewById = async (id: number) => {
