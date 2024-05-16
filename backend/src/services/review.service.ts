@@ -1,17 +1,13 @@
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Category } from '../entity/category.entity';
-import { ReviewImg } from '../entity/review_img.entity';
-import { Review } from '../entity/reviews.entity';
-import { User } from '../entity/users.entity';
 import {
-  allReviews,
   createNewReview,
   findReviewById,
   updateReviewData,
   allComments,
   reviewDetails,
-  getReviews
+  getReviews,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -32,7 +28,7 @@ export interface IResponseReview {
   stars: number;
   createdAt: string;
   verified: number;
-  reviewImg: string[];
+  reviewImgs: string[];
   likes: number;
 }
 
@@ -61,15 +57,15 @@ export const getReviewList = async ({
 
   return reviews.map((review) => ({
     id: review.id,
-    categoryId: review.category.id,
-    userId: review.user.id,
-    userName: review.user.nickname,
+    categoryId: review.categoryId,
+    userId: review.userId,
+    userName: review.userName,
     title: review.title,
     content: review.content,
     stars: review.stars,
     createdAt: review.createdAt.toISOString(),
     verified: review.verified ? 1 : 0,
-    reviewImg: review.reviewImg ? review.reviewImg.map((img) => img.image) : [],
+    reviewImgs: review.reviewImgs && [],
     likes: review.likes,
   }));
 };
