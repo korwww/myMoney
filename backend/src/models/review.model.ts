@@ -5,7 +5,7 @@ import { Like } from '../entity/likes.entity';
 import { ReviewImg } from '../entity/review_img.entity';
 import { Review } from '../entity/reviews.entity';
 
-const reviewRepository = AppDataSource.getRepository(Review);
+export const reviewRepository = AppDataSource.getRepository(Review);
 const reviewImgRepository = AppDataSource.getRepository(ReviewImg);
 
 interface IQueryResult {

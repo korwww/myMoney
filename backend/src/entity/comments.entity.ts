@@ -15,11 +15,11 @@ export class Comment {
   id!: number;
 
   @ManyToOne(() => User, (user) => user.comments)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 
   @ManyToOne(() => Review, (review) => review.comments, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'reviewId' })
+  @JoinColumn({ name: 'review_id' })
   review!: Review;
 
   @Column({ comment: '댓글 내용', type: 'varchar', length: 100 })
