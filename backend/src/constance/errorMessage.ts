@@ -14,5 +14,6 @@ export const ERROR_MESSAGE = {
   DENIED: 'Permission denied',
   REVIEW_NOT_FOUND: 'Review not found',
   ALREADY_LIKED: 'Already liked',
-  LIKE_NOT_EXISTS: 'Like not exists',
+  LIKE_NOT_FOUND: 'Like not found',
+  COMMENT_NOT_FOUND: 'Comment not found',
 };
