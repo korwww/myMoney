@@ -13,7 +13,7 @@ export class ReviewImg {
   id!: number;
 
   @ManyToOne(() => Review, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'reviewId' })
+  @JoinColumn({ name: 'review_id' })
   review!: Review;
 
   @Column({ comment: '사진 데이터', type: 'text' })
