@@ -8,9 +8,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './users.entity';
+import { Category } from './category.entity';
+import { ReviewImg } from './review_img.entity';
 import { Like } from './likes.entity';
 import { Comment } from './comments.entity';
-import { Category } from './category.entity';
 
 
 @Entity('reviews')
@@ -19,6 +20,7 @@ export class Review {
   id!: number;
 
   @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 
   @ManyToOne(() => Category)
@@ -53,4 +55,10 @@ export class Review {
 
   @Column({ comment: '인증용 사진', type: 'text' })
   receiptImg!: string;
+
+  @OneToMany(() => ReviewImg, (reviewImg) => reviewImg.review)
+  reviewImg!: ReviewImg[];
+
+  @OneToMany(() => Like, (like) => like.review)
+  likes!: number;
 }
