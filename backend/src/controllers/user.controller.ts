@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 import { CustomRequest } from '../middlewares/authentication';
 import {
@@ -10,7 +10,7 @@ import {
 } from '../services/user.service';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 
-export const loginUser = async (req: CustomRequest, res: Response) => {
+export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -35,15 +35,12 @@ export const loginUser = async (req: CustomRequest, res: Response) => {
   }
 };
 
-export const logoutUser = async (req: CustomRequest, res: Response) => {
+export const logoutUser = async (req: Request, res: Response) => {
   res.clearCookie('access-token');
   res.send(204).end();
 };
 
-export const checkedDuplicateEmail = async (
-  req: CustomRequest,
-  res: Response,
-) => {
+export const checkedDuplicateEmail = async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
     await checkDuplicateEmail(email);
@@ -53,10 +50,7 @@ export const checkedDuplicateEmail = async (
   }
 };
 
-export const checkedDuplicateNickname = async (
-  req: CustomRequest,
-  res: Response,
-) => {
+export const checkedDuplicateNickname = async (req: Request, res: Response) => {
   const { nickname } = req.body;
   try {
     await checkDuplicateNickname(nickname);
@@ -66,7 +60,7 @@ export const checkedDuplicateNickname = async (
   }
 };
 
-export const joinUser = async (req: CustomRequest, res: Response) => {
+export const joinUser = async (req: Request, res: Response) => {
   const { email, password, nickname } = req.body;
 
   try {
