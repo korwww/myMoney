@@ -1,4 +1,8 @@
-import { deleteReport, findSuspendedUsers } from '../models/report.model';
+import {
+  ICreateReviewProps,
+  deleteReport,
+  findSuspendedUsers,
+} from '../models/report.model';
 import { calcSuspensionEndDate } from '../utils/authUtils';
 
 export const serviceFindSuspendedUsers = async () => {
@@ -16,3 +20,9 @@ export const serviceFindSuspendedUsers = async () => {
 export const serviceCancelReport = async (reportId: number) => {
   return await deleteReport(reportId);
 };
+
+export const serviceCreateReport = async ({
+  reportedUserId,
+  reporterUserId,
+  reason,
+}: ICreateReviewProps) => {};
