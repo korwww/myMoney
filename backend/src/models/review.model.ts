@@ -5,23 +5,10 @@ import { AppDataSource } from '../data-source';
 import { Like } from '../entity/likes.entity';
 import { ReviewImg } from '../entity/review_img.entity';
 import { Review } from '../entity/reviews.entity';
+import { IResponseReview } from '../services/review.service';
 
 export const reviewRepository = AppDataSource.getRepository(Review);
 const reviewImgRepository = AppDataSource.getRepository(ReviewImg);
-
-interface IQueryResult {
-  id: number;
-  categoryId: number;
-  userId: number;
-  userName: string;
-  title: string;
-  content: string;
-  stars: number;
-  createdAt: Date;
-  verified: boolean;
-  reviewImgs: string[];
-  likes: number;
-}
 
 export const getReviews = async ({
   categoryId,
@@ -33,11 +20,10 @@ export const getReviews = async ({
   currentPage = 1,
   limit,
   userId,
-}: IReviewQueryParams): Promise<IQueryResult[]> => {
+}: IReviewQueryParams): Promise<IResponseReview[]> => {
   const queryBuilder = reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.user', 'user')
-    .leftJoinAndSelect('review.reviewImgs', 'review_img')
     .loadRelationCountAndMap('review.likes', 'review.likes', 'likes')
     .select([
       'review.id AS id',
@@ -50,12 +36,11 @@ export const getReviews = async ({
       'review.createdAt AS createdAt',
       'review.verified AS verified',
     ])
-    .addSelect('review_img.image', 'reviewImgs')
     .addSelect((subQuery) => {
       return subQuery
         .select('COUNT(like.id)', 'likes')
         .from(Like, 'like')
-        .where('like.reviewId = review.id');
+        .where('like.review_id = review.id');
     }, 'likes');
 
   if (categoryId) {
@@ -95,16 +80,12 @@ export const getReviews = async ({
   if (currentPage && limit) {
     queryBuilder.skip((currentPage - 1) * limit);
   }
-  const reviews: IQueryResult[] = await queryBuilder.getRawMany();
-
-  for (const review of reviews) {
-    review.reviewImgs = await getReviewImages(review.id);
-  }
+  const reviews: IResponseReview[] = await queryBuilder.getRawMany();
 
   return reviews;
 };
 
-const getReviewImages = async (reviewId: number): Promise<string[]> => {
+export const getReviewImages = async (reviewId: number): Promise<string[]> => {
   const images = await reviewImgRepository.find({
     where: { review: { id: reviewId } },
     select: ['image'],

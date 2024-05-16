@@ -42,7 +42,7 @@ export const getReviewsWithPagination = async (
     best,
     myReviews,
     currentPage = 1,
-    limit = 1000,
+    limit = 10,
   } = req.query as IReviewQueryParams;
 
   let responseData: IResponseData = {};
