@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Like } from '../entity/likes.entity';
@@ -234,4 +235,15 @@ const saveReviewImages = async (review: Review, reviewImg: string[]) => {
 const updateReviewImages = async (review: Review, reviewImg: string[]) => {
   await reviewImgRepository.delete({ review });
   await saveReviewImages(review, reviewImg);
+};
+
+// 미인증 후기 인증처리하기
+export const approve = async (reviewId: number) => {
+  let review = await reviewRepository.findOneBy({ id: reviewId });
+  if (!review) {
+    throw new Error(ERROR_MESSAGE.INVALID_DATA);
+  }
+
+  review.verified = true;
+  return await reviewRepository.save(review);
 };

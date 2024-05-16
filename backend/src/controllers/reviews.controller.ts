@@ -7,6 +7,7 @@ import {
   create,
   update,
   serviceReviewDetails,
+  approveReview,
 } from '../services/review.service';
 import { CustomRequest } from '../middlewares/authentication';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
@@ -69,6 +70,7 @@ export const getReviewsWithPagination = async (
 
     return res.status(200).json(responseData);
   } catch (error: any) {
+    console.log(error);
     return res.status(500).json({
       status: 500,
       message: 'Internal Server Error',
@@ -130,6 +132,25 @@ export const updateReview = async (req: CustomRequest, res: Response) => {
       receiptImg,
       reviewImg,
     );
+    res.status(200).send({ message: 'success' });
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const approveReviewByAdmin = async (
+  req: CustomRequest,
+  res: Response,
+) => {
+  const { isAdmin } = req.user!;
+  if (!isAdmin) {
+    throw new Error(ERROR_MESSAGE.DENIED);
+  }
+
+  const reviewId = parseInt(req.params.id);
+
+  try {
+    await approveReview(reviewId);
     res.status(200).send({ message: 'success' });
   } catch (error: any) {
     throw new Error(error.message);
