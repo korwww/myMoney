@@ -29,6 +29,7 @@ export const getReviewList = async ({
   myReviews,
   currentPage,
   limit,
+  userId,
 }: IReviewQueryParams): Promise<IResponseReview[]> => {
   const reviews = await getReviews({
     categoryId,
@@ -39,6 +40,7 @@ export const getReviewList = async ({
     myReviews,
     currentPage,
     limit,
+    userId,
   });
 
   return reviews.map((review) => ({

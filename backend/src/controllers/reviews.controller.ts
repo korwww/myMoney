@@ -5,6 +5,7 @@ import {
   createPagination,
   IResponseReview,
 } from '../services/review.service';
+import { CustomRequest } from '../middlewares/authentication';
 
 export interface IReviewQueryParams {
   categoryId?: number;
@@ -15,6 +16,7 @@ export interface IReviewQueryParams {
   myReviews?: boolean;
   currentPage?: number;
   limit?: number;
+  userId?: number;
 }
 
 export interface IResponseData {
@@ -22,7 +24,10 @@ export interface IResponseData {
   pagination?: IResponsePagination;
 }
 
-export const getReviewsWithPagination = async (req: Request, res: Response) => {
+export const getReviewsWithPagination = async (
+  req: CustomRequest,
+  res: Response,
+) => {
   const {
     categoryId,
     isVerified,
@@ -35,6 +40,7 @@ export const getReviewsWithPagination = async (req: Request, res: Response) => {
   } = req.query as IReviewQueryParams;
 
   let responseData: IResponseData = {};
+  const userId: number | undefined = req.user?.id;
 
   try {
     const reviews: IResponseReview[] = await getReviewList({
@@ -46,6 +52,7 @@ export const getReviewsWithPagination = async (req: Request, res: Response) => {
       myReviews,
       currentPage,
       limit,
+      userId,
     });
     responseData.reviews = reviews;
 

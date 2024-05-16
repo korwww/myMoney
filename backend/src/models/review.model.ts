@@ -1,3 +1,4 @@
+import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Like } from '../entity/likes.entity';
 import { ReviewImg } from '../entity/review_img.entity';
@@ -14,16 +15,8 @@ export const getReviews = async ({
   myReviews,
   currentPage = 1,
   limit,
-}: {
-  categoryId?: number;
-  isVerified?: boolean;
-  query?: string;
-  liked?: boolean;
-  best?: boolean;
-  myReviews?: boolean;
-  currentPage?: number;
-  limit?: number;
-}): Promise<Review[]> => {
+  userId,
+}: IReviewQueryParams): Promise<Review[]> => {
   const queryBuilder = reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.user', 'user')
@@ -62,19 +55,19 @@ export const getReviews = async ({
     queryBuilder.andWhere('reviews.verified = :isVerified', { verifiedValue });
   }
 
-  // if (liked) {
-  //   queryBuilder
-  //     .innerJoin('review.likes', 'like')
-  //     .andWhere('like.user_id = :userId', { userId: 로그인한 유저 id });
-  // }
+  if (liked) {
+    queryBuilder
+      .innerJoin('review.likes', 'like')
+      .andWhere('like.user_id = :userId', { userId });
+  }
 
   if (best) {
     queryBuilder.orderBy('likes', 'DESC').take(3);
   }
 
-  // if (myReviews) {
-  //   queryBuilder.andWhere('review.user_id = :userId', { userId: 로그인한 유저 id });
-  // }
+  if (myReviews) {
+    queryBuilder.andWhere('review.user_id = :userId', { userId });
+  }
 
   if (query) {
     queryBuilder.andWhere(
