@@ -1,9 +1,26 @@
 import { AppDataSource } from '../data-source';
 import { Like } from '../entity/likes.entity';
+import { reviewRepository } from './review.model';
+import { ERROR_MESSAGE } from '../constance/errorMessage';
 
 const likeRepository = AppDataSource.getRepository(Like);
 
-export const addLikeToDB = async (reviewId: number, userId: number) => {
+export interface ILikeProps {
+  reviewId: number;
+  userId: number;
+}
+
+export const findReview = async (reviewId: number) => {
+  const review = await reviewRepository.findOne({
+    where: {
+      id: reviewId,
+    },
+  });
+
+  return review;
+};
+
+export const isLike = async ({ reviewId, userId }: ILikeProps) => {
   const existingLike = await likeRepository.findOne({
     where: {
       review: { id: reviewId },
@@ -11,8 +28,13 @@ export const addLikeToDB = async (reviewId: number, userId: number) => {
     },
   });
 
-  if (existingLike) {
-    throw new Error('이미 좋아요를 했습니다.');
+  return existingLike;
+};
+
+export const createLike = async ({ reviewId, userId }: ILikeProps) => {
+  const like = await isLike({ reviewId, userId });
+  if (like) {
+    throw new Error(ERROR_MESSAGE.ALREADY_LIKED);
   }
 
   const newLike = likeRepository.create({
@@ -25,18 +47,13 @@ export const addLikeToDB = async (reviewId: number, userId: number) => {
   return newLike;
 };
 
-export const cancelLikeFromDB = async (reviewId: number, userId: number) => {
-  const existingLike = await likeRepository.findOne({
-    where: {
-      review: { id: reviewId },
-      user: { id: userId },
-    },
-  });
+export const deleteLike = async ({ reviewId, userId }: ILikeProps) => {
+  const like = await isLike({ reviewId, userId });
 
-  if (!existingLike) {
-    throw new Error('좋아요가 존재하지 않습니다.');
+  if (!like) {
+    throw new Error(ERROR_MESSAGE.LIKE_NOT_EXISTS);
   }
 
-  const result = await likeRepository.remove(existingLike);
+  const result = await likeRepository.remove(like);
   return result;
 };

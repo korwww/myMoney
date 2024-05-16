@@ -12,4 +12,7 @@ export const ERROR_MESSAGE = {
   INVALID_DATA: 'Invalid data',
   TOKEN_NOT_FOUND: 'Token Not found',
   DENIED: 'Permission denied',
+  REVIEW_NOT_FOUND: 'Review not found',
+  ALREADY_LIKED: 'Already liked',
+  LIKE_NOT_EXISTS: 'Like not exists',
 };
