@@ -3,10 +3,11 @@ import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
 
 interface CreateContentProps {
+  content: string;
   onChange: (value: string) => void; 
 }
 
-function CreateContent({ onChange }: CreateContentProps) {
+function CreateContent({ content, onChange }: CreateContentProps) {
   const modules = {
     toolbar: {
       container: [
@@ -29,6 +30,7 @@ function CreateContent({ onChange }: CreateContentProps) {
   return (
     <ReactQuillStyled>
       <ReactQuill
+        value={content}
         style={{ width: '100%', height: '300px' }}
         modules={modules}
         onChange={handleQuillChange}

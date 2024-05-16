@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
-import CreateReview from '@/pages/CreateReview';
+import CreateReview from '@/pages/Review/CreateReview';
 import ReviewList from '@/pages/ReviewList';
 import MyPage from '@/pages/MyPage';
 import Login from '@/pages/Login';
@@ -13,6 +13,7 @@ import AdminLogin from '@/pages/Admin/AdminLogin';
 import ReportedUsersDashboard from '@/pages/Admin/ReportedUsersDashboard';
 import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard';
 import NotFoundError from './components/Error/NotFoundError';
+import EditReview from './pages/Review/EditReview';
 
 export function Router() {
   return (
@@ -20,10 +21,12 @@ export function Router() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/create" element={<CreateReview />} />
+        <Route path="/review" element={<CreateReview />} />
+        <Route path="/review/:id" element={<EditReview />} />
         <Route path="/list" element={<ReviewList />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
+
 
         {/* 관리자 페이지 */}
         <Route path="/admin">
