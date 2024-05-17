@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Dropdown from '@/components/common/Dropdown';
-import CaretDown from '@/api/assets/icons/CaretDown';
+import CaretDown from '@/assets/icons/CaretDown';
 
 interface CategorySelectorProps {
   categoryOptions: string[];

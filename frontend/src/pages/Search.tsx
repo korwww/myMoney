@@ -1,13 +1,12 @@
 import Layout from '@/layout/Layout';
 import styled from 'styled-components';
-import { MagnifyingGlass } from '@/api/assets/icons/MagnifyingGlass';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { IsearchQuery, postSearchResults } from '@/api/search.api';
+import Input from '@/components/common/Input';
+import { MagnifyingGlass } from '@/assets/icons/MagnifyingGlass';
 
 function Search() {
-  const [searchValue, setSearchValue] = useState('');
   const { register, handleSubmit } = useForm<IsearchQuery>();
   const onSubmit = (data: IsearchQuery) => {
     SearchMutation.mutate(data);
@@ -26,21 +25,51 @@ function Search() {
   return (
     <Layout showBackButton={true} title="검색">
       <Container>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <MagnifyingGlass />
-          <input
-            type="text"
-            {...register('query', { required: true })}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-        </form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Fieldset>
+            <SearchIcon onClick={() => alert('아이콘 클릭!')}>
+              <MagnifyingGlass />
+            </SearchIcon>
+            <StyledInput
+              $inputType="text"
+              {...register('query', { required: true })}
+              type="text"
+              placeholder="검색어를 입력해주세요"
+            />
+          </Fieldset>
+        </Form>
       </Container>
     </Layout>
   );
 }
 
-const Container = styled.div`
-  margin-top: 90px;
+const Container = styled.div``;
+
+const Form = styled.form``;
+
+const Fieldset = styled.fieldset`
+  position: relative;
+  width: 100%;
+`;
+
+const StyledInput = styled(Input)`
+  padding-left: 50px; /* 아이콘을 수용할 수 있는 충분한 공간 확보 */
+  height: 40px;
+  box-sizing: border-box;
+  width: 100%;
+`;
+
+const SearchIcon = styled.div`
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 10px; /* 인풋 필드 내부 왼쪽으로 정확한 위치 조정 */
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px; /* 인풋 필드 높이와 일치 */
 `;
 
 export default Search;

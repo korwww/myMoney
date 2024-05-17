@@ -1,8 +1,8 @@
 import React, { ForwardedRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { EyeClosed } from '@/api/assets/icons/EyeClosed';
-import { Eye } from '@/api/assets/icons/Eye';
+import { EyeClosed } from '@/assets/icons/EyeClosed';
+import { Eye } from '@/assets/icons/Eye';
 import Icon from './Icon';
 
 type TinputType = 'text' | 'email' | 'password' | 'number';

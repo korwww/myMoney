@@ -24,12 +24,6 @@ export function Router() {
         <Route path="/search" element={<Search />} />
         <Route path="/create" element={<CreateReview />} />
         <Route path="/list" element={<ReviewList />} />
-        {/* 마이페이지, 내가 작성한 리뷰 목록, 좋아요 누른 리뷰 목록 */}
-        <Route path="/mypage">
-          <Route index element={<MyPage />} />
-          <Route path="reviews" element={<MyReviews />} />
-          <Route path="liked" element={<LikedReviews />} />
-        </Route>
         <Route path="/login" element={<Login />} />
         {/* 관리자 페이지 */}
         <Route path="/admin">

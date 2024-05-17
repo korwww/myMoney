@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { handleGoAdmin, handleGoBack } from '@/utils/routingUtils';
 import useAuthStore from '@/store/auth.store';
-import { CaretLeft } from '@/api/assets/icons/CaretLeft';
-import { TextLogo } from '@/api/assets/icons/textLogo';
+import { CaretLeft } from '@/assets/icons/CaretLeft';
+import { TextLogo } from '@/assets/icons/textLogo';
 
 interface HeaderProps {
   title?: string;

@@ -1,10 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { User } from '@/api/assets/icons/User';
-import { MagnifyingGlass } from '@/api/assets/icons/MagnifyingGlass';
-import { Plus } from '@/api/assets/icons/Plus';
-import { Archive } from '@/api/assets/icons/Archive';
-import { House } from '@/api/assets/icons/House';
+import { User } from '@/assets/icons/User';
+import { MagnifyingGlass } from '@/assets/icons/MagnifyingGlass';
+import { Plus } from '@/assets/icons/Plus';
+import { Archive } from '@/assets/icons/Archive';
+import { House } from '@/assets/icons/House';
 
 interface NavItem {
   text?: string;

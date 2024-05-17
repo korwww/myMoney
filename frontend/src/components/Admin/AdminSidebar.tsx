@@ -2,10 +2,10 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import AdminNavItem, { AdminNavItemProps } from './AdminNavItem';
-import { Link as LinkIcon } from '@/api/assets/icons/Link';
-import { User } from '@/api/assets/icons/User';
-import { ReceiptAuthentication } from '@/api/assets/icons/ReceiptAuthentication';
-import { TextLogo } from '@/api/assets/icons/textLogo';
+import { Link as LinkIcon } from '@/assets/icons/Link';
+import { User } from '@/assets/icons/User';
+import { ReceiptAuthentication } from '@/assets/icons/ReceiptAuthentication';
+import { TextLogo } from '@/assets/icons/textLogo';
 
 const adminNav: AdminNavItemProps[] = [
   {

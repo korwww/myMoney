@@ -1,33 +1,26 @@
 import React from 'react';
 import Layout from '@/layout/Layout';
 import { useMyReviews } from '@/hooks/useMyReviews';
-import Loading from '@/components/common/Loading';
+import { IReviewItem } from '@/models/review.model';
 
-const MyReviews = () => {
-  const { data, isLoading, error } = useMyReviews();
+function MyReviews() {
+  const { data: reviews, isLoading, error } = useMyReviews();
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    return <div>오류가 발생했습니다.</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error occurred: {error.message}</div>;
 
   return (
     <Layout showBackButton={true} title="내가 작성한 리뷰">
-      {data && data.length > 0 ? (
-        data.map((review) => (
+      <div>
+        {reviews?.map((review: IReviewItem) => (
           <div key={review.id}>
-            <h3>{review.title}</h3>
+            <h2>{review.title}</h2>
             <p>{review.content}</p>
           </div>
-        ))
-      ) : (
-        <p>작성한 리뷰가 없습니다.</p>
-      )}
+        ))}
+      </div>
     </Layout>
   );
-};
+}
 
 export default MyReviews;

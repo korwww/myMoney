@@ -3,7 +3,7 @@ import AdminSidebar from './AdminSidebar';
 import AdminHeader from './AdminHeader';
 import styled from 'styled-components';
 import Icon from '../common/Icon';
-import { Attention } from '@/api/assets/icons/Attention';
+import { Attention } from '@/assets/icons/Attention';
 
 interface AdminLayoutProps {
   children: React.ReactNode;

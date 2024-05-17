@@ -5,7 +5,6 @@ export interface IsearchQuery {
 }
 
 export const postSearchResults = async (query: IsearchQuery) => {
-  const response = await httpClient.post('/reviews/search', query);
-  console.log(response.data);
+  const response = await httpClient.post(`/reviews?query=${query}`);
   return response.data;
 };

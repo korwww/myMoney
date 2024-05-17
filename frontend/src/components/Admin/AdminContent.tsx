@@ -22,7 +22,7 @@ function AdminContent({ title, children, isLoading }: AdminContentProps) {
     </Container>
   );
 }
-const LoadingContainer = styled.div`
+export const LoadingContainer = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;

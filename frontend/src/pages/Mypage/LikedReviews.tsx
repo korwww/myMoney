@@ -1,33 +1,26 @@
 import React from 'react';
 import Layout from '@/layout/Layout';
 import { useLikedReviews } from '@/hooks/useLikedReviews';
-import Loading from '@/components/common/Loading';
+import { IReviewItem } from '@/models/review.model';
 
-const LikedReviews = () => {
-  const { data, isLoading, error } = useLikedReviews();
+function LikedReviews() {
+  const { data: reviews, isLoading, error } = useLikedReviews();
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    return <div>오류가 발생했습니다.</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error occurred: {error.message}</div>;
 
   return (
     <Layout showBackButton={true} title="내가 좋아요 누른 리뷰">
-      {data && data.length > 0 ? (
-        data.map((review) => (
+      <div>
+        {reviews?.map((review: IReviewItem) => (
           <div key={review.id}>
-            <h3>{review.title}</h3>
+            <h2>{review.title}</h2>
             <p>{review.content}</p>
           </div>
-        ))
-      ) : (
-        <p>좋아요 누른 리뷰가 없습니다.</p>
-      )}
+        ))}
+      </div>
     </Layout>
   );
-};
+}
 
 export default LikedReviews;
