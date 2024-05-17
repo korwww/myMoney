@@ -99,7 +99,6 @@ export const useAuth = () => {
     throwOnError: true,
   });
 
-  console.log(storeEmail, storeNickname);
   const userJoin = (password: string) => {
     if (!storeEmail) {
       alert('이메일을 입력하지 않으셨습니다.');
