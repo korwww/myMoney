@@ -36,12 +36,30 @@ export const getReviews = async ({
       'reviews.createdAt AS createdAt',
       'reviews.verified AS verified',
     ])
+    .addSelect(
+      (subQuery) =>
+        subQuery
+          .select('image', 'image')
+          .from(ReviewImg, 'review_img')
+          .where('review_img.review_id = reviews.id')
+          .orderBy('review_img.id', 'ASC')
+          .limit(1),
+      'reviewImg',
+    )
     .addSelect((subQuery) => {
       return subQuery
         .select('COUNT(like.id)', 'likes')
         .from(Like, 'like')
         .where('like.review_id = reviews.id');
-    }, 'likes');
+    }, 'likes')
+    .addSelect((subQuery) => {
+      return subQuery
+        .select('COUNT(`like`.`id`) > 0', 'isLiked')
+        .from(Like, 'like')
+        .where('like.review_id = reviews.id AND like.user_id = :userId', {
+          userId,
+        });
+    }, 'isLiked');
 
   if (categoryId) {
     queryBuilder.andWhere('reviews.category_id = :categoryId', {
