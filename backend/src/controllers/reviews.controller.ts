@@ -8,7 +8,7 @@ import {
   update,
   serviceReviewDetails,
   approveReview,
-  deleteOne,
+  serviceDeleteReview,
 } from '../services/review.service';
 import { CustomRequest } from '../middlewares/authentication';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
@@ -83,44 +83,32 @@ export const getReviewDetails: RequestHandler<{ id: string }> = async (
   req,
   res,
 ) => {
-  const id = Number(req.params.id);
+  const id = parseInt(req.params.id);
 
   try {
     const responseData = await serviceReviewDetails(id);
     return res.status(200).json(responseData);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: '개별 리뷰 조회 오류' });
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 };
 
-export const deleteReview: RequestHandler<{ id: string }> = async (
+export const removeReview: RequestHandler<{ id: string }> = async (
   req: CustomRequest,
   res,
 ) => {
+  if (!req.user) {
+    throw new Error(ERROR_MESSAGE.INVALID_USER);
+  }
+  const userId = req.user.id;
+  const reviewId = parseInt(req.params.id);
+
   try {
-    const reviewId = Number(req.params.id);
+    await serviceDeleteReview(reviewId, userId);
 
-    if (!req.user) {
-      return res.status(401).json({ message: '로그인이 필요합니다.' });
-    }
-
-    const userId = req.user.id;
-
-    const isSuccess = await deleteOne(reviewId, userId);
-
-    if (!isSuccess) {
-      throw new Error('리뷰 삭제 실패');
-    }
-
-    return res.status(200).send('리뷰 삭제 성공');
-  } catch (err) {
-    if (err instanceof Error) {
-      console.log(err.message);
-      return res.status(500).json({ message: err.message || '리뷰 삭제 오류' });
-    }
-
-    return res.status(500).json({ message: '리뷰 삭제 오류' });
+    res.status(200).send({ status: 200, message: 'success' });
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 };
 
