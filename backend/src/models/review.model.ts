@@ -119,6 +119,7 @@ export const findReviewDetails = async (reviewId: number): Promise<any> => {
     .leftJoinAndSelect('review.likes', 'like')
     .leftJoinAndSelect('review.comments', 'comment')
     .leftJoinAndSelect('comment.user', 'commentUser')
+    .leftJoinAndSelect('review.reviewImg', 'reviewImg')
     .select([
       'review.id AS id',
       'category.id AS categoryId',
@@ -133,9 +134,12 @@ export const findReviewDetails = async (reviewId: number): Promise<any> => {
       'review.receiptImg AS reviewReceiptImg',
     ])
     .addSelect('COUNT(like.id)', 'likes')
+    .addSelect('reviewImg.image AS reviewImg')
     .where('review.id = :reviewId', { reviewId })
     .groupBy('review.id')
     .getRawOne();
+
+  review.reviewImg = await getReviewImages(reviewId);
   return review;
 };
 
