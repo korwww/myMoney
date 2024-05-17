@@ -59,7 +59,7 @@ function ReviewForm({
   const { isLoggedIn } = useAuthStore();
 
   useEffect(() => {
-    if (!isLoggedIn && '/create'.includes(location.pathname)) {
+    if (!isLoggedIn && '/review'.includes(location.pathname)) {
       alert('로그인이 필요합니다.');
       navigate('/login');
     }

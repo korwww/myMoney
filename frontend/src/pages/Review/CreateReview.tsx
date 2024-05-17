@@ -29,7 +29,7 @@ function CreateReview() {
       receiptImg,
     };
     console.log('data', data);
-    //addToReview(data);
+    addToReview(data);
   };
 
   return (
