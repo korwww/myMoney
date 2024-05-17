@@ -23,13 +23,13 @@ export const useAuth = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const { storeLogin, storeLogout, setIsAdminUser } = useAuthStore();
-  const { email, nickname, setEmail, setNickname } = useUserRegistrationStore();
+  const { storeEmail, storeNickname, setStoreEmail, setStoreNickname } =
+    useUserRegistrationStore();
 
   /** 이메일 중복 검사 */
   const checkedEmailMutation = useMutation({
     mutationFn: checkedEmail,
     onSuccess: () => {
-      setEmail(email);
       setErrorMessage(null);
       navigate('/join/step2');
     },
@@ -47,6 +47,7 @@ export const useAuth = () => {
   });
 
   const userCheckedEmail = (email: string) => {
+    setStoreEmail(email);
     checkedEmailMutation.mutate({ email });
   };
 
@@ -55,7 +56,6 @@ export const useAuth = () => {
     mutationFn: checkedNickname,
     onSuccess: () => {
       setErrorMessage(null);
-      setNickname(nickname);
       navigate('/join/step3');
     },
     throwOnError: (error) => {
@@ -71,6 +71,7 @@ export const useAuth = () => {
   });
 
   const userCheckedNickname = (nickname: string) => {
+    setStoreNickname(nickname);
     checkedNicknameMutation.mutate({ nickname });
   };
 
@@ -78,8 +79,8 @@ export const useAuth = () => {
   const joinUserMutation = useMutation({
     mutationFn: join,
     onSuccess: () => {
-      setEmail(null);
-      setNickname(null);
+      setStoreEmail(null);
+      setStoreNickname(null);
       setErrorMessage(null);
       alert('회원가입에 성공했습니다.');
       navigate('/login');
@@ -88,18 +89,22 @@ export const useAuth = () => {
   });
 
   const userJoin = (password: string) => {
-    if (!email) {
+    if (!storeEmail) {
       alert('이메일을 입력하지 않으셨습니다.');
       navigate('/join/step1');
       return;
     }
-    if (!nickname) {
+    if (!storeNickname) {
       alert('닉네임을 입력하지 않으셨습니다.');
       navigate('/join/step2');
       return;
     }
 
-    joinUserMutation.mutate({ email, nickname, password });
+    joinUserMutation.mutate({
+      email: storeEmail,
+      nickname: storeNickname,
+      password,
+    });
   };
 
   /** 로그인 */
@@ -119,9 +124,10 @@ export const useAuth = () => {
       }
     },
     throwOnError: (error) => {
+      console.log(error);
       if (
-        error.response.status === 400 ||
-        error.response.data.message === 'User not found'
+        error?.response?.status === 400 ||
+        error?.response?.data.message === 'User not found'
       )
         return false;
       return true;

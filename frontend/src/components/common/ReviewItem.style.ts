@@ -16,22 +16,51 @@ export const InfoContainer = styled.div`
     font-size: ${({ theme }) => theme.text['small'].fontSize};
     color: ${({ theme }) => theme.color.border};
   }
+  ul {
+    li {
+      a {
+        text-decoration: none;
+      }
+    }
+  }
 `;
 
 export const ImgContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  min-height: 160px;
   max-height: 205px;
   margin-bottom: 14px;
   overflow: hidden;
+  background-color: ${({ theme }) => theme.color.background};
+  a {
+    text-decoration: none;
+    p {
+      color: ${({ theme }) => theme.color.darkGrey};
+      font-size: ${({ theme }) => theme.text['small'].fontSize};
+    }
+  }
 `;
 
 export const TitleContainer = styled.div`
   display: flex;
   gap: 6px;
   margin-bottom: 8px;
-  .title {
-    font-size: ${({ theme }) => theme.heading['small'].fontSize};
-    font-weight: ${({ theme }) => theme.fontWeight.bold};
+  a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    .title {
+      width: 100%;
+      font-size: ${({ theme }) => theme.heading['small'].fontSize};
+      font-weight: ${({ theme }) => theme.fontWeight.bold};
+      text-overflow: inherit;
+      white-space: inherit;
+      overflow: inherit;
+    }
   }
 `;
 
@@ -75,7 +104,8 @@ export const LikeButton = styled.div`
   cursor: pointer;
   &.liked {
     svg {
-      fill: ${({ theme }) => theme.color.danger} path {
+      fill: ${({ theme }) => theme.color.danger};
+      path {
         fill: inherit;
       }
     }

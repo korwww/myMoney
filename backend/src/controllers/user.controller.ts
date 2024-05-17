@@ -37,7 +37,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
 export const logoutUser = async (req: Request, res: Response) => {
   res.clearCookie('access-token');
-  res.send(204).end();
+  res.sendStatus(204);
 };
 
 export const checkedDuplicateEmail = async (req: Request, res: Response) => {

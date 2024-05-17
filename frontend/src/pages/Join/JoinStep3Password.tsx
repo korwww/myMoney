@@ -83,7 +83,6 @@ const JoinStep3Password = () => {
           <Input
             $inputType="password"
             {...register('password', passwordValidation)}
-            type="password"
             placeholder="비밀번호를 입력해주세요"
           />
           {errors.password && (
@@ -94,7 +93,6 @@ const JoinStep3Password = () => {
           <Input
             $inputType="password"
             {...register('password_checked', passwordCheckedValidation)}
-            type="password"
             placeholder="비밀번호를 다시 입력해주세요"
           />
           {errors.password_checked && (
