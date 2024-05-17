@@ -21,7 +21,7 @@ export const login = async (email: string, password: string) => {
   if (!isPasswordMatch) throw new Error(ERROR_MESSAGE.NOT_MATCHED_PASSWORD);
 
   // 정지된 유저 처리
-  if (parseInt(user.reportCount) > 0 && user.reportedDate) {
+  if (user.reportCount > 0 && user.reportedDate) {
     return suspendedUser(user);
   }
 
@@ -52,7 +52,7 @@ export const getUserInfo = async (email: string) => {
   const user = await findUserWithReportInfo(email);
   if (!user) throw new Error(ERROR_MESSAGE.USER_NOT_FOUND);
 
-  if (parseInt(user.reportCount) > 0 && user.reportedDate) {
+  if (user.reportCount > 0 && user.reportedDate) {
     return suspendedUser(user);
   }
 

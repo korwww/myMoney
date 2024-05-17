@@ -8,7 +8,7 @@ export interface IUser {
   email: string;
   nickname: string;
   isAdmin: boolean;
-  reportCount: string;
+  reportCount: number;
 }
 
 export interface IUserWithReportInfo extends IUser {
@@ -39,7 +39,7 @@ export const findUserWithReportInfo = async (email: string) => {
     .groupBy('user.id')
     .getRawMany();
 
-  return userFromDB;
+  return { ...userFromDB, reportCount: Number(userFromDB.reportCount) };
 };
 
 export const findUserByEmail = async (email: string) => {
