@@ -9,7 +9,6 @@ import {
   allComments,
   findReviewDetails,
   getReviews,
-  getReviewImages,
   approve,
   deleteReview,
 } from '../models/review.model';
@@ -32,8 +31,10 @@ export interface IResponseReview {
   stars: number;
   createdAt: string;
   verified: number;
-  reviewImgs: string[];
+  reviewImg: string;
   likes: number;
+  isMyReview: number;
+  isLiked: number;
 }
 
 export interface getReviewParams extends IReviewQueryParams {
@@ -74,8 +75,10 @@ export const getReviewList = async ({
       stars: review.stars,
       createdAt: review.createdAt.toString(),
       verified: review.verified ? 1 : 0,
-      reviewImgs: await getReviewImages(review.id),
+      reviewImg: review.reviewImg,
       likes: review.likes,
+      isMyReview: review.userId === userId ? 1 : 0,
+      isLiked: review.isLiked,
     })),
   );
   return reviews;
