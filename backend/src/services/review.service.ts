@@ -9,7 +9,6 @@ import {
   allComments,
   findReviewDetails,
   getReviews,
-  getReviewImages,
   approve,
   deleteReview,
 } from '../models/review.model';
