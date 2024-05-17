@@ -12,8 +12,8 @@ import {
 
 const router = express.Router();
 
-router.post('/', validateAddReport, authentication, addReport);
-router.delete('/:id', validateCancelReport, authentication, cancelReport);
-router.get('/users', authentication, getSuspendedUsers);
+router.post('/', validateAddReport, authentication(true), addReport);
+router.delete('/:id', validateCancelReport, authentication(true), cancelReport);
+router.get('/users', authentication(true), getSuspendedUsers);
 
 export { router as reportsRouter };
