@@ -1,8 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { createReview } from '@/api/review.api';
 import { IReview } from '@/models/review.model';
 import { useNavigate } from 'react-router-dom';
 
+// 훅을 정의하여 리뷰를 생성
 export const useReview = () => {
   const navigate = useNavigate();
 
