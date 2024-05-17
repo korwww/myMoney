@@ -1,11 +1,12 @@
-// useMyReviews.ts
-import { useQuery } from '@tanstack/react-query';
-import { getMyReviews } from '@/api/myReview.api';
-import { IReviewItem } from '@/models/review.model';
+import { fetchMyReviews } from '@/api/myReviews.api';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 export const useMyReviews = () => {
-  return useQuery<IReviewItem[], Error>({
+  return useInfiniteQuery({
     queryKey: ['myReviews'],
-    queryFn: getMyReviews,
+    queryFn: ({ pageParam = 1 }: { pageParam?: number }) =>
+      fetchMyReviews({ pageParam }),
+    getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+    initialPageParam: 1,
   });
 };

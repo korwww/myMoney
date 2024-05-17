@@ -7,13 +7,16 @@ export interface IReviewListProps {
   reviews: IReviewItem[];
   title?: string;
   isLoading?: boolean;
+  text?: string;
 }
 
-function ReviewList({ reviews, title, isLoading }: IReviewListProps) {
+function ReviewList({ reviews, title, isLoading, text }: IReviewListProps) {
   return (
     <div>
       {title && <h3>{title}</h3>}
-      {!reviews.length && <EmptyReviews>등록된 리뷰가 없습니다.</EmptyReviews>}
+      {!reviews.length && (
+        <EmptyReviews> {text} 리뷰가 없습니다. </EmptyReviews>
+      )}
       {reviews.map((review) => (
         <ReviewItem key={review.id} {...review} />
       ))}

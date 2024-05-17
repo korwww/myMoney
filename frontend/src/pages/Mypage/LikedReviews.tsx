@@ -1,26 +1,24 @@
 import React from 'react';
 import Layout from '@/layout/Layout';
 import { useLikedReviews } from '@/hooks/useLikedReviews';
-import { IReviewItem } from '@/models/review.model';
+import ReviewList from '@/components/common/ReviewList';
 
-function LikedReviews() {
-  const { data: reviews, isLoading, error } = useLikedReviews();
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error occurred: {error.message}</div>;
+const LikedReviews = () => {
+  const { data, isLoading, fetchNextPage, hasNextPage } = useLikedReviews();
+  console.log(data);
 
   return (
-    <Layout showBackButton={true} title="내가 좋아요 누른 리뷰">
-      <div>
-        {reviews?.map((review: IReviewItem) => (
-          <div key={review.id}>
-            <h2>{review.title}</h2>
-            <p>{review.content}</p>
-          </div>
-        ))}
-      </div>
+    <Layout showBackButton={true} title="좋아요 누른 리뷰">
+      <ReviewList
+        reviews={data?.pages.flatMap((page) => page.reviews) || []}
+        isLoading={isLoading}
+        text="좋아요를 누른"
+      />
+      {hasNextPage && (
+        <button onClick={() => fetchNextPage()}>Load More</button>
+      )}
     </Layout>
   );
-}
+};
 
 export default LikedReviews;

@@ -1,10 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import { getLikedReviews } from '@/api/myReview.api';
-import { IReviewItem } from '@/models/review.model';
+import { fetchLikedReviews } from '@/api/likedReviews.api';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 export const useLikedReviews = () => {
-  return useQuery<IReviewItem[], Error>({
+  return useInfiniteQuery({
     queryKey: ['likedReviews'],
-    queryFn: getLikedReviews,
+    queryFn: ({ pageParam = 1 }: { pageParam?: number }) =>
+      fetchLikedReviews({ pageParam }),
+    getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+    initialPageParam: 1,
   });
 };

@@ -17,6 +17,6 @@ export interface IReviewItem {
   likes: number;
   userId: number;
   id: number;
-  isMyReview: boolean;
-  isLiked: boolean;
+  isMyReview: boolean; // 작성자 여부 (임시로 설정, api에 맞춰서 수정해야 함)
+  isLiked: boolean; // 좋아요 여부 (임시로 설정, api에 맞춰서 수정해야 함)
 }

@@ -54,8 +54,8 @@ function ReviewItem({
         </div>
         <Dropdown
           toggleButton={<DotsThree />}
-          $positionLnR="left"
-          $positionValue={-30}
+          $positionLnR="right"
+          $positionValue={0}
           $positionTopValue={32}
           $width={100}
         >

@@ -114,34 +114,3 @@ const StyledIcon = styled.p`
 `;
 
 export default withAuthenticatedUser(MyPage);
-
-// 조건문을 사용해서 isLoading일때는 로딩 화면 보여주고 아니면 컨테이너를 보여주자!
-
-// import { MagnifyingGlass } from '@/api/assets/icons/MagnifyingGlass';
-// import Layout from '@/layout/Layout';
-// import styled from 'styled-components';
-
-// function MyPage() {
-//   const recentSearchword = ['abc', 'def'];
-//   return (
-//     <Layout showBackButton={true} title="마이페이지">
-//       <Fieldset className="인풋박스를 감쌀 친구">
-//         <SearchIcon className="검색 아이콘을 감쌀 친구">
-//           <MagnifyingGlass />
-//         </SearchIcon>
-//         <input />
-//       </Fieldset>
-//     </Layout>
-//   );
-// }
-
-// const Fieldset = styled.fieldset`
-//   position: relative;
-//   input {
-//     padding-left: 40px;
-//   }
-// `;
-// const SearchIcon = styled.div`
-//   position: absolute;
-// `;
-// export default MyPage;
