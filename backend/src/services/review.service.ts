@@ -9,6 +9,7 @@ import {
   allComments,
   findReviewDetails,
   getReviews,
+  getReviewImages,
   approve,
   deleteReview,
 } from '../models/review.model';
@@ -35,6 +36,10 @@ export interface IResponseReview {
   likes: number;
 }
 
+export interface getReviewParams extends IReviewQueryParams {
+  userId?: number;
+}
+
 export const getReviewList = async ({
   categoryId,
   isVerified,
@@ -45,8 +50,8 @@ export const getReviewList = async ({
   currentPage,
   limit,
   userId,
-}: IReviewQueryParams): Promise<IResponseReview[]> => {
-  const reviews = await getReviews({
+}: getReviewParams): Promise<IResponseReview[]> => {
+  let reviews = await getReviews({
     categoryId,
     isVerified,
     query,
@@ -58,22 +63,23 @@ export const getReviewList = async ({
     userId,
   });
 
-  return reviews.map((review) => ({
-    id: review.id,
-    categoryId: review.categoryId,
-    userId: review.userId,
-    userName: review.userName,
-    title: review.title,
-    content: review.content,
-    stars: review.stars,
-    createdAt: review.createdAt.toISOString(),
-    verified: review.verified ? 1 : 0,
-    reviewImgs: review.reviewImgs && [],
-    likes: review.likes,
-  }));
+  reviews = await Promise.all(
+    reviews.map(async (review) => ({
+      id: review.id,
+      categoryId: review.categoryId,
+      userId: review.userId,
+      userName: review.userName,
+      title: review.title,
+      content: review.content,
+      stars: review.stars,
+      createdAt: review.createdAt.toString(),
+      verified: review.verified ? 1 : 0,
+      reviewImgs: await getReviewImages(review.id),
+      likes: review.likes,
+    })),
+  );
+  return reviews;
 };
-
-const selectBestReviews = () => {};
 
 export const createPagination = async (
   currentPage: number,

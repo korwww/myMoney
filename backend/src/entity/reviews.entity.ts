@@ -56,5 +56,5 @@ export class Review {
   receiptImg!: string;
 
   @OneToMany(() => ReviewImg, (reviewImg) => reviewImg.review)
-  reviewImg!: ReviewImg[];
+  reviewImgs!: ReviewImg[];
 }
