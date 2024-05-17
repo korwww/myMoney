@@ -92,13 +92,9 @@ export const createPagination = async (
 
 export const serviceReviewDetails = async (
   reviewId: number,
-  userId: number,
+  userId?: number,
 ) => {
   const review = await findReviewDetails(reviewId, userId);
-  if (!review) {
-    throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
-  }
-
   const comments = await allComments(reviewId);
 
   return {
