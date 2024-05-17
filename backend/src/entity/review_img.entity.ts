@@ -12,10 +12,13 @@ export class ReviewImg {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => Review)
+  @ManyToOne(() => Review, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'review_id' })
   review!: Review;
 
   @Column({ comment: '사진 데이터', type: 'text' })
   image!: string;
+
+  @Column({ comment: '확장자', type: 'varchar' })
+  extension!: string;
 }

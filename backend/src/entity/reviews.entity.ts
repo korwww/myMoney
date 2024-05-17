@@ -52,7 +52,7 @@ export class Review {
   @Column({ comment: '인증 여부', type: 'boolean', default: () => 'false' })
   verified!: boolean;
 
-  @Column({ comment: '인증용 사진', type: 'text' })
+  @Column({ comment: '인증용 사진', type: 'text', nullable: true })
   receiptImg!: string;
 
   @OneToMany(() => ReviewImg, (reviewImg) => reviewImg.review)

@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Like } from '../entity/likes.entity';
@@ -5,7 +6,7 @@ import { ReviewImg } from '../entity/review_img.entity';
 import { Review } from '../entity/reviews.entity';
 import { IResponseReview, getReviewParams } from '../services/review.service';
 
-const reviewRepository = AppDataSource.getRepository(Review);
+export const reviewRepository = AppDataSource.getRepository(Review);
 const reviewImgRepository = AppDataSource.getRepository(ReviewImg);
 
 export const getReviews = async ({
@@ -94,7 +95,7 @@ export const getReviewImages = async (reviewId: number): Promise<string[]> => {
   return images.map((img) => img.image);
 };
 
-export const reviewDetails = async (reviewId: number): Promise<any> => {
+export const findReviewDetails = async (reviewId: number): Promise<any> => {
   const review = await reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.user', 'user')
@@ -102,6 +103,7 @@ export const reviewDetails = async (reviewId: number): Promise<any> => {
     .leftJoinAndSelect('review.likes', 'like')
     .leftJoinAndSelect('review.comments', 'comment')
     .leftJoinAndSelect('comment.user', 'commentUser')
+    .leftJoinAndSelect('review.reviewImg', 'reviewImg')
     .select([
       'review.id AS id',
       'category.id AS categoryId',
@@ -116,14 +118,16 @@ export const reviewDetails = async (reviewId: number): Promise<any> => {
       'review.receiptImg AS reviewReceiptImg',
     ])
     .addSelect('COUNT(like.id)', 'likes')
+    .addSelect('reviewImg.image AS reviewImg')
     .where('review.id = :reviewId', { reviewId })
     .groupBy('review.id')
     .getRawOne();
+
+  review.reviewImg = await getReviewImages(reviewId);
   return review;
 };
 
 export const allComments = async (reviewId: number): Promise<any[]> => {
-  const reviewRepository = AppDataSource.getRepository(Review);
   const comments = await reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.comments', 'comment')
@@ -137,7 +141,33 @@ export const allComments = async (reviewId: number): Promise<any[]> => {
     .where('review.id = :reviewId', { reviewId })
     .getRawMany();
 
+  if (!comments) return [];
+
   return comments;
+};
+
+export const deleteReview = async (reviewId: number, userId: number) => {
+  const review = await reviewRepository.findOne({
+    where: {
+      id: reviewId,
+      user: { id: userId },
+    },
+    relations: ['user'],
+  });
+
+  if (!review) {
+    throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
+  }
+
+  const result = await reviewRepository
+    .createQueryBuilder()
+    .delete()
+    .from(Review)
+    .where('id = :reviewId', { reviewId })
+    .andWhere('user_id = :userId', { userId })
+    .execute();
+
+  return result;
 };
 
 export const findReviewById = async (id: number) => {
@@ -218,4 +248,15 @@ const saveReviewImages = async (review: Review, reviewImg: string[]) => {
 const updateReviewImages = async (review: Review, reviewImg: string[]) => {
   await reviewImgRepository.delete({ review });
   await saveReviewImages(review, reviewImg);
+};
+
+// 미인증 후기 인증처리하기
+export const approve = async (reviewId: number) => {
+  let review = await reviewRepository.findOneBy({ id: reviewId });
+  if (!review) {
+    throw new Error(ERROR_MESSAGE.INVALID_DATA);
+  }
+
+  review.verified = true;
+  return await reviewRepository.save(review);
 };

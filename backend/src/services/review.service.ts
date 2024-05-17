@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Category } from '../entity/category.entity';
@@ -6,9 +7,11 @@ import {
   findReviewById,
   updateReviewData,
   allComments,
-  reviewDetails,
+  findReviewDetails,
   getReviews,
   getReviewImages,
+  approve,
+  deleteReview,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -89,10 +92,10 @@ export const createPagination = async (
 };
 
 export const serviceReviewDetails = async (reviewId: number) => {
-  const review = await reviewDetails(reviewId);
+  const review = await findReviewDetails(reviewId);
 
   if (!review) {
-    return null;
+    throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
   }
 
   const comments = await allComments(reviewId);
@@ -101,6 +104,10 @@ export const serviceReviewDetails = async (reviewId: number) => {
     ...review,
     comments,
   };
+};
+
+export const serviceDeleteReview = async (reviewId: number, userId: number) => {
+  return await deleteReview(reviewId, userId);
 };
 
 export const create = async (
@@ -153,4 +160,8 @@ export const update = async (
     receiptImg,
     reviewImg,
   });
+};
+
+export const approveReview = async (reviewId: number) => {
+  return await approve(reviewId);
 };
