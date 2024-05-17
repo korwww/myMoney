@@ -9,7 +9,16 @@ export const getReviewById = async (id: string) => {
   return await httpClient.get(`/reviews/${id}`);
 };
 
-export const fetchReviews = async () => {
-  const { data } = await httpClient.get('/reviews');
+interface FetchReviewsParams {
+  categoryId: number | undefined;
+  isVerified: true | undefined;
+  page: number | undefined;
+}
+
+export const fetchReviews = async (params: FetchReviewsParams) => {
+  console.log(params);
+  const { data } = await httpClient.get('/reviews', {
+    params: { ...params, limit: 3 },
+  });
   return data;
 };
