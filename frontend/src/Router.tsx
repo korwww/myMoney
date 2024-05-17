@@ -47,6 +47,13 @@ export function Router() {
           <Route path="step2" element={<JoinStep2Nickname />} />
           <Route path="step3" element={<JoinStep3Password />} />
         </Route>
+
+        <Route path="/mypage">
+          <Route index element={<MyPage />} />
+          <Route path="reviews" element={<MyReviews />} />
+          <Route path="liked" element={<LikedReviews />} />
+        </Route>
+
         <Route path="*" element={<NotFoundError />} />
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createReview } from '@/api/review.api';
+import { createReview, fetchReviews } from '@/api/review.api';
 import { IReview } from '@/models/review.model';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,5 +20,12 @@ export const useReview = () => {
     addToReviewMutation.mutate(data);
   };
 
-  return { addToReview };
+  const { data: reviews, isLoading: isLoadingFetchReviews } = useQuery({
+    queryKey: ['fetchReviews'],
+    queryFn: fetchReviews,
+  });
+
+  console.log(reviews, isLoadingFetchReviews);
+
+  return { addToReview, reviews };
 };

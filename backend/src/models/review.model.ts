@@ -1,3 +1,4 @@
+import { SelectQueryBuilder } from 'typeorm';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
@@ -95,19 +96,20 @@ export const getReviewImages = async (reviewId: number): Promise<string[]> => {
   return images.map((img) => img.image);
 };
 
-export const findReviewDetails = async (reviewId: number): Promise<any> => {
-  const review = await reviewRepository
+export const findReviewDetails = async (
+  reviewId: number,
+  userId?: number,
+): Promise<any> => {
+  let queryBuilder = reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.user', 'user')
     .leftJoinAndSelect('review.category', 'category')
     .leftJoinAndSelect('review.likes', 'like')
-    .leftJoinAndSelect('review.comments', 'comment')
-    .leftJoinAndSelect('comment.user', 'commentUser')
-    .leftJoinAndSelect('review.reviewImg', 'reviewImg')
+    .leftJoinAndSelect('review.reviewImgs', 'reviewImg')
     .select([
       'review.id AS id',
       'category.id AS categoryId',
-      'category.name AS cartegoryName',
+      'category.name AS categoryName',
       'user.id AS userId',
       'user.nickname AS nickname',
       'review.title AS title',
@@ -115,16 +117,42 @@ export const findReviewDetails = async (reviewId: number): Promise<any> => {
       'review.stars AS stars',
       'review.createdAt AS createdAt',
       'review.verified AS verified',
-      'review.receiptImg AS reviewReceiptImg',
+      'review.receiptImg AS receiptImg',
     ])
-    .addSelect('COUNT(like.id)', 'likes')
-    .addSelect('reviewImg.image AS reviewImg')
+    .addSelect('COUNT(like.id) AS likes')
+    .addSelect('reviewImg.image AS reviewImgs')
     .where('review.id = :reviewId', { reviewId })
-    .groupBy('review.id')
-    .getRawOne();
+    .groupBy('review.id');
 
-  review.reviewImg = await getReviewImages(reviewId);
+  if (userId) {
+    queryBuilder = addLikedSubQuery(queryBuilder, userId);
+  } else {
+    queryBuilder = queryBuilder.addSelect('0', 'liked');
+  }
+
+  let review = await queryBuilder.getRawOne();
+
+  if (!review) {
+    throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
+  }
+
+  review.reviewImgs = await getReviewImages(reviewId);
+  review.isAuthor = userId === review.user_id;
+
   return review;
+};
+
+const addLikedSubQuery = (
+  queryBuilder: SelectQueryBuilder<any>,
+  userId: number,
+): SelectQueryBuilder<any> => {
+  return queryBuilder.addSelect((subQuery) => {
+    return subQuery
+      .select('COUNT(1)', 'liked')
+      .from('likes', 'likes')
+      .where('likes.user_id = :userId', { userId })
+      .andWhere('likes.review_id = review.id');
+  }, 'liked');
 };
 
 export const allComments = async (reviewId: number): Promise<any[]> => {
