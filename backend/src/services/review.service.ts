@@ -29,7 +29,7 @@ export interface IResponseReview {
   stars: number;
   createdAt: string;
   verified: number;
-  reviewImgs: string[];
+  reviewImg: string;
   likes: number;
 }
 
@@ -71,7 +71,7 @@ export const getReviewList = async ({
       stars: review.stars,
       createdAt: review.createdAt.toString(),
       verified: review.verified ? 1 : 0,
-      reviewImgs: await getReviewImages(review.id),
+      reviewImg: review.reviewImg,
       likes: review.likes,
     })),
   );
