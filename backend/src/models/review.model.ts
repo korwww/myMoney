@@ -3,7 +3,7 @@ import { AppDataSource } from '../data-source';
 import { Like } from '../entity/likes.entity';
 import { ReviewImg } from '../entity/review_img.entity';
 import { Review } from '../entity/reviews.entity';
-import { IResponseReview } from '../services/review.service';
+import { IResponseReview, getReviewParams } from '../services/review.service';
 
 const reviewRepository = AppDataSource.getRepository(Review);
 const reviewImgRepository = AppDataSource.getRepository(ReviewImg);
@@ -18,41 +18,44 @@ export const getReviews = async ({
   currentPage = 1,
   limit,
   userId,
-}: IReviewQueryParams): Promise<IResponseReview[]> => {
+}: getReviewParams): Promise<IResponseReview[]> => {
   const queryBuilder = reviewRepository
-    .createQueryBuilder('review')
-    .leftJoinAndSelect('review.user', 'user')
-    .loadRelationCountAndMap('review.likes', 'review.likes', 'likes')
+    .createQueryBuilder('reviews')
+    .leftJoinAndSelect('reviews.user', 'user')
+    .loadRelationCountAndMap('reviews.likes', 'reviews.likes', 'likes')
     .select([
-      'review.id AS id',
-      'review.category_id AS categoryId',
+      'reviews.id AS id',
+      'reviews.category_id AS categoryId',
       'user.id AS userId',
       'user.nickname AS userName',
-      'review.title AS title',
-      'review.content AS content',
-      'review.stars AS stars',
-      'review.createdAt AS createdAt',
-      'review.verified AS verified',
+      'reviews.title AS title',
+      'reviews.content AS content',
+      'reviews.stars AS stars',
+      'reviews.createdAt AS createdAt',
+      'reviews.verified AS verified',
     ])
     .addSelect((subQuery) => {
       return subQuery
         .select('COUNT(like.id)', 'likes')
         .from(Like, 'like')
-        .where('like.review_id = review.id');
+        .where('like.review_id = reviews.id');
     }, 'likes');
 
   if (categoryId) {
-    queryBuilder.andWhere('reviews.category_id = :categoryId', { categoryId });
+    queryBuilder.andWhere('reviews.category_id = :categoryId', {
+      categoryId,
+    });
   }
 
   if (isVerified !== undefined) {
-    const verifiedValue = isVerified ? 1 : 0;
-    queryBuilder.andWhere('reviews.verified = :isVerified', { verifiedValue });
+    queryBuilder.andWhere('reviews.verified = :isVerified', {
+      isVerified,
+    });
   }
 
   if (liked) {
     queryBuilder
-      .innerJoin('review.likes', 'like')
+      .innerJoin('reviews.likes', 'like')
       .andWhere('like.user_id = :userId', { userId });
   }
 
@@ -61,13 +64,13 @@ export const getReviews = async ({
   }
 
   if (myReviews) {
-    queryBuilder.andWhere('review.user_id = :userId', { userId });
+    queryBuilder.andWhere('reviews.user_id = :userId', { userId });
   }
 
   if (query) {
     queryBuilder.andWhere(
-      'reviews.title LIKE :query OR review.content LIKE :query',
-      { query: `%${query}%` },
+      'reviews.title LIKE :query OR reviews.content LIKE :query',
+      { query: `%${query.replace(/'/g, '')}%` },
     );
   }
 

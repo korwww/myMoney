@@ -20,7 +20,6 @@ export interface IReviewQueryParams {
   myReviews?: boolean;
   currentPage?: number;
   limit?: number;
-  userId?: number;
 }
 
 export interface IResponseData {
@@ -28,48 +27,75 @@ export interface IResponseData {
   pagination?: IResponsePagination;
 }
 
+const parseQueryParamsToInterface = (
+  queryParams: Record<string, any>,
+): IReviewQueryParams => {
+  return {
+    categoryId:
+      typeof queryParams.categoryId === 'string'
+        ? parseInt(queryParams.categoryId, 10)
+        : undefined,
+    isVerified:
+      typeof queryParams.isVerified === 'string'
+        ? queryParams.isVerified === 'true'
+        : undefined,
+    query:
+      typeof queryParams.query === 'string' &&
+      queryParams.query.trim().length > 0
+        ? queryParams.query
+        : undefined,
+    liked:
+      typeof queryParams.liked === 'string'
+        ? queryParams.liked === 'true'
+        : undefined,
+    best:
+      typeof queryParams.best === 'string'
+        ? queryParams.best === 'true'
+        : undefined,
+    myReviews:
+      typeof queryParams.myReviews === 'string'
+        ? queryParams.myReviews === 'true'
+        : undefined,
+    currentPage:
+      typeof queryParams.currentPage === 'string' &&
+      parseInt(queryParams.currentPage, 10) > 0
+        ? parseInt(queryParams.currentPage, 10)
+        : undefined,
+    limit:
+      typeof queryParams.limit === 'string' &&
+      parseInt(queryParams.limit, 10) > 0 &&
+      parseInt(queryParams.limit, 10) <= 100
+        ? parseInt(queryParams.limit, 10)
+        : undefined,
+  };
+};
+
 export const getReviewsWithPagination = async (
   req: CustomRequest,
   res: Response,
 ) => {
-  const {
-    categoryId,
-    isVerified,
-    query,
-    liked,
-    best,
-    myReviews,
-    currentPage = 1,
-    limit = 10,
-  } = req.query as IReviewQueryParams;
+  const queryParams = parseQueryParamsToInterface(req.query);
+  const userId: number | undefined = req.user?.id;
 
   let responseData: IResponseData = {};
-  const userId: number | undefined = req.user?.id;
 
   try {
     const reviews: IResponseReview[] = await getReviewList({
-      categoryId,
-      isVerified,
-      query,
-      liked,
-      best,
-      myReviews,
-      currentPage,
-      limit,
+      ...queryParams,
       userId,
     });
     responseData.reviews = reviews;
 
     const pagination = await createPagination(
-      currentPage,
-      limit,
+      queryParams.currentPage || 1,
+      queryParams.limit || 10,
       reviews.length,
     );
     responseData.pagination = pagination;
 
     return res.status(200).json(responseData);
-  } catch (error: any) {
-    console.log(error);
+  } catch (err: any) {
+    console.log(err);
     return res.status(500).json({
       status: 500,
       message: 'Internal Server Error',
