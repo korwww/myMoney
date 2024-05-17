@@ -7,6 +7,8 @@ import {
   create,
   update,
   serviceReviewDetails,
+  approveReview,
+  serviceDeleteReview,
 } from '../services/review.service';
 import { CustomRequest } from '../middlewares/authentication';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
@@ -94,8 +96,8 @@ export const getReviewsWithPagination = async (
     responseData.pagination = pagination;
 
     return res.status(200).json(responseData);
-  } catch (err: any) {
-    console.log(err);
+  } catch (error: any) {
+    console.log(error);
     return res.status(500).json({
       status: 500,
       message: 'Internal Server Error',
@@ -103,20 +105,39 @@ export const getReviewsWithPagination = async (
   }
 };
 
-export const getReviewDetails: RequestHandler<{ id: number }> = (req, res) => {
-  const id = Number(req.params.id);
+export const getReviewDetails: RequestHandler<{ id: string }> = async (
+  req: CustomRequest,
+  res,
+) => {
+  const id = parseInt(req.params.id);
+  const userId = req.user?.id;
 
   try {
-    serviceReviewDetails(id).then((responseData) => {
-      return res.status(200).json(responseData);
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: '개별 리뷰 조회 오류' });
+    const responseData = await serviceReviewDetails(id, userId);
+    return res.status(200).json(responseData);
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 };
 
-export const deleteReview: RequestHandler<{ id: string }> = (req, res) => {};
+export const removeReview: RequestHandler<{ id: string }> = async (
+  req: CustomRequest,
+  res,
+) => {
+  if (!req.user) {
+    throw new Error(ERROR_MESSAGE.INVALID_USER);
+  }
+  const userId = req.user.id;
+  const reviewId = parseInt(req.params.id);
+
+  try {
+    await serviceDeleteReview(reviewId, userId);
+
+    res.status(200).send({ status: 200, message: 'success' });
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
 
 export const createReview = async (req: CustomRequest, res: Response) => {
   const { id } = req.user!;
@@ -157,6 +178,25 @@ export const updateReview = async (req: CustomRequest, res: Response) => {
       receiptImg,
       reviewImg,
     );
+    res.status(200).send({ message: 'success' });
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const approveReviewByAdmin = async (
+  req: CustomRequest,
+  res: Response,
+) => {
+  const { isAdmin } = req.user!;
+  if (!isAdmin) {
+    throw new Error(ERROR_MESSAGE.DENIED);
+  }
+
+  const reviewId = parseInt(req.params.id);
+
+  try {
+    await approveReview(reviewId);
     res.status(200).send({ message: 'success' });
   } catch (error: any) {
     throw new Error(error.message);

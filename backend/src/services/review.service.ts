@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Category } from '../entity/category.entity';
@@ -6,8 +7,11 @@ import {
   findReviewById,
   updateReviewData,
   allComments,
-  reviewDetails,
+  findReviewDetails,
   getReviews,
+  getReviewImages,
+  approve,
+  deleteReview,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -91,19 +95,21 @@ export const createPagination = async (
   return { currentPage, totalCount };
 };
 
-export const serviceReviewDetails = async (reviewId: number) => {
-  const review = await reviewDetails(reviewId);
-
-  if (!review) {
-    return null;
-  }
-
+export const serviceReviewDetails = async (
+  reviewId: number,
+  userId?: number,
+) => {
+  const review = await findReviewDetails(reviewId, userId);
   const comments = await allComments(reviewId);
 
   return {
     ...review,
     comments,
   };
+};
+
+export const serviceDeleteReview = async (reviewId: number, userId: number) => {
+  return await deleteReview(reviewId, userId);
 };
 
 export const create = async (
@@ -156,4 +162,8 @@ export const update = async (
     receiptImg,
     reviewImg,
   });
+};
+
+export const approveReview = async (reviewId: number) => {
+  return await approve(reviewId);
 };

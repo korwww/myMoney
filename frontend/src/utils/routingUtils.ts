@@ -9,3 +9,7 @@ export const handleGoHome = () => {
 export const handleGoLogin = () => {
   window.location.href = '/login';
 };
+
+export const handleGoAdmin = () => {
+  window.location.href = '/admin/report-user';
+};

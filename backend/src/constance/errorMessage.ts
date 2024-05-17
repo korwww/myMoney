@@ -3,6 +3,7 @@ export const ERROR_MESSAGE = {
   NOT_MATCHED_PASSWORD: 'Not Matched Password',
   DUPLICATE_EMAIL: 'Duplicate email',
   DUPLICATE_NICKNAME: 'Duplicate nickname',
+  DUPLICATE_REPORT: 'Duplicate report',
   USER_NOT_FOUND: 'User not found',
   USER_IS_SUSPENDED: 'User is suspended',
   SESSION_EXPIRED: 'Session expired',
@@ -11,4 +12,8 @@ export const ERROR_MESSAGE = {
   INVALID_DATA: 'Invalid data',
   TOKEN_NOT_FOUND: 'Token Not found',
   DENIED: 'Permission denied',
+  REVIEW_NOT_FOUND: 'Review not found',
+  ALREADY_LIKED: 'Already liked',
+  LIKE_NOT_FOUND: 'Like not found',
+  COMMENT_NOT_FOUND: 'Comment not found',
 };

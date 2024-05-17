@@ -1,6 +1,9 @@
+import styled from 'styled-components';
+
 import { CaretLeft } from '@/assets/icons/CaretLeft';
 import { TextLogo } from '@/assets/icons/textLogo';
-import styled from 'styled-components';
+import { handleGoAdmin, handleGoBack } from '@/utils/routingUtils';
+import useAuthStore from '@/store/auth.store';
 
 interface HeaderProps {
   title?: string;
@@ -9,10 +12,7 @@ interface HeaderProps {
 }
 
 export default function Header({ title, showBackButton = false }: HeaderProps) {
-  const handleGoBack = () => {
-    window.history.back();
-  };
-
+  const { isAdminUser } = useAuthStore();
   return (
     <Container>
       {showBackButton && (
@@ -27,6 +27,11 @@ export default function Header({ title, showBackButton = false }: HeaderProps) {
         <Icon>
           <TextLogo />
         </Icon>
+      )}
+      {isAdminUser && (
+        <GoToAdminButton onClick={handleGoAdmin}>
+          <span role="button">관리</span>
+        </GoToAdminButton>
       )}
     </Container>
   );
@@ -62,4 +67,12 @@ const BackIcon = styled.div`
     width: 24px;
     height: 24px;
   }
+`;
+
+const GoToAdminButton = styled.div`
+  position: absolute;
+  right: 16px;
+  color: ${({ theme }) => theme.color.darkGray};
+  font-size: ${({ theme }) => theme.text['medium'].fontSize};
+  cursor: pointer;
 `;
