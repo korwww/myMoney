@@ -35,6 +35,10 @@ export interface IResponseReview {
   likes: number;
 }
 
+export interface getReviewParams extends IReviewQueryParams {
+  userId?: number;
+}
+
 export const getReviewList = async ({
   categoryId,
   isVerified,
@@ -45,7 +49,7 @@ export const getReviewList = async ({
   currentPage,
   limit,
   userId,
-}: IReviewQueryParams): Promise<IResponseReview[]> => {
+}: getReviewParams): Promise<IResponseReview[]> => {
   let reviews = await getReviews({
     categoryId,
     isVerified,
@@ -75,8 +79,6 @@ export const getReviewList = async ({
   );
   return reviews;
 };
-
-const selectBestReviews = () => {};
 
 export const createPagination = async (
   currentPage: number,

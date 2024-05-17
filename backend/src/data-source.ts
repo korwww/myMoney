@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm';
+import { DataSource, LoggerOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import {
@@ -27,5 +27,5 @@ export const AppDataSource = new DataSource({
   entities: [User, Like, Review, Category, Report, Comment, ReviewImg],
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
-  logging: DB_LOGGING,
+  logging: true,
 });
