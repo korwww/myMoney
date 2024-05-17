@@ -27,6 +27,6 @@ router.post(
   checkedDuplicateNickname,
 );
 router.post('/join', validateJoin, joinUser);
-router.get('/me', authentication, userInfo);
+router.get('/me', authentication(true), userInfo);
 
 export { router as usersRouter };

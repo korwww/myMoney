@@ -142,7 +142,7 @@ const ModalStyle = styled.div`
 
     background-color: #fff;
     max-width: 90%;
-    max-heght: 90%;
+    max-height: 90%;
   }
 
   .modal-contents {
@@ -155,7 +155,7 @@ const ModalStyle = styled.div`
       margin-bottom: 16px;
       font-weight: bold;
       font-size: 20px;
-      text-align: center
+      text-align: center;
       white-space: pre-wrap;
     }
 
@@ -165,11 +165,11 @@ const ModalStyle = styled.div`
       white-space: pre-wrap;
     }
 
-    .image{
+    .image {
       margin-bottom: 16px;
       width: 268px;
       max-height: 300px;
-      text-align: center;  
+      text-align: center;
       overflow: scroll;
 
       -ms-overflow-style: none;
@@ -177,14 +177,14 @@ const ModalStyle = styled.div`
       ::-webkit-scrollbar {
         display: none;
       }
-    
+
       @media (min-width: 1000px) {
         width: 600px;
         height: 100%;
         max-height: 550px;
       }
-    
-      img{
+
+      img {
         width: 100%;
         height: auto;
       }
