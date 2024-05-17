@@ -15,7 +15,10 @@ router.use(express.json());
 
 router.route('/').get(authentication, getReviewsWithPagination).post();
 
-router.route('/:id').get(getReviewDetails).delete(authentication, removeReview);
+router
+  .route('/:id')
+  .get(authentication, getReviewDetails)
+  .delete(authentication, removeReview);
 
 router.post('/', authentication, createReview);
 router.patch('/:id', authentication, updateReview);
