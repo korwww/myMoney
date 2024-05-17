@@ -8,10 +8,11 @@ export class Like {
   id!: number;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user!: User;
 
   @ManyToOne(() => Review, (review) => review.likes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'reviewId' })
+
   review!: Review;
 }
