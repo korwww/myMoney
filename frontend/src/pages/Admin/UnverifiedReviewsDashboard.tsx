@@ -7,13 +7,9 @@ import AdminTable, { TableHeadItem } from '@/components/Admin/AdminTable';
 import { Image } from '@/assets/icons/Image';
 import Icon from '@/components/common/Icon';
 import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthenticatedUser';
-
-interface ReportUserTd {
-  title: string;
-  author: string;
-  imageURL: string;
-  isVerified: boolean;
-}
+import { useAdmin } from '@/hooks/useAdmin';
+import Modal from '@/components/common/Modal';
+import { IReviewItem } from '@/models/review.model';
 
 const tableHead: TableHeadItem[] = [
   { name: 'No', $widthRatio: 5 },
@@ -22,37 +18,52 @@ const tableHead: TableHeadItem[] = [
   { name: '인증 사진', $widthRatio: 18.7 },
 ];
 
-const tableBody: ReportUserTd[] = [
-  {
-    author: 'myMoney@gmail.com',
-    title: '이것은 갈비인가 통닭인가',
-    imageURL: '정지 종료',
-    isVerified: false,
-  },
-];
-
 function UnverifiedReviewsDashboard() {
-  const [isModalopen, setIsModalOpen] = useState(false);
+  const { unverifiedReviews, isLoadingUnverifiedReviews } = useAdmin();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { approveReview } = useAdmin();
+
+  const approve = async (reviewId: number) => {
+    await approveReview(reviewId);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <AdminLayout>
-      <AdminContent title="미승인 후기 관리">
-        <AdminTable tableHead={tableHead}>
-          {tableBody.map((report, idx) => (
-            <tr key={idx}>
-              <td>{idx + 1}</td>
-              <td>{report.title}</td>
-              <td>{report.author}</td>
-              <td>
-                <IconButton>
-                  <Icon width={22} icon={<Image />} />
-                </IconButton>
+      <AdminContent
+        title="미승인 후기 관리"
+        isLoading={isLoadingUnverifiedReviews}
+      >
+        {!unverifiedReviews.length && <p>미승인 후기가 없습니다.</p>}
 
-                {/* <Button  scheme="transparent" size="small">
-                </Button> */}
-              </td>
-            </tr>
-          ))}
-        </AdminTable>
+        {unverifiedReviews.length > 0 && (
+          <AdminTable tableHead={tableHead}>
+            {unverifiedReviews.map((report: IReviewItem, idx: number) => (
+              <>
+                <tr key={idx}>
+                  <td>{idx + 1}</td>
+                  <td>{report.title}</td>
+                  <td>{report.userName}</td>
+                  <td>
+                    <IconButton onClick={() => setIsModalOpen(true)}>
+                      <Icon width={22} icon={<Image />} />
+                    </IconButton>
+                  </td>
+                </tr>
+                <Modal
+                  buttonText="승인"
+                  imageSrc="https://www.press9.kr/news/photo/201910/30004_craw1.jpg"
+                  isOpen={isModalOpen}
+                  onClose={closeModal}
+                  onCancel={closeModal}
+                  onConfirm={() => approve(report.id)}
+                />
+              </>
+            ))}
+          </AdminTable>
+        )}
       </AdminContent>
     </AdminLayout>
   );
