@@ -119,8 +119,8 @@ export const findReviewDetails = async (
       'review.verified AS verified',
       'review.receiptImg AS receiptImg',
     ])
-    .addSelect('COUNT(like.id) AS likes')
     .addSelect('reviewImg.image AS reviewImgs')
+    .addSelect('COUNT(like.id) AS likes')
     .where('review.id = :reviewId', { reviewId })
     .groupBy('review.id');
 
