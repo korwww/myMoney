@@ -98,14 +98,14 @@ export const getReviewImages = async (reviewId: number): Promise<string[]> => {
 
 export const findReviewDetails = async (
   reviewId: number,
-  userId: number,
+  userId?: number,
 ): Promise<any> => {
   let queryBuilder = reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.user', 'user')
     .leftJoinAndSelect('review.category', 'category')
     .leftJoinAndSelect('review.likes', 'like')
-    .leftJoinAndSelect('review.reviewImg', 'reviewImg')
+    .leftJoinAndSelect('review.reviewImgs', 'reviewImg')
     .select([
       'review.id AS id',
       'category.id AS categoryId',
@@ -120,12 +120,14 @@ export const findReviewDetails = async (
       'review.receiptImg AS receiptImg',
     ])
     .addSelect('COUNT(like.id) AS likes')
-    .addSelect('reviewImg.image AS reviewImg')
+    .addSelect('reviewImg.image AS reviewImgs')
     .where('review.id = :reviewId', { reviewId })
     .groupBy('review.id');
 
   if (userId) {
     queryBuilder = addLikedSubQuery(queryBuilder, userId);
+  } else {
+    queryBuilder = queryBuilder.addSelect('0', 'liked');
   }
 
   let review = await queryBuilder.getRawOne();
@@ -134,7 +136,7 @@ export const findReviewDetails = async (
     throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
   }
 
-  review.reviewImg = await getReviewImages(reviewId);
+  review.reviewImgs = await getReviewImages(reviewId);
   review.isAuthor = userId === review.user_id;
 
   return review;

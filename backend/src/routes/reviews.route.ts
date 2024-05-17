@@ -17,8 +17,8 @@ router.route('/').get(authentication, getReviewsWithPagination).post();
 
 router
   .route('/:id')
-  .get(authentication, getReviewDetails)
-  .delete(authentication, removeReview);
+  .get(authentication(), getReviewDetails)
+  .delete(authentication(), removeReview);
 
 router.post('/', authentication, createReview);
 router.patch('/:id', authentication, updateReview);

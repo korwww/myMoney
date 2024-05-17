@@ -110,7 +110,7 @@ export const getReviewDetails: RequestHandler<{ id: string }> = async (
   res,
 ) => {
   const id = parseInt(req.params.id);
-  const userId = req.user!.id;
+  const userId = req.user?.id;
 
   try {
     const responseData = await serviceReviewDetails(id, userId);
