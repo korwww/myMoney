@@ -8,3 +8,8 @@ export const createReview = async (reviewData: IReview) => {
 export const getReviewById = async (id: string) => {
   return await httpClient.get(`/reviews/${id}`);
 };
+
+export const fetchReviews = async () => {
+  const { data } = await httpClient.get('/reviews');
+  return data;
+};
