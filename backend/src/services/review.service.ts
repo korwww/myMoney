@@ -33,6 +33,8 @@ export interface IResponseReview {
   verified: number;
   reviewImg: string;
   likes: number;
+  isMyReview: number;
+  isLiked: number;
 }
 
 export interface getReviewParams extends IReviewQueryParams {
@@ -75,6 +77,8 @@ export const getReviewList = async ({
       verified: review.verified ? 1 : 0,
       reviewImg: review.reviewImg,
       likes: review.likes,
+      isMyReview: review.userId === userId ? 1 : 0,
+      isLiked: review.isLiked,
     })),
   );
   return reviews;
