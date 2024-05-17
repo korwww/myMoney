@@ -80,13 +80,14 @@ export const getReviewsWithPagination = async (
 };
 
 export const getReviewDetails: RequestHandler<{ id: string }> = async (
-  req,
+  req: CustomRequest,
   res,
 ) => {
   const id = parseInt(req.params.id);
+  const userId = req.user!.id;
 
   try {
-    const responseData = await serviceReviewDetails(id);
+    const responseData = await serviceReviewDetails(id, userId);
     return res.status(200).json(responseData);
   } catch (error: any) {
     throw new Error(error.message);
