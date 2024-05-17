@@ -36,6 +36,16 @@ export const getReviews = async ({
       'reviews.createdAt AS createdAt',
       'reviews.verified AS verified',
     ])
+    .addSelect(
+      (subQuery) =>
+        subQuery
+          .select('image', 'image')
+          .from(ReviewImg, 'review_img')
+          .where('review_img.review_id = reviews.id')
+          .orderBy('review_img.id', 'ASC')
+          .limit(1),
+      'reviewImg',
+    )
     .addSelect((subQuery) => {
       return subQuery
         .select('COUNT(like.id)', 'likes')
