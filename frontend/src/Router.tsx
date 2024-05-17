@@ -4,7 +4,7 @@ import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import CreateReview from '@/pages/CreateReview';
 import ReviewList from '@/pages/ReviewList';
-import MyPage from '@/pages/MyPage';
+import MyPage from '@/pages/Mypage/MyPage';
 import Login from '@/pages/Login';
 import JoinStep1Email from '@/pages/Join/JoinStep1Email';
 import JoinStep2Nickname from '@/pages/Join/JoinStep2Nickname';
@@ -13,6 +13,8 @@ import AdminLogin from '@/pages/Admin/AdminLogin';
 import ReportedUsersDashboard from '@/pages/Admin/ReportedUsersDashboard';
 import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard';
 import NotFoundError from './components/Error/NotFoundError';
+import MyReviews from './pages/Mypage/MyReviews';
+import LikedReviews from './pages/Mypage/LikedReviews';
 
 export function Router() {
   return (
@@ -41,6 +43,12 @@ export function Router() {
           <Route path="step1" element={<JoinStep1Email />} />
           <Route path="step2" element={<JoinStep2Nickname />} />
           <Route path="step3" element={<JoinStep3Password />} />
+        </Route>
+
+        <Route path="/mypage">
+          <Route index element={<MyPage />} />
+          <Route path="reviews" element={<MyReviews />} />
+          <Route path="liked" element={<LikedReviews />} />
         </Route>
 
         <Route path="*" element={<NotFoundError />} />
