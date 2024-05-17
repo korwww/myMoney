@@ -1,24 +1,24 @@
 import { create } from 'zustand';
 
 interface UserRegistrationState {
-  email: string | null;
-  nickname: string | null;
-  setEmail: (email: string | null) => void;
-  setNickname: (nickname: string | null) => void;
+  storeEmail: string | null;
+  storeNickname: string | null;
+  setStoreEmail: (email: string | null) => void;
+  setStoreNickname: (nickname: string | null) => void;
   clearUserRegistrationInfo: () => void;
 }
 
 const useUserRegistrationStore = create<UserRegistrationState>((set) => ({
-  email: null,
-  nickname: null,
-  setEmail: (email: string | null) => {
-    set({ email });
+  storeEmail: null,
+  storeNickname: null,
+  setStoreEmail: (email: string | null) => {
+    set({ storeEmail: email });
   },
-  setNickname: (nickname: string | null) => {
-    set({ nickname });
+  setStoreNickname: (nickname: string | null) => {
+    set({ storeNickname: nickname });
   },
   clearUserRegistrationInfo: () => {
-    set({ email: null, nickname: null });
+    set({ storeEmail: null, storeNickname: null });
   },
 }));
 
