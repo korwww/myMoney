@@ -100,7 +100,8 @@ export const serviceReviewDetails = async (
 ) => {
   const review = await findReviewDetails(reviewId, userId);
   review.likes = parseInt(review.likes);
-  review.liked = parseInt(review.liked);
+  review.isLiked = review.isLiked > 0 ? true : false;
+
   const comments = await allComments(reviewId);
 
   return {
