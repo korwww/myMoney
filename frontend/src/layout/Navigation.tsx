@@ -25,7 +25,7 @@ export default function Navigation() {
       icon: <Archive />,
     },
     {
-      path: '/create',
+      path: '/review',
       icon: <Plus />,
     },
     {
