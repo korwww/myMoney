@@ -5,6 +5,7 @@ import Search from '@/pages/Search';
 import CreateReview from '@/pages/Review/CreateReview';
 import ReviewList from '@/pages/ReviewList';
 import MyPage from '@/pages/Mypage/MyPage';
+import MyPage from '@/pages/Mypage/MyPage';
 import Login from '@/pages/Login';
 import JoinStep1Email from '@/pages/Join/JoinStep1Email';
 import JoinStep2Nickname from '@/pages/Join/JoinStep2Nickname';
@@ -46,6 +47,12 @@ export function Router() {
           <Route path="step1" element={<JoinStep1Email />} />
           <Route path="step2" element={<JoinStep2Nickname />} />
           <Route path="step3" element={<JoinStep3Password />} />
+        </Route>
+
+        <Route path="/mypage">
+          <Route index element={<MyPage />} />
+          <Route path="reviews" element={<MyReviews />} />
+          <Route path="liked" element={<LikedReviews />} />
         </Route>
 
         <Route path="/mypage">
