@@ -8,11 +8,11 @@ interface IAuthProps {
 }
 
 export const checkedEmail = async (email: IAuthProps) => {
-  return await httpClient.post('/users/checked_email', email);
+  return await httpClient.post('/users/checkedEmail', email);
 };
 
 export const checkedNickname = async (nickname: IAuthProps) => {
-  return await httpClient.post('/users/checked_nickname', nickname);
+  return await httpClient.post('/users/checkedNickname', nickname);
 };
 
 export const join = async (
