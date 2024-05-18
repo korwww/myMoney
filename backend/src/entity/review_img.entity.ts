@@ -12,7 +12,7 @@ export class ReviewImg {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => Review)
+  @ManyToOne(() => Review, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'review_id' })
   review!: Review;
 
