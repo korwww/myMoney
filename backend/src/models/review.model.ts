@@ -1,4 +1,3 @@
-import { SelectQueryBuilder } from 'typeorm';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
@@ -118,7 +117,7 @@ export const findReviewDetails = async (
   reviewId: number,
   userId?: number,
 ): Promise<any> => {
-  let queryBuilder = reviewRepository
+  let review = await reviewRepository
     .createQueryBuilder('review')
     .leftJoinAndSelect('review.user', 'user')
     .leftJoinAndSelect('review.category', 'category')
@@ -138,39 +137,32 @@ export const findReviewDetails = async (
       'review.receiptImg AS receiptImg',
     ])
     .addSelect('reviewImg.image AS reviewImgs')
-    .addSelect('COUNT(like.id) AS likes')
+    .addSelect((subQuery) => {
+      return subQuery
+        .select('COUNT(like.id)', 'likes')
+        .from(Like, 'like')
+        .where('like.review_id = review.id');
+    }, 'likes')
+    .addSelect((subQuery) => {
+      return subQuery
+        .select('COUNT(`like`.`id`) > 0', 'isLiked')
+        .from(Like, 'like')
+        .where('like.review_id = review.id AND like.user_id = :userId', {
+          userId,
+        });
+    }, 'isLiked')
     .where('review.id = :reviewId', { reviewId })
-    .groupBy('review.id');
-
-  if (userId) {
-    queryBuilder = addLikedSubQuery(queryBuilder, userId);
-  } else {
-    queryBuilder = queryBuilder.addSelect('0', 'liked');
-  }
-
-  let review = await queryBuilder.getRawOne();
+    .groupBy('review.id')
+    .getRawOne();
 
   if (!review) {
     throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
   }
 
+  review.isAuthor = userId === review.userId;
   review.reviewImgs = await getReviewImages(reviewId);
-  review.isAuthor = userId === review.user_id;
 
   return review;
-};
-
-const addLikedSubQuery = (
-  queryBuilder: SelectQueryBuilder<any>,
-  userId: number,
-): SelectQueryBuilder<any> => {
-  return queryBuilder.addSelect((subQuery) => {
-    return subQuery
-      .select('COUNT(1)', 'liked')
-      .from('likes', 'likes')
-      .where('likes.user_id = :userId', { userId })
-      .andWhere('likes.review_id = review.id');
-  }, 'liked');
 };
 
 export const allComments = async (reviewId: number): Promise<any[]> => {
