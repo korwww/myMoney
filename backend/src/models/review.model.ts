@@ -51,8 +51,10 @@ export const getReviews = async ({
         .select('COUNT(like.id)', 'likes')
         .from(Like, 'like')
         .where('like.review_id = reviews.id');
-    }, 'likes')
-    .addSelect((subQuery) => {
+    }, 'likes');
+
+  if (userId) {
+    queryBuilder.addSelect((subQuery) => {
       return subQuery
         .select('COUNT(`like`.`id`) > 0', 'isLiked')
         .from(Like, 'like')
@@ -60,6 +62,7 @@ export const getReviews = async ({
           userId,
         });
     }, 'isLiked');
+  }
 
   if (categoryId) {
     queryBuilder.andWhere('reviews.category_id = :categoryId', {
@@ -80,7 +83,7 @@ export const getReviews = async ({
   }
 
   if (best) {
-    queryBuilder.orderBy('likes', 'DESC').take(3);
+    queryBuilder.orderBy('likes', 'DESC');
   }
 
   if (myReviews) {
@@ -94,13 +97,18 @@ export const getReviews = async ({
     );
   }
 
-  if (limit) {
-    queryBuilder.take(limit);
-  }
-
   if (currentPage && limit) {
     queryBuilder.skip((currentPage - 1) * limit);
   }
+
+  if (limit) {
+    queryBuilder.limit(limit);
+  }
+
+  if (best) {
+    queryBuilder.offset(3);
+  }
+
   const reviews: IResponseReview[] = await queryBuilder.getRawMany();
 
   return reviews;
