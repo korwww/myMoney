@@ -18,7 +18,4 @@ export class ReviewImg {
 
   @Column({ comment: '사진 데이터', type: 'text' })
   image!: string;
-
-  @Column({ comment: '확장자', type: 'varchar' })
-  extension!: string;
 }

@@ -20,7 +20,7 @@ router
   .get(authentication(), getReviewDetails)
   .delete(authentication(), removeReview);
 
-router.post('/', authentication, createReview);
+router.post('/', authentication(true), createReview);
 router.patch('/:id', authentication, updateReview);
 router.patch('/:id/approve', authentication(true), approveReviewByAdmin);
 

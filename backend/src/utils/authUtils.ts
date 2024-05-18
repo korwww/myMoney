@@ -56,17 +56,13 @@ export interface ISuspendedUser {
 }
 
 export const suspendedUser = (user: IUserWithReportInfo) => {
-  const parseIntReportCount = parseInt(user.reportCount);
   const { reportReason, reportedDate } = user;
 
-  const remainingDays = calcSuspensionEndDate(
-    parseIntReportCount,
-    reportedDate!,
-  );
+  const remainingDays = calcSuspensionEndDate(user.reportCount, reportedDate!);
 
   const suspendedUser = {
     email: user.email,
-    reportCount: parseIntReportCount,
+    reportCount: user.reportCount,
     isSuspended: true,
     reportReason,
     suspensionRemainingDays: remainingDays,

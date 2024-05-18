@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createReview, fetchReviews } from '@/api/review.api';
+import { createReview, getReviewById } from '@/api/review.api';
 import { IReview } from '@/models/review.model';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-export const useReview = () => {
+export const useReview = (id?:string) => {
   const navigate = useNavigate();
 
   const addToReviewMutation = useMutation({
@@ -19,12 +20,18 @@ export const useReview = () => {
     addToReviewMutation.mutate(data);
   };
 
-  const { data: reviews, isLoading: isLoadingFetchReviews } = useQuery({
-    queryKey: ['fetchReviews'],
-    queryFn: fetchReviews,
+  const { data: reviewData, isLoading, refetch} = useQuery({
+    queryKey: ['review', id],
+    queryFn: () => id ? getReviewById(id) : undefined,
+    enabled: false,
   });
 
-  console.log(reviews, isLoadingFetchReviews);
+  useEffect(() => {
+    if (id) {
+      refetch();
+    }
+  }, [id, refetch]);
 
-  return { addToReview, reviews };
+
+  return { addToReview, review: reviewData?.data, isLoading };
 };

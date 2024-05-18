@@ -2,8 +2,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
-import CreateReview from '@/pages/CreateReview';
+import CreateReview from '@/pages/Review/CreateReview';
 import ReviewList from '@/pages/ReviewList';
+import MyPage from '@/pages/Mypage/MyPage';
 import MyPage from '@/pages/Mypage/MyPage';
 import Login from '@/pages/Login';
 import JoinStep1Email from '@/pages/Join/JoinStep1Email';
@@ -15,6 +16,7 @@ import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard
 import NotFoundError from './components/Error/NotFoundError';
 import MyReviews from './pages/Mypage/MyReviews';
 import LikedReviews from './pages/Mypage/LikedReviews';
+import EditReview from './pages/Review/EditReview';
 
 export function Router() {
   return (
@@ -22,10 +24,12 @@ export function Router() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/create" element={<CreateReview />} />
+        <Route path="/review" element={<CreateReview />} />
+        <Route path="/review/:id" element={<EditReview />} />
         <Route path="/list" element={<ReviewList />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
+
 
         {/* 관리자 페이지 */}
         <Route path="/admin">
@@ -43,6 +47,12 @@ export function Router() {
           <Route path="step1" element={<JoinStep1Email />} />
           <Route path="step2" element={<JoinStep2Nickname />} />
           <Route path="step3" element={<JoinStep3Password />} />
+        </Route>
+
+        <Route path="/mypage">
+          <Route index element={<MyPage />} />
+          <Route path="reviews" element={<MyReviews />} />
+          <Route path="liked" element={<LikedReviews />} />
         </Route>
 
         <Route path="/mypage">
