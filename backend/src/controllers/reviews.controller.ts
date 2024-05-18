@@ -96,8 +96,8 @@ export const getReviewsWithPagination = async (
     responseData.pagination = pagination;
 
     return res.status(200).json(responseData);
-  } catch (err: any) {
-    console.log(err);
+  } catch (error: any) {
+    console.log(error);
     return res.status(500).json({
       status: 500,
       message: 'Internal Server Error',
