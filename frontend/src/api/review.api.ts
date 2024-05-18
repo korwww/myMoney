@@ -22,7 +22,3 @@ export const fetchReviews = async (params: FetchReviewsParams) => {
   });
   return data;
 };
-
-export const getReviewById = async (id: string) => {
-  return await httpClient.get(`/reviews/${id}`);
-};

@@ -3,10 +3,7 @@ import { createReview, getReviewById } from '@/api/review.api';
 import { IReview } from '@/models/review.model';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
-export const useReview = (id?:string) => {
 export const useReview = (id?:string) => {
   const navigate = useNavigate();
 

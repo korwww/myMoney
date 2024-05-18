@@ -7,7 +7,7 @@ import ReviewForm from '../../components/Review/ReviewForm';
 function EditReview() {
   const { id } = useParams<{ id: string }>();
   const { review } = useReview(id!);
-
+  
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [ratingIndex, setRatingIndex] = useState<number>(3);
@@ -43,7 +43,7 @@ function EditReview() {
       receiptImg,
     };
     console.log('update', data);
-    //updateReview(data);
+    //updateToReview(data);
   };
 
   return (

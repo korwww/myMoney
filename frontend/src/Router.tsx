@@ -13,7 +13,6 @@ import AdminLogin from '@/pages/Admin/AdminLogin';
 import ReportedUsersDashboard from '@/pages/Admin/ReportedUsersDashboard';
 import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard';
 import NotFoundError from './components/Error/NotFoundError';
-import EditReview from './pages/Review/EditReview';
 import MyReviews from './pages/Mypage/MyReviews';
 import LikedReviews from './pages/Mypage/LikedReviews';
 import EditReview from './pages/Review/EditReview';
