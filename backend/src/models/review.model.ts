@@ -15,10 +15,11 @@ export const getReviews = async ({
   isVerified,
   query,
   liked,
-  best,
   myReviews,
   currentPage = 1,
   limit,
+  sortBy,
+  orderBy,
   userId,
 }: getReviewParams): Promise<IResponseReview[]> => {
   const queryBuilder = reviewRepository
@@ -82,8 +83,8 @@ export const getReviews = async ({
       .andWhere('like.user_id = :userId', { userId });
   }
 
-  if (best) {
-    queryBuilder.orderBy('likes', 'DESC');
+  if (sortBy && orderBy) {
+    queryBuilder.orderBy(sortBy, orderBy as 'ASC' | 'DESC');
   }
 
   if (myReviews) {
@@ -98,15 +99,11 @@ export const getReviews = async ({
   }
 
   if (currentPage && limit) {
-    queryBuilder.skip((currentPage - 1) * limit);
+    queryBuilder.offset((currentPage - 1) * limit);
   }
 
   if (limit) {
     queryBuilder.limit(limit);
-  }
-
-  if (best) {
-    queryBuilder.offset(3);
   }
 
   const reviews: IResponseReview[] =

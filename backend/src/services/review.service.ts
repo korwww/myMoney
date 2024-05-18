@@ -46,10 +46,11 @@ export const getReviewList = async ({
   isVerified,
   query,
   liked,
-  best,
   myReviews,
   currentPage,
   limit,
+  sortBy,
+  orderBy,
   userId,
 }: getReviewParams): Promise<IResponseReview[]> => {
   let reviews = await getReviews({
@@ -57,10 +58,11 @@ export const getReviewList = async ({
     isVerified,
     query,
     liked,
-    best,
     myReviews,
     currentPage,
     limit,
+    sortBy,
+    orderBy,
     userId,
   });
 
