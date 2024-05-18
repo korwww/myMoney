@@ -43,6 +43,7 @@ function EditReview() {
       receiptImg,
     };
     console.log('update', data);
+    //작업 해야 함
     //updateToReview(data);
   };
 
