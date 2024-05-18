@@ -109,7 +109,8 @@ export const getReviews = async ({
     queryBuilder.offset(3);
   }
 
-  const reviews: IResponseReview[] = await queryBuilder.getRawMany();
+  const reviews: IResponseReview[] =
+    await queryBuilder.getRawMany<IResponseReview>();
 
   return reviews;
 };
