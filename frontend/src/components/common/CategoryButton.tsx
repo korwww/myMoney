@@ -96,7 +96,11 @@ const CateogoryButtonStyle = styled.div`
 
   p {
     font-size: 12px;
-    text-align: center;
+    max-width: 61px;
+    white-space: nowrap;
+    overflow: visible;
+    display: flex;
+    justify-content: center;
   }
 
   button {
