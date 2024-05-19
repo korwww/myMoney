@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useCategory } from '@/hooks/useCategory';
 
 import { Armchair } from '@/assets/icons/Armchair';
 import { HairDryer } from '@/assets/icons/HairDryer';
@@ -62,11 +63,14 @@ const categories: ICategoryItem[] = [
   {
     categoryId: null,
     categoryName: '인증',
-    imgSrc: CheckImg,
+    element: CheckImg,
   },
 ];
 
 function Category() {
+  const { categoryList } = useCategory();
+  console.log(categoryList);
+
   return (
     <CategoryStyle>
       <div className="items">
