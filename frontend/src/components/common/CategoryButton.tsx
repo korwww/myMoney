@@ -11,6 +11,7 @@ import { Oven } from '@/assets/icons/Oven';
 import { FilmSlate } from '@/assets/icons/FilmSlate';
 import { DotsThree } from '@/assets/icons/DotsThree';
 import { SealCheck } from '@/assets/icons/SealCheck';
+import { Link } from 'react-router-dom';
 
 const categorys = [
   <Devices />,
@@ -31,13 +32,15 @@ function CateogoryButton() {
       <div className="items">
         {categorys.map((category, idx) => (
           <div className="item">
-            <Button
-              key={idx}
-              children={category}
-              size={'small'}
-              scheme={'disabled'}
-            />
-            <p>카테고리</p>
+            <StyledLink to={''}>
+              <Button
+                key={idx}
+                children={category}
+                size={'small'}
+                scheme={'disabled'}
+              />
+              <p>카테고리</p>
+            </StyledLink>
           </div>
         ))}
       </div>
@@ -49,6 +52,7 @@ const CateogoryButtonStyle = styled.div`
   max-width: 100%;
   max-height: 200px;
   overflow: hidden;
+  margin: 20px 0;
 
   p {
     font-size: 12px;
@@ -70,6 +74,11 @@ const CateogoryButtonStyle = styled.div`
     grid-column: span 1;
     text-align: center;
   }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: white;
 `;
 
 export default CateogoryButton;
