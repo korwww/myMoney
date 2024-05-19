@@ -1,6 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
-import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Like } from '../entity/likes.entity';
 import { ReviewImg } from '../entity/review_img.entity';
@@ -196,6 +195,10 @@ export const allComments = async (reviewId: number): Promise<any[]> => {
   if (!comments) return [];
 
   return comments;
+};
+
+export const getTotalCount = async () => {
+  return await reviewRepository.count();
 };
 
 export const deleteReview = async (reviewId: number, userId: number) => {
