@@ -11,6 +11,25 @@ export interface ICommentProps {
   userId: number;
 }
 
+export const allComments = async (reviewId: number): Promise<any[]> => {
+  const comments = await commentRepository
+    .createQueryBuilder('comment')
+    .leftJoinAndSelect('comment.review', 'review')
+    .leftJoinAndSelect('comment.user', 'user')
+    .select([
+      'comment.id AS id',
+      'user.id AS userId',
+      'user.nickname AS name',
+      'comment.content AS content',
+      'comment.createdAt AS createdAt',
+    ])
+    .where('comment.review_id = :reviewId', { reviewId })
+    .orderBy('comment.createdAt', 'DESC')
+    .getRawMany();
+
+  return comments;
+};
+
 export const createComment = async ({
   content,
   reviewId,

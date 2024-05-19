@@ -1,6 +1,7 @@
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
+import { Comment } from '../entity/comments.entity';
 import { Like } from '../entity/likes.entity';
 import { ReviewImg } from '../entity/review_img.entity';
 import { Review } from '../entity/reviews.entity';
@@ -134,7 +135,7 @@ export const findReviewDetails = async (
       'category.id AS categoryId',
       'category.name AS categoryName',
       'user.id AS userId',
-      'user.nickname AS nickname',
+      'user.nickname AS name',
       'review.title AS title',
       'review.content AS content',
       'review.stars AS stars',
@@ -165,29 +166,9 @@ export const findReviewDetails = async (
     throw new Error(ERROR_MESSAGE.REVIEW_NOT_FOUND);
   }
 
-  review.isAuthor = userId === review.userId;
   review.reviewImgs = await getReviewImages(reviewId);
 
   return review;
-};
-
-export const allComments = async (reviewId: number): Promise<any[]> => {
-  const comments = await reviewRepository
-    .createQueryBuilder('review')
-    .leftJoinAndSelect('review.comments', 'comment')
-    .leftJoinAndSelect('comment.user', 'user')
-    .select([
-      'comment.id AS commentId',
-      'user.nickname AS commentAuthor',
-      'comment.content AS commentContent',
-      'comment.createdAt AS commentCreatedAt',
-    ])
-    .where('review.id = :reviewId', { reviewId })
-    .getRawMany();
-
-  if (!comments) return [];
-
-  return comments;
 };
 
 export const deleteReview = async (reviewId: number, userId: number) => {
