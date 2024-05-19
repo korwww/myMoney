@@ -3,13 +3,9 @@ import styled from 'styled-components';
 
 import Button from './Button';
 import { ICategoryItem } from '@/models/category.model';
+import React from 'react';
 
-function CategoryButton({
-  categoryId,
-  element,
-  categoryName,
-  imgSrc,
-}: ICategoryItem) {
+function CategoryButton({ categoryId, element, categoryName }: ICategoryItem) {
   return (
     <CategoryButtonStyle className="item" key={categoryId}>
       <StyledLink
@@ -20,7 +16,13 @@ function CategoryButton({
       >
         <Button
           key={categoryId}
-          children={element ? element : <img src={imgSrc} alt={categoryName} />}
+          children={
+            React.isValidElement(element) ? (
+              element
+            ) : (
+              <img src={element as string} alt={categoryName} />
+            )
+          }
           size={'small'}
           scheme={'disabled'}
         />
@@ -32,12 +34,13 @@ function CategoryButton({
 
 const CategoryButtonStyle = styled.div`
   grid-column: span 1;
+  display: flex;
+  justify-content: center;
   max-width: 61px;
-  text-align: center;
 
   p {
     font-size: 12px;
-    max-width: 61px;
+    max-width: 55px;
     white-space: nowrap;
     overflow: visible;
     display: flex;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useCategory } from '@/hooks/useCategory';
 
 import { Armchair } from '@/assets/icons/Armchair';
 import { HairDryer } from '@/assets/icons/HairDryer';
@@ -12,61 +13,40 @@ import { DotsThree } from '@/assets/icons/DotsThree';
 import CategoryButton from './CategoryButton';
 import CheckImg from '@/assets/images/logo32x32.png';
 import { ICategoryItem } from '@/models/category.model';
+import Loading from './Loading';
+import { LoadingContainer } from '../Admin/AdminContent';
 
-const categories: ICategoryItem[] = [
-  {
-    categoryId: 1,
-    categoryName: '디지털',
-    element: <Devices />,
-  },
-  {
-    categoryId: 2,
-    categoryName: '의류',
-    element: <TShirt />,
-  },
-  {
-    categoryId: 3,
-    categoryName: '가구/인테리어',
-    element: <Armchair />,
-  },
-  {
-    categoryId: 4,
-    categoryName: '가전',
-    element: <Oven />,
-  },
-  {
-    categoryId: 5,
-    categoryName: '문화',
-    element: <FilmSlate />,
-  },
-  {
-    categoryId: 6,
-    categoryName: '식품',
-    element: <Hamburger />,
-  },
-  {
-    categoryId: 7,
-    categoryName: '뷰티/미용',
-    element: <HairDryer />,
-  },
-  {
-    categoryId: 8,
-    categoryName: '장소',
-    element: <MapPin />,
-  },
-  {
-    categoryId: 9,
-    categoryName: '기타',
-    element: <DotsThree />,
-  },
-  {
-    categoryId: null,
-    categoryName: '인증',
-    imgSrc: CheckImg,
-  },
-];
+const assetMap = {
+  디지털: <Devices />,
+  의류: <TShirt />,
+  '가구/인테리어': <Armchair />,
+  가전: <Oven />,
+  문화: <FilmSlate />,
+  식품: <Hamburger />,
+  '뷰티/미용': <HairDryer />,
+  장소: <MapPin />,
+  기타: <DotsThree />,
+  인증: CheckImg,
+};
 
 function Category() {
+  const { categoryList, isLoading } = useCategory();
+  if (isLoading) {
+    return (
+      <LoadingContainer>
+        <Loading />
+      </LoadingContainer>
+    );
+  }
+
+  const categories: ICategoryItem[] = categoryList.map(
+    (category: { id: number; name: string }) => ({
+      categoryId: category.id,
+      categoryName: category.name,
+      element: assetMap[category.name as keyof typeof assetMap],
+    }),
+  );
+
   return (
     <CategoryStyle>
       <div className="items">
