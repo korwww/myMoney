@@ -10,9 +10,10 @@ export const getReviewById = async (id: string) => {
 };
 
 interface FetchReviewsParams {
-  categoryId: number | undefined;
-  isVerified: true | undefined;
-  currentPage: number | undefined;
+  categoryId?: number;
+  isVerified?: true;
+  currentPage?: number;
+  query?: string;
 }
 
 export const fetchReviews = async (params: FetchReviewsParams) => {
