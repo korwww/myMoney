@@ -24,10 +24,7 @@ function PhotoUpload({ photoToAddList, setPhotoToAddList }: PhotoUploadProps) {
         const base64 = await convertToBase64(file);
         imageArray.push(base64);
       }
-      setPhotoToAddList((prevList) => [
-        ...prevList,
-        ...imageArray,
-      ]);
+      setPhotoToAddList((prevList) => [...prevList, ...imageArray]);
     }
   };
 
@@ -125,4 +122,3 @@ const CloseButton = styled.button`
   border-radius: 50%;
   cursor: pointer;
 `;
-

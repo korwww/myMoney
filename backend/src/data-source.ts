@@ -27,5 +27,5 @@ export const AppDataSource = new DataSource({
   entities: [User, Like, Review, Category, Report, Comment, ReviewImg],
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
-  logging: true,
+  logging: false,
 });

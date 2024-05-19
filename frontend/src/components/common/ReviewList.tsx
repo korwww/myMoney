@@ -12,21 +12,22 @@ export interface IReviewListProps {
   isLoading?: boolean;
   hasNextPage?: boolean;
   fetchNextPage?: () => Promise<InfiniteQueryObserverResult>;
+  text?: string;
 }
 
 function ReviewList({
   reviews,
   title,
   isLoading,
-  hasNextPage,
+  text,
   fetchNextPage,
+  hasNextPage,
 }: IReviewListProps) {
-  console.log(hasNextPage);
   const { observerRef } = useIntersectionObserver(fetchNextPage);
   return (
     <div>
       {title && <h3>{title}</h3>}
-      {!reviews.length && <EmptyReviews>등록된 리뷰가 없습니다.</EmptyReviews>}
+      {!reviews.length && <EmptyReviews>{text} 리뷰가 없습니다.</EmptyReviews>}
       {reviews.map((review) => (
         <ReviewItem key={review.id} {...review} />
       ))}
