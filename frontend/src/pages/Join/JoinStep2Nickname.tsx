@@ -12,7 +12,7 @@ import { withUnauthenticatedUser } from '@/components/hocs/withUnauthenticatedUs
 
 const JoinStep2Nickname = () => {
   const { errorMessage, userCheckedNickname } = useAuth();
-  const { nickname } = useUserRegistrationStore();
+  const { storeNickname } = useUserRegistrationStore();
   const {
     register,
     handleSubmit,
@@ -20,7 +20,7 @@ const JoinStep2Nickname = () => {
   } = useForm<Pick<IUserRegistration, 'nickname'>>({
     mode: 'onChange',
     defaultValues: {
-      nickname: nickname ?? '',
+      nickname: storeNickname ?? '',
     },
   });
 
