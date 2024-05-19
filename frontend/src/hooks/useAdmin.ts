@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { cancelReport, getSuspendedUsers } from '@/api/report.api';
+import { deleteReport, getSuspendedUsers } from '@/api/report.api';
 import { fetchUnverifiedReviews, fetchApproveReview } from '@/api/admin.api';
 
 export const useAdmin = () => {
-  // 정지 유저 가져오기
+  // 정지된 사용자 정보 가져오기
   const {
-    data: suspendedUsers,
+    data: suspendedUsersData,
     isLoading: isLoadingSuspendedUsers,
     refetch: refetchSuspendedUsers,
   } = useQuery({
@@ -16,20 +16,20 @@ export const useAdmin = () => {
   });
 
   // 신고 취소 처리하기
-  const cancelReportMutation = useMutation({
-    mutationFn: cancelReport,
+  const deleteReportMutation = useMutation({
+    mutationFn: deleteReport,
     throwOnError: true,
     onSuccess: () => {
       refetchSuspendedUsers();
     },
   });
-  const fetchCancelReport = (reportId: number) => {
-    cancelReportMutation.mutate(reportId);
+  const deleteReportAction = (reportId: number) => {
+    deleteReportMutation.mutate(reportId);
   };
 
   // 미인증 후기 가져오기
   const {
-    data: unverifiedReviews,
+    data: unverifiedReviewsData,
     isLoading: isLoadingUnverifiedReviews,
     refetch: refetchUnverifiedReviews,
   } = useQuery({
@@ -38,7 +38,7 @@ export const useAdmin = () => {
     throwOnError: true,
   });
 
-  // 미인증 후기 인증처리하기
+  // 미인증 후기 인증 처리하기
   const approveReviewMutation = useMutation({
     mutationFn: fetchApproveReview,
     onSuccess: () => {
@@ -52,11 +52,11 @@ export const useAdmin = () => {
   };
 
   return {
-    suspendedUsers: suspendedUsers?.users || [],
+    suspendedUsers: suspendedUsersData?.users || [],
     isLoadingSuspendedUsers,
-    fetchCancelReport,
+    deleteReportAction,
     approveReview,
     isLoadingUnverifiedReviews,
-    unverifiedReviews: unverifiedReviews?.reviews || [],
+    unverifiedReviews: unverifiedReviewsData?.reviews || [],
   };
 };

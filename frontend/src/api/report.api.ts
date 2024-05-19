@@ -5,6 +5,6 @@ export const getSuspendedUsers = async () => {
   return data;
 };
 
-export const cancelReport = async (reportId: number) => {
+export const deleteReport = async (reportId: number) => {
   return await httpClient.delete(`/reports/${reportId}`);
 };
