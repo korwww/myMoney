@@ -32,12 +32,13 @@ function CategoryButton({
 
 const CategoryButtonStyle = styled.div`
   grid-column: span 1;
+  display: flex;
+  justify-content: center;
   max-width: 61px;
-  text-align: center;
 
   p {
     font-size: 12px;
-    max-width: 61px;
+    max-width: 55px;
     white-space: nowrap;
     overflow: visible;
     display: flex;
