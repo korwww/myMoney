@@ -14,7 +14,7 @@ import { withUnauthenticatedUser } from '@/components/hocs/withUnauthenticatedUs
 
 function JoinStep1Email() {
   const { errorMessage, userCheckedEmail } = useAuth();
-  const { email: storeEmail } = useUserRegistrationStore();
+  const { storeEmail } = useUserRegistrationStore();
   const {
     register,
     handleSubmit,
