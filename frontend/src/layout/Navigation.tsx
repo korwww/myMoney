@@ -1,5 +1,6 @@
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { User } from '@/assets/icons/User.tsx';
 import { MagnifyingGlass } from '@/assets/icons/MagnifyingGlass.tsx';
 import { Plus } from '@/assets/icons/Plus.tsx';
@@ -40,62 +41,71 @@ export default function Navigation() {
     },
   ];
 
-  const location = useLocation();
-  
   return (
     <NavStyle>
-      <div className="navigation">
-        {NAV_ITEMS.map((item, index) => (
-          <Link key={item.path} to={item.path}>
-            <Icon
-              className={
-                index === 2
-                  ? 'greenBg'
-                  : location.pathname === item.path
-                    ? 'active'
-                    : ''
-              }
-            >
-              {item.icon}
-            </Icon>
-            {item.text && <span>{item.text}</span>}
-          </Link>
-        ))}
-      </div>
+      {NAV_ITEMS.map((item, index) => (
+        <NavItem
+          key={item.path}
+          to={item.path}
+          className={({ isActive }) => (isActive ? 'active' : '')}
+        >
+          <Icon className={index === 2 ? 'greenBg' : ''}>{item.icon}</Icon>
+          {item.text && <p>{item.text}</p>}
+        </NavItem>
+      ))}
     </NavStyle>
   );
 }
 
 const NavStyle = styled.div`
-  .navigation {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    gap: 40px;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 85px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background-color: white;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  max-width: 390px;
+  height: 85px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: white;
+`;
 
-    a {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      cursor: pointer;
+const NavItem = styled(NavLink)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
 
-      span {
-        font-size: 10px;
-        color: ${({ theme }) => theme.color.darkGray};
-      }
+  p {
+    font-size: 10px;
+    color: ${({ theme }) => theme.color.darkGray};
+  }
+  /* active 스타일 */
+  &.active {
+    svg {
+      fill: ${({ theme }) => theme.color.primary};
+    }
+    p {
+      color: ${({ theme }) => theme.color.primary};
     }
   }
+`;
 
-  .greenBg {
+const Icon = styled.div`
+  svg {
+    width: 25px;
+    height: 25px;
+    fill: ${({ theme }) => theme.color.darkGray};
+    path {
+      fill: inherit;
+    }
+  }
+  /* 플러스 버튼 스타일 */
+  &.greenBg {
     display: flex;
     width: 50px;
     height: 50px;
@@ -107,27 +117,7 @@ const NavStyle = styled.div`
     svg {
       width: 32px;
       height: 32px;
-      path {
-        fill: #ffffff;
-      }
+      fill: #ffffff;
     }
-  }
-`;
-
-const Icon = styled.div`
-  display: flex;
-  &.active {
-    color: ${({ theme }) => theme.color.primary};
-
-    svg {
-      path {
-        fill: ${({ theme }) => theme.color.primary};
-      }
-    }
-  }
-
-  svg {
-    width: 25px;
-    height: 25px;
   }
 `;

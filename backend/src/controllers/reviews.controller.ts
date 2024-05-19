@@ -82,7 +82,7 @@ export const getReviewsWithPagination = async (
   let responseData: IResponseData = {};
 
   try {
-    const reviews: IResponseReview[] = await getReviewList({
+    const { reviews, totalCount } = await getReviewList({
       ...queryParams,
       userId,
     });
@@ -91,7 +91,7 @@ export const getReviewsWithPagination = async (
     const pagination = await createPagination(
       queryParams.currentPage || 1,
       queryParams.limit || 10,
-      reviews.length,
+      totalCount,
     );
     responseData.pagination = pagination;
 
