@@ -23,7 +23,7 @@ export const useReviews = () => {
     return fetchReviews({
       categoryId: categoryIdParams ? Number(categoryIdParams) : undefined,
       isVerified: isVerifiedParams === 'true' ? true : undefined,
-      page: pageParams ? Number(pageParams) : 1,
+      currentPage: pageParams ? Number(pageParams) : 1,
     });
   };
 
@@ -32,11 +32,19 @@ export const useReviews = () => {
     data: reviews,
     isLoading: isLoadingFetchReviews,
     fetchNextPage: fetchReviewsNextPage,
+    hasNextPage: hasNextPageFetchReviews,
   } = useInfiniteQuery({
     queryKey: ['fetchReviews'],
     queryFn: fetchReviewsData,
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.nextPage,
+    getNextPageParam: (lastPage) => {
+      const parseIntCurrentPage = parseInt(lastPage.pagination.currentPage, 10);
+      const parseIntTotalPages = parseInt(lastPage.pagination.totalCount, 10);
+      if (parseIntCurrentPage < parseIntTotalPages) {
+        return parseIntCurrentPage + 1;
+      }
+      return null;
+    },
   });
 
   const computedData = reviews
@@ -50,10 +58,10 @@ export const useReviews = () => {
       )
     : [];
 
-  console.log(reviews, computedData);
   return {
     reviews: computedData,
     isLoadingFetchReviews,
     fetchReviewsNextPage,
+    hasNextPageFetchReviews,
   };
 };

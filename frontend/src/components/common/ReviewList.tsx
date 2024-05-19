@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ReviewItem from './ReviewItem';
 import { IReviewItem } from '@/models/review.model';
 import Loading from './Loading';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
 export interface IReviewListProps {
   reviews: IReviewItem[];
