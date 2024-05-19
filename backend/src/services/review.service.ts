@@ -11,6 +11,7 @@ import {
   getReviews,
   approve,
   deleteReview,
+  getTotalCount,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -89,9 +90,8 @@ export const getReviewList = async ({
 export const createPagination = async (
   currentPage: number,
   limit: number,
-  total: number,
 ): Promise<IResponsePagination> => {
-  const totalCount = Math.ceil(total / limit);
+  const totalCount = Math.ceil((await getTotalCount()) / limit);
 
   return { currentPage, totalCount };
 };

@@ -91,7 +91,6 @@ export const getReviewsWithPagination = async (
     const pagination = await createPagination(
       queryParams.currentPage || 1,
       queryParams.limit || 10,
-      reviews.length,
     );
     responseData.pagination = pagination;
 
