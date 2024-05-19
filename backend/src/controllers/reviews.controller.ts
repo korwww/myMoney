@@ -18,10 +18,11 @@ export interface IReviewQueryParams {
   isVerified?: boolean;
   query?: string;
   liked?: boolean;
-  best?: boolean;
   myReviews?: boolean;
   currentPage?: number;
   limit?: number;
+  sortBy?: string;
+  orderBy?: 'ASC' | 'DESC';
 }
 
 export interface IResponseData {
@@ -50,10 +51,6 @@ const parseQueryParamsToInterface = (
       typeof queryParams.liked === 'string'
         ? queryParams.liked === 'true'
         : undefined,
-    best:
-      typeof queryParams.best === 'string'
-        ? queryParams.best === 'true'
-        : undefined,
     myReviews:
       typeof queryParams.myReviews === 'string'
         ? queryParams.myReviews === 'true'
@@ -69,6 +66,9 @@ const parseQueryParamsToInterface = (
       parseInt(queryParams.limit, 10) <= 100
         ? parseInt(queryParams.limit, 10)
         : undefined,
+    sortBy:
+      typeof queryParams.sortBy === 'string' ? queryParams.sortBy : undefined,
+    orderBy: queryParams.orderBy === 'DESC' ? 'DESC' : 'ASC',
   };
 };
 
