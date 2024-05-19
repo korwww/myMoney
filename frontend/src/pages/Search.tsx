@@ -34,13 +34,13 @@ function Search() {
     setKeywords(updatedKeywords.slice(0, 5));
   };
 
-  // ① window 즉, 브라우저가 모두 렌더링된 상태에서 해당 함수를 실행할 수 있도록 작업
+  // 1. window 즉, 브라우저가 모두 렌더링된 상태에서 해당 함수를 실행할 수 있도록 작업
   useEffect(() => {
     const result = localStorage.getItem('keywords') || '[]';
     setKeywords(JSON.parse(result));
   }, []);
 
-  // ② keywords 객체를 의존하여, 변경될 경우 새롭게 localStroage의 아이템 'keywords'를 세팅한다
+  // 2. keywords 객체를 의존하여, 변경될 경우 새롭게 localStroage의 아이템 'keywords'를 세팅한다
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(keywords));
   }, [keywords]);
@@ -156,7 +156,7 @@ const Fieldset = styled.fieldset`
 `;
 
 const StyledInput = styled(Input)`
-  padding-left: 50px; /* 아이콘을 수용할 수 있는 충분한 공간 확보 */
+  padding-left: 50px;
   height: 40px;
   box-sizing: border-box;
   width: 100%;
@@ -194,13 +194,3 @@ const CancleIcon = styled.div`
 `;
 
 export default Search;
-
-/**
- * 추가 구현사항 목록
- * 1. 저장된 검색어 화면에 표시. -> 최근 검색어 표시. ✅
- * 2. 최근검색어를 지우는 기능.(X 아이콘 사용)✅
- * 3. 최근검색어 저장 개수 limit제한 (오래된 순서부터)✅
- * 4. useReviews 이용해서 검색결과 화면에 표시하는 것.
- * 5. 검색결과가 없는 경우 & 최근검색결과가 없는 경우✅의 화면 구현.
- * 6. 검색 취소하는것(검색창 초기화) -> x 아이콘 추가해서 기능 구현. ✅
- */
