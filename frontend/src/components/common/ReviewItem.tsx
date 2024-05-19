@@ -63,7 +63,7 @@ function ReviewItem({
             {isMyReview ? (
               <>
                 <li>
-                  <Link to="/create">수정하기</Link>
+                  <Link to={`/review/${id}`}>수정하기</Link>
                 </li>
                 <li>삭제하기</li>
               </>

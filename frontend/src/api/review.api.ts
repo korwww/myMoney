@@ -8,7 +8,7 @@ export const createReview = async (reviewData: IReview) => {
 interface FetchReviewsParams {
   categoryId: number | undefined;
   isVerified: true | undefined;
-  page: number | undefined;
+  currentPage: number | undefined;
 }
 
 export const fetchReviews = async (params: FetchReviewsParams) => {
