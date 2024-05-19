@@ -1,3 +1,4 @@
+import { IReport } from '@/models/report.model';
 import { httpClient } from './http';
 
 export const getSuspendedUsers = async () => {
@@ -7,4 +8,8 @@ export const getSuspendedUsers = async () => {
 
 export const cancelReport = async (reportId: number) => {
   return await httpClient.delete(`/reports/${reportId}`);
+};
+
+export const addReport = async (data: IReport) => {
+  return await httpClient.post(`/reports`, data);
 };
