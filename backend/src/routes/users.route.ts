@@ -20,9 +20,9 @@ const router = express.Router();
 
 router.post('/login', validateLogin, loginUser);
 router.post('/logout', logoutUser);
-router.post('/checked_email', validateCheckedEmail, checkedDuplicateEmail);
+router.post('/checkedEmail', validateCheckedEmail, checkedDuplicateEmail);
 router.post(
-  '/checked_nickname',
+  '/checkedNickname',
   validateCheckedNickname,
   checkedDuplicateNickname,
 );

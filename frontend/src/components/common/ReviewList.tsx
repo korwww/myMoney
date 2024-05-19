@@ -1,16 +1,29 @@
+import { InfiniteQueryObserverResult } from '@tanstack/react-query';
 import styled from 'styled-components';
+
 import ReviewItem from './ReviewItem';
 import { IReviewItem } from '@/models/review.model';
 import Loading from './Loading';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
 export interface IReviewListProps {
   reviews: IReviewItem[];
   title?: string;
   isLoading?: boolean;
+  hasNextPage?: boolean;
+  fetchNextPage?: () => Promise<InfiniteQueryObserverResult>;
   text?: string;
 }
 
-function ReviewList({ reviews, title, isLoading, text }: IReviewListProps) {
+function ReviewList({
+  reviews,
+  title,
+  isLoading,
+  text,
+  fetchNextPage,
+  hasNextPage,
+}: IReviewListProps) {
+  const { observerRef } = useIntersectionObserver(fetchNextPage);
   return (
     <div>
       {title && <h3>{title}</h3>}
@@ -24,7 +37,8 @@ function ReviewList({ reviews, title, isLoading, text }: IReviewListProps) {
           <Loading />
         </LoadingContainer>
       )}
-      <span id="more"></span>
+
+      {hasNextPage && <ObserverDiv id="more" ref={observerRef}></ObserverDiv>}
     </div>
   );
 }
@@ -40,6 +54,10 @@ const LoadingContainer = styled.div`
 const EmptyReviews = styled.p`
   padding-top: 45vh;
   text-align: center;
+`;
+
+const ObserverDiv = styled.div`
+  height: 1px;
 `;
 
 export default ReviewList;
