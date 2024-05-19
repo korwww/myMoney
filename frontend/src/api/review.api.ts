@@ -16,9 +16,8 @@ interface FetchReviewsParams {
 }
 
 export const fetchReviews = async (params: FetchReviewsParams) => {
-  console.log(params);
   const { data } = await httpClient.get('/reviews', {
-    params: { ...params, limit: 3 },
+    params: { ...params, limit: 10 },
   });
   return data;
 };
