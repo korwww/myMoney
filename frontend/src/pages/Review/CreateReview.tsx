@@ -28,7 +28,6 @@ function CreateReview() {
       reviewImg: photoToAddList,
       receiptImg,
     };
-    console.log('data', data);
     addToReview(data);
   };
 

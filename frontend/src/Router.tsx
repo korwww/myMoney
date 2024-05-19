@@ -5,7 +5,6 @@ import Search from '@/pages/Search';
 import CreateReview from '@/pages/Review/CreateReview';
 import ReviewList from '@/pages/ReviewList';
 import MyPage from '@/pages/Mypage/MyPage';
-import MyPage from '@/pages/Mypage/MyPage';
 import Login from '@/pages/Login';
 import JoinStep1Email from '@/pages/Join/JoinStep1Email';
 import JoinStep2Nickname from '@/pages/Join/JoinStep2Nickname';
