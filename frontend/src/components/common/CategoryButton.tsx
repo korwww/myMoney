@@ -72,7 +72,12 @@ function CateogoryButton() {
       <div className="items">
         {categorys.map((category) => (
           <div className="item">
-            <StyledLink to={`/reviews?categoryId=${category.categoryId}`}>
+            <StyledLink
+              to={{
+                pathname: '/list',
+                search: `?categoryId=${category.categoryId}`,
+              }}
+            >
               <Button
                 key={category.categoryId}
                 children={category.element}
