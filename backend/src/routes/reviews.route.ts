@@ -8,6 +8,7 @@ import {
   approveReviewByAdmin,
 } from '../controllers/reviews.controller';
 import { authentication } from '../middlewares/authentication';
+import { validateReview } from '../validators/reviews.validator';
 
 const router = express.Router();
 
@@ -20,8 +21,8 @@ router
   .get(authentication(), getReviewDetails)
   .delete(authentication(), removeReview);
 
-router.post('/', authentication(true), createReview);
-router.patch('/:id', authentication(true), updateReview);
+router.post('/',  validateReview, authentication(true),createReview);
+router.patch('/:id', validateReview, authentication(true), updateReview);
 router.patch('/:id/approve', authentication(true), approveReviewByAdmin);
 
 export { router as reviewsRouter };
