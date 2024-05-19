@@ -10,7 +10,7 @@ import { Devices } from '@/assets/icons/Devices';
 import { Oven } from '@/assets/icons/Oven';
 import { FilmSlate } from '@/assets/icons/FilmSlate';
 import { DotsThree } from '@/assets/icons/DotsThree';
-import img from '@/assets/images/badge-img.png';
+import { SealCheck } from '@/assets/icons/SealCheck';
 
 const categorys = [
   <Devices />,
@@ -22,7 +22,7 @@ const categorys = [
   <HairDryer />,
   <MapPin />,
   <DotsThree />,
-  <img src={img} />,
+  <SealCheck />,
 ];
 
 function CateogoryButton() {
