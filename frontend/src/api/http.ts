@@ -1,4 +1,4 @@
-// import { handleGoLogin } from '@/utils/routingUtils';
+import { handleGoLogin } from '@/utils/routingUtils';
 import axios, { AxiosRequestConfig } from 'axios';
 
 const BASE_URL = 'http://localhost:3031';

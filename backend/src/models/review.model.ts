@@ -14,10 +14,11 @@ export const getReviews = async ({
   isVerified,
   query,
   liked,
-  best,
   myReviews,
   currentPage = 1,
   limit,
+  sortBy,
+  orderBy,
   userId,
 }: getReviewParams): Promise<IResponseReview[]> => {
   const queryBuilder = reviewRepository
@@ -50,8 +51,10 @@ export const getReviews = async ({
         .select('COUNT(like.id)', 'likes')
         .from(Like, 'like')
         .where('like.review_id = reviews.id');
-    }, 'likes')
-    .addSelect((subQuery) => {
+    }, 'likes');
+
+  if (userId) {
+    queryBuilder.addSelect((subQuery) => {
       return subQuery
         .select('COUNT(`like`.`id`) > 0', 'isLiked')
         .from(Like, 'like')
@@ -59,6 +62,7 @@ export const getReviews = async ({
           userId,
         });
     }, 'isLiked');
+  }
 
   if (categoryId) {
     queryBuilder.andWhere('reviews.category_id = :categoryId', {
@@ -78,8 +82,8 @@ export const getReviews = async ({
       .andWhere('like.user_id = :userId', { userId });
   }
 
-  if (best) {
-    queryBuilder.orderBy('likes', 'DESC').take(3);
+  if (sortBy && orderBy) {
+    queryBuilder.orderBy(sortBy, orderBy as 'ASC' | 'DESC');
   }
 
   if (myReviews) {
@@ -93,14 +97,16 @@ export const getReviews = async ({
     );
   }
 
-  if (limit) {
-    queryBuilder.take(limit);
+  if (currentPage && limit) {
+    queryBuilder.offset((currentPage - 1) * limit);
   }
 
-  if (currentPage && limit) {
-    queryBuilder.skip((currentPage - 1) * limit);
+  if (limit) {
+    queryBuilder.limit(limit);
   }
-  const reviews: IResponseReview[] = await queryBuilder.getRawMany();
+
+  const reviews: IResponseReview[] =
+    await queryBuilder.getRawMany<IResponseReview>();
 
   return reviews;
 };
