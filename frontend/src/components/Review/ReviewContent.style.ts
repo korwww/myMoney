@@ -15,7 +15,7 @@ export const TitleContainer = styled.div`
   gap: 6px;
   margin-bottom: 8px;
   .title {
-    font-size: ${({ theme }) => theme.heading['small'].fontSize};
+    font-size: ${({ theme }) => theme.heading['medium'].fontSize};
     font-weight: ${({ theme }) => theme.fontWeight.bold};
   }
 `;

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import useComments from '@/hooks/useComment';
 import { useParams } from 'react-router-dom';
 import Modal from '../common/Modal';
+import useAuthStore from '@/store/auth.store';
 
 interface Props {
   comment: IComment;
@@ -18,6 +19,7 @@ function CommentItem({ comment, onUpdate }: Props) {
   const [editedContent, setEditedContent] = useState(comment.content);
   const [isOpen, setIsOpen] = useState(false);
   const { deleteComment } = useComments(id);
+  const { isLoggedIn } = useAuthStore();
 
   const handleEdit = () => {
     setIsEdit(true);
@@ -43,8 +45,6 @@ function CommentItem({ comment, onUpdate }: Props) {
     setIsOpen(false);
   };
 
-  // console.log(comment);
-
   return (
     <Container>
       <div className="info">
@@ -62,32 +62,33 @@ function CommentItem({ comment, onUpdate }: Props) {
       ) : (
         <div className="cont">{comment.content}</div>
       )}
-
-      <ButtonContainer>
-        {isEdit ? (
-          <>
-            <Button size="small" scheme="primary" onClick={handleSubmit}>
-              수정 완료
-            </Button>
-            <Button size="small" scheme="border" onClick={handleCancel}>
-              취소
-            </Button>
-          </>
-        ) : comment.isAuthor ? (
-          <>
-            <Button size="small" scheme="border" onClick={handleEdit}>
-              수정
-            </Button>
-            <Button
-              size="small"
-              scheme="border"
-              onClick={() => setIsOpen(true)}
-            >
-              삭제
-            </Button>
-          </>
-        ) : null}
-      </ButtonContainer>
+      {isLoggedIn && (
+        <ButtonContainer>
+          {isEdit ? (
+            <>
+              <Button size="small" scheme="primary" onClick={handleSubmit}>
+                수정 완료
+              </Button>
+              <Button size="small" scheme="border" onClick={handleCancel}>
+                취소
+              </Button>
+            </>
+          ) : comment.isAuthor ? (
+            <>
+              <Button size="small" scheme="border" onClick={handleEdit}>
+                수정
+              </Button>
+              <Button
+                size="small"
+                scheme="border"
+                onClick={() => setIsOpen(true)}
+              >
+                삭제
+              </Button>
+            </>
+          ) : null}
+        </ButtonContainer>
+      )}
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
