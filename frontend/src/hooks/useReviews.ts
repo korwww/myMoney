@@ -27,7 +27,6 @@ export const useReviews = () => {
     });
   };
 
-  // 전체 후기 목록에서 데이터 가져오는 쿼리
   const {
     data: reviews,
     isLoading: isLoadingFetchReviews,
@@ -38,10 +37,11 @@ export const useReviews = () => {
     queryFn: ({ pageParam = 1 }) => fetchReviewsData(pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
-      const parseIntCurrentPage = parseInt(lastPage.pagination.currentPage, 10);
-      const parseIntTotalPages = parseInt(lastPage.pagination.totalCount, 10);
-      if (parseIntCurrentPage < parseIntTotalPages) {
-        return parseIntCurrentPage + 1;
+      const NumberCurrentPage = Number(lastPage.pagination.currentPage);
+      const NumberTotalPages = Number(lastPage.pagination.totalCount);
+
+      if (NumberCurrentPage < NumberTotalPages) {
+        return NumberCurrentPage + 1;
       }
       return null;
     },

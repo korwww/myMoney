@@ -242,9 +242,16 @@ const ModalStyle = styled.div`
       gap: 16px;
     }
 
+
     .reportButtons {
       display: flex;
     }
+    
+        .reason {
+      li:hover {
+        cursor: pointer;
+        font-weight: ${({ theme }) => theme.fontWeight.bold};
+      }
   }
 `;
 

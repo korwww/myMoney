@@ -1,22 +1,21 @@
 import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
 
-import Icon from './Icon';
 import Dropdown from './Dropdown';
 import { DotsThree } from '@/assets/icons/DotsThree';
-import { Heart } from '@/assets/icons/Heart';
 import BadgeImg from '@/assets/images/badge-img.png';
 import {
   Badge,
   Container,
   Content,
   ImgContainer,
-  LikeButton,
   LikesContainer,
   TitleContainer,
   InfoContainer,
 } from './ReviewItem.style';
 import { IReviewItem } from '@/models/review.model';
+import Like from '../Review/Like';
+import { useLike } from '@/hooks/useLike';
+import { formatDate } from '@/utils/format';
 
 function ReviewItem({
   title,
@@ -27,22 +26,15 @@ function ReviewItem({
   reviewImg,
   likes,
   id,
-  userId,
   isLiked,
   isMyReview,
 }: IReviewItem) {
-  const toggleLiked = () => {
-    // 좋아요 누르기, 취소 기능 추가
-  };
+  const { likeToggle, localIsLiked } = useLike(id, isLiked);
 
   const stripHtmlTags = (html: string) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     return doc.body.textContent || '';
-  };
-
-  const formatDate = (date: string) => {
-    return dayjs(date).format('YYYY.MM.DD');
   };
 
   return (
@@ -99,18 +91,8 @@ function ReviewItem({
       </TitleContainer>
 
       <Content>{stripHtmlTags(content)}</Content>
-
       <LikesContainer>
-        <p className="review-helpful-count">
-          {likes}명에게 도움이 된 리뷰예요.
-        </p>
-        <LikeButton
-          role="button"
-          onClick={toggleLiked}
-          className={isLiked ? 'liked' : ''}
-        >
-          <Icon width={20} icon={<Heart />} />
-        </LikeButton>
+        <Like isLiked={localIsLiked} likes={likes} onClick={likeToggle} />
       </LikesContainer>
     </Container>
   );

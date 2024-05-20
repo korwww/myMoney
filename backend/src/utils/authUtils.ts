@@ -23,7 +23,11 @@ export const generateToken = (loginUser: IUserInfo) => {
   });
 };
 
-// 정지 종료일 계산
+/** 정지 종료일 계산
+ * @param count : number
+ * @param date : string
+ * @returns remainingSeconds (초단위의 정지 종료일)
+ */
 export const calcSuspensionEndDate = (count: number, date: string) => {
   let suspensionEndDate = new Date(date);
 
@@ -55,6 +59,7 @@ export interface ISuspendedUser {
   suspensionRemainingDays: number;
 }
 
+/** 정지 유저의 response 값을 연산하는 함수 */
 export const suspendedUser = (user: IUserWithReportInfo) => {
   const { reportReason, reportedDate } = user;
 

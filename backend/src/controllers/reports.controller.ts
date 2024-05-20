@@ -2,7 +2,7 @@ import { Response, Request } from 'express';
 
 import { CustomRequest } from '../middlewares/authentication';
 import {
-  serviceCancelReport,
+  serviceDeleteReport,
   serviceCreateReport,
   serviceFindSuspendedUsers,
 } from '../services/report.service';
@@ -17,7 +17,7 @@ export const getSuspendedUsers = async (req: Request, res: Response) => {
   }
 };
 
-export const cancelReport = async (req: CustomRequest, res: Response) => {
+export const deleteReport = async (req: CustomRequest, res: Response) => {
   const { isAdmin } = req.user!;
   if (!isAdmin) {
     throw new Error(ERROR_MESSAGE.DENIED);
@@ -26,7 +26,7 @@ export const cancelReport = async (req: CustomRequest, res: Response) => {
   const { id } = req.params;
   const parseIntId = parseInt(id);
   try {
-    await serviceCancelReport(parseIntId);
+    await serviceDeleteReport(parseIntId);
     res.status(200).send({ message: 'success' });
   } catch (error: any) {
     throw new Error(error.message);

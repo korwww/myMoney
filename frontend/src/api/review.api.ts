@@ -1,4 +1,4 @@
-import { IReview } from '@/models/review.model';
+import { IReview, IReviewDetail } from '@/models/review.model';
 import { httpClient } from './http';
 
 export const createReview = async (reviewData: IReview) => {
@@ -8,6 +8,10 @@ export const createReview = async (reviewData: IReview) => {
 export const getReviewById = async (id: string) => {
   return await httpClient.get(`/reviews/${id}`);
 };
+
+export const updateReview = async (id: string, reviewData: IReview) => {
+  return await httpClient.patch<IReview>(`/reviews/${id}`, reviewData);
+}
 
 interface FetchReviewsParams {
   categoryId?: number;
@@ -20,5 +24,26 @@ export const fetchReviews = async (params: FetchReviewsParams) => {
   const { data } = await httpClient.get('/reviews', {
     params: { ...params, limit: 10 },
   });
+  return data;
+};
+
+export const fetchReview = async (reviewId: string) => {
+  const { data } = await httpClient.get<IReviewDetail>(`/reviews/${reviewId}`);
+  return data;
+};
+
+export const likeReview = async (reviewId: number) => {
+  const { data } = await httpClient.post(`/likes/${reviewId}`);
+  console.log(data);
+  return data;
+};
+
+export const unlikeReview = async (reviewId: number) => {
+  const { data } = await httpClient.delete(`/likes/${reviewId}`);
+  return data;
+};
+
+export const deleteReview = async (reviewId: number) => {
+  const { data } = await httpClient.delete(`/reviews/${reviewId}`);
   return data;
 };

@@ -26,7 +26,7 @@ function ReviewList({
   const { observerRef } = useIntersectionObserver(fetchNextPage);
   return (
     <div>
-      {title && <h3>{title}</h3>}
+      {title && <Title>{title}</Title>}
       {!reviews.length && <EmptyReviews>{text} 리뷰가 없습니다.</EmptyReviews>}
       {reviews.map((review) => (
         <ReviewItem key={review.id} {...review} />
@@ -58,6 +58,11 @@ const EmptyReviews = styled.p`
 
 const ObserverDiv = styled.div`
   height: 1px;
+`;
+
+export const Title = styled.h3`
+  padding: 0 16px;
+  font-size: ${({ theme }) => theme.heading['small'].fontSize};
 `;
 
 export default ReviewList;

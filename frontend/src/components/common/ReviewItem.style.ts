@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.article`
-  padding: 14px 16px;
+  padding: 14px 0;
 `;
 
 export const InfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  padding: 0 16px;
   margin-bottom: 4px;
   .name {
     font-size: ${({ theme }) => theme.text['medium'].fontSize};
@@ -30,11 +31,12 @@ export const ImgContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 160px;
-  max-height: 205px;
-  margin-bottom: 14px;
-  overflow: hidden;
+  min-height: 219.375px;
+  max-height: 292.5px;
   background-color: ${({ theme }) => theme.color.background};
+  margin-bottom: 14px;
+  border-radius: 10px;
+  overflow: hidden;
   a {
     text-decoration: none;
     p {
@@ -47,6 +49,7 @@ export const ImgContainer = styled.div`
 export const TitleContainer = styled.div`
   display: flex;
   gap: 6px;
+  padding: 0 16px;
   margin-bottom: 8px;
   a {
     white-space: nowrap;
@@ -88,26 +91,13 @@ export const Content = styled.p`
   text-overflow: ellipsis;
   line-height: 1.5;
   max-height: 3em;
+  padding: 0 16px;
   margin-bottom: 14px;
 `;
 
 export const LikesContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .review-helpful-count {
+  padding: 0 16px;
+  p {
     font-size: ${({ theme }) => theme.text['small'].fontSize};
-  }
-`;
-
-export const LikeButton = styled.div`
-  cursor: pointer;
-  &.liked {
-    svg {
-      fill: ${({ theme }) => theme.color.danger};
-      path {
-        fill: inherit;
-      }
-    }
   }
 `;
