@@ -41,7 +41,7 @@ const CommentStyle = styled.section`
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.heading.small.fontSize};
+  font-size: ${({ theme }) => theme.heading.medium.fontSize};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 

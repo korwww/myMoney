@@ -5,7 +5,8 @@ export const MODAL_TYPES = {
 };
 
 export const MODAL_TITLE = {
-  DELETE: '리뷰를 정말로 삭제하시겠어요?',
+  REVIEW_DELETE: '리뷰를 정말로 삭제하시겠어요?',
+  COMMENT_DELETE: '댓글을 삭제하시겠어요?',
   REPORT: '리뷰 작성자를 신고하시겠어요?',
   LOGIN: '로그인이 필요합니다.',
 };
