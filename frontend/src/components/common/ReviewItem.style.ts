@@ -96,23 +96,8 @@ export const Content = styled.p`
 `;
 
 export const LikesContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 0 16px;
-  .review-helpful-count {
+  p {
     font-size: ${({ theme }) => theme.text['small'].fontSize};
-  }
-`;
-
-export const LikeButton = styled.div`
-  cursor: pointer;
-  &.liked {
-    svg {
-      fill: ${({ theme }) => theme.color.danger};
-      path {
-        fill: inherit;
-      }
-    }
   }
 `;

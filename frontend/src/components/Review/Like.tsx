@@ -1,25 +1,31 @@
 import styled from 'styled-components';
-import Icon from '../common/Icon';
-import { IReviewDetail } from '@/models/review.model';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
+import Icon from '../common/Icon';
+import { theme } from '@/style/theme';
+
 interface Props {
-  review: IReviewDetail;
+  likes: number;
+  isLiked: boolean;
   onClick: () => void;
 }
 
-function Like({ review, onClick }: Props) {
+function Like({ likes, isLiked, onClick }: Props) {
   return (
     <LikeStyle>
-      <p>{review.likes}명에게 도움이 된 리뷰에요.</p>
+      <p>{likes}명에게 도움이 된 리뷰에요.</p>
 
-      <div className="likeButton" role="button" onClick={onClick}>
-        {review.isLiked ? (
-          <Icon width={24} icon={<AiFillHeart />} fill="#d1423c" />
+      <LikeButton
+        className={isLiked ? 'liked' : ''}
+        role="button"
+        onClick={onClick}
+      >
+        {isLiked ? (
+          <Icon width={24} icon={<AiFillHeart />} fill={theme.color.danger} />
         ) : (
           <Icon width={24} icon={<AiOutlineHeart />} />
         )}
-      </div>
+      </LikeButton>
     </LikeStyle>
   );
 }
@@ -34,13 +40,15 @@ const LikeStyle = styled.div`
     padding-top: 3px;
     font-size: ${({ theme }) => theme.text.medium.fontSize};
   }
+`;
+const LikeButton = styled.div`
+  cursor: pointer;
 
-  .likeButton {
-    cursor: pointer;
-
-    &:hover {
-      svg {
-        fill: #d1423c;
+  &:hover {
+    svg {
+      fill: ${({ theme }) => theme.color.danger};
+      path {
+        fill: inherit;
       }
     }
   }
