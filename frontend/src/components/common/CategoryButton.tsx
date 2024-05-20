@@ -36,7 +36,6 @@ const CategoryButtonStyle = styled.div`
   grid-column: span 1;
   display: flex;
   justify-content: center;
-  max-width: 61px;
 
   p {
     font-size: 12px;
