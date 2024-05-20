@@ -18,7 +18,7 @@ const validateReviewContent = body('content')
 const validateReviewCategoryId = body('categoryId')
   .notEmpty()
   .withMessage('Category ID is required')
-  .isInt({ min: 0 })
+  .isInt({ min: 1 })
   .withMessage('Category ID must be a positive integer');
 
 const validateReviewStars = body('stars')
