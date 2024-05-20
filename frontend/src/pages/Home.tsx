@@ -5,7 +5,7 @@ import ReviewList from '@/components/common/ReviewList';
 
 import { useReviews } from '@/hooks/useReviews';
 import Category from '@/components/common/Category';
-import BestReviews from '@/components/Review/BestReviews';
+import BestReviews from '@/components/Home/BestReviews';
 
 function Home() {
   const { reviews, isLoadingFetchReviews, fetchReviewsNextPage } = useReviews();
