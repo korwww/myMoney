@@ -46,7 +46,7 @@ function ReviewImages({ reviewImages, title }: ReviewImagesProps) {
 const ReviewImagesStyle = styled.div`
   width: 100%;
   height: 390px;
-  background-color: #ffa;
+  background-color: ${({ theme }) => theme.color.background};
   position: relative;
 `;
 
@@ -58,7 +58,7 @@ const ReactSlider = styled(Slider)`
   }
 
   /* 슬라이드 화살표 위치,크기 변경 */
-  .Slick-next,
+  .slick-next,
   .slick-prev {
     width: 32px;
     height: 32px;
