@@ -3,8 +3,10 @@ import { Badge } from '@/components/common/ReviewItem.style';
 import BadgeImg from '@/assets/images/badge-img.png';
 import { Star } from '@/assets/icons/Star';
 import { LightStar } from '@/assets/icons/LightStar';
+import { Link } from 'react-router-dom';
 
 interface Props {
+  id: number;
   img?: string;
   isVerified?: number;
   title?: string;
@@ -14,6 +16,7 @@ interface Props {
 }
 
 function BestReview({
+  id,
   img,
   isVerified,
   title,
@@ -36,7 +39,9 @@ function BestReview({
       </div>
       <img className="img" src={img} />
       <div className="wrapBottom">
-        <div className="title">{title}</div>
+        <StyledLink to={`/reviews/${id}`}>
+          <div className="title">{title}</div>
+        </StyledLink>
         <div className="userName">{userName}</div>
         <div className="wrapFlex">
           <div className="stars">
@@ -97,6 +102,10 @@ const BestReviewStyle = styled.div`
   .title {
     font-weight: ${({ theme }) => theme.fontWeight.bold};
     font-size: ${({ theme }) => theme.heading.large.fontSize};
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .userName {
@@ -124,6 +133,11 @@ const BadgeStyle = styled(Badge)`
   .badgeImg {
     height: 22px;
   }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: white;
 `;
 
 export default BestReview;
