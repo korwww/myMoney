@@ -9,15 +9,14 @@ import styled from 'styled-components';
 function ReviewDetail() {
   const { id } = useParams();
   const { review } = useReviewDetail(id);
+  console.log(review);
 
   if (!review) return null;
 
   return (
     <Layout showBackButton={true}>
       <ReviewDetailStyle>
-        <ReviewImages>
-          <img src="" alt="" />
-        </ReviewImages>
+        <ReviewImages reviewImages={review.reviewImg} title={review.title} />
 
         <ReviewContent reviewId={id} />
 
