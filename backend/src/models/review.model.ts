@@ -143,7 +143,7 @@ export const findReviewDetails = async (
       'review.verified AS verified',
       'review.receiptImg AS receiptImg',
     ])
-    .addSelect('reviewImg.image AS reviewImgs')
+    .addSelect('reviewImg.image AS reviewImg')
     .addSelect((subQuery) => {
       return subQuery
         .select('COUNT(like.id)', 'likes')
