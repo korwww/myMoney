@@ -184,7 +184,6 @@ export const useAuth = () => {
     onSuccess: () => {
       setIsAdminUser(false);
       storeLogout();
-      handleGoHome();
     },
     throwOnError: true,
   });

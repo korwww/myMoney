@@ -13,7 +13,7 @@ import {
   suspendedUser,
 } from '../utils/authUtils';
 
-export const login = async (email: string, password: string) => {
+export const serviceLogin = async (email: string, password: string) => {
   const user = await findUserWithReportInfo(email);
   if (!user) throw new Error(ERROR_MESSAGE.USER_NOT_FOUND);
 
@@ -29,17 +29,17 @@ export const login = async (email: string, password: string) => {
   return { user, token, isAdmin: !!user.isAdmin };
 };
 
-export const checkDuplicateEmail = async (email: string) => {
+export const serviceCheckDuplicateEmail = async (email: string) => {
   const user = await findUserByEmail(email);
   if (user) throw new Error(ERROR_MESSAGE.DUPLICATE_EMAIL);
 };
 
-export const checkDuplicateNickname = async (nickname: string) => {
+export const serviceCheckDuplicateNickname = async (nickname: string) => {
   const user = await findUserByNickname(nickname);
   if (user) throw new Error(ERROR_MESSAGE.DUPLICATE_NICKNAME);
 };
 
-export const join = async (
+export const serviceJoin = async (
   email: string,
   password: string,
   nickname: string,
@@ -48,7 +48,7 @@ export const join = async (
   await createNewUser({ email, password: hashedPassword, nickname });
 };
 
-export const getUserInfo = async (email: string) => {
+export const serviceGetUserInfo = async (email: string) => {
   const user = await findUserWithReportInfo(email);
   if (!user) throw new Error(ERROR_MESSAGE.USER_NOT_FOUND);
 

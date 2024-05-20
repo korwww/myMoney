@@ -7,27 +7,27 @@ import { useAdmin } from '@/hooks/useAdmin';
 import { ISuspendedUsers } from '@/models/admin.model';
 
 const tableHead: TableHeadItem[] = [
-  { name: 'No', $widthRatio: 40 },
-  { name: '이메일', $widthRatio: 295 },
-  { name: '신고 사유', $widthRatio: 240 },
-  { name: '횟수', $widthRatio: 50 },
-  { name: '상태', $widthRatio: 150 },
-  { name: '', $widthRatio: 135 },
+  { name: 'No', $widthRatio: 7 },
+  { name: '이메일', $widthRatio: 36 },
+  { name: '신고 사유', $widthRatio: 13 },
+  { name: '횟수', $widthRatio: 13 },
+  { name: '상태', $widthRatio: 14 },
+  { name: '', $widthRatio: 20 },
 ];
 
 function ReportedUsersDashboard() {
-  const { isLoadingSuspendedUsers, suspendedUsers, fetchCancelReport } =
+  const { isLoadingSuspendedUsers, suspendedUsers, deleteReportAction } =
     useAdmin();
 
-  const transformedData = (users: ISuspendedUsers[]) => {
+  const transformData = (users: ISuspendedUsers[]) => {
     return users.map((data: ISuspendedUsers) => ({
       ...data,
       status: data.isSuspended ? '정지' : '정지 종료',
     }));
   };
 
-  const handleCancelReport = (reportId: number) => {
-    fetchCancelReport(reportId);
+  const handleDeleteReport = (reportId: number) => {
+    deleteReportAction(reportId);
   };
   return (
     <AdminLayout>
@@ -35,11 +35,15 @@ function ReportedUsersDashboard() {
         title="신고된 유저 관리"
         isLoading={isLoadingSuspendedUsers}
       >
-        {!suspendedUsers.length && <p>신고된 유저가 없습니다.</p>}
+        {!suspendedUsers.length && (
+          <tr>
+            <td colSpan={tableHead.length}>신고된 유저가 없습니다.</td>
+          </tr>
+        )}
 
         {suspendedUsers.length > 0 && (
           <AdminTable tableHead={tableHead}>
-            {transformedData(suspendedUsers).map((report, idx) => (
+            {transformData(suspendedUsers).map((report, idx) => (
               <tr key={idx}>
                 <td>{idx + 1}</td>
                 <td>{report.reportedUserEmail}</td>
@@ -51,7 +55,7 @@ function ReportedUsersDashboard() {
                     scheme="primary"
                     size="small"
                     disabled={report.status === '정지 종료'}
-                    onClick={() => handleCancelReport(report.reportId)}
+                    onClick={() => handleDeleteReport(report.reportId)}
                   >
                     정지해제
                   </Button>

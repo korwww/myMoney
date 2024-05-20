@@ -7,7 +7,7 @@ import {
   joinUser,
   loginUser,
   logoutUser,
-  userInfo,
+  getUserInfo,
 } from '../controllers/user.controller';
 import {
   validateCheckedEmail,
@@ -27,6 +27,6 @@ router.post(
   checkedDuplicateNickname,
 );
 router.post('/join', validateJoin, joinUser);
-router.get('/me', authentication(true), userInfo);
+router.get('/me', authentication(true), getUserInfo);
 
 export { router as usersRouter };
