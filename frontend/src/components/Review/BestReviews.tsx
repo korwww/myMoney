@@ -49,9 +49,7 @@ function BestReviews({ reviews, isLoading }: Props) {
   }
 
   return (
-    <BestReviewsStyle>
-      {items ? <ImageSlide items={items} /> : <div></div>}
-    </BestReviewsStyle>
+    <BestReviewsStyle>{items && <ImageSlide items={items} />}</BestReviewsStyle>
   );
 }
 
