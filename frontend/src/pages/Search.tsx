@@ -1,14 +1,14 @@
 import Layout from '@/layout/Layout';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useForm } from 'react-hook-form';
 import Input from '@/components/common/Input';
 import { MagnifyingGlass } from '@/assets/icons/MagnifyingGlass';
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom'; // useHistory 추가
 import { useReviews } from '@/hooks/useReviews';
 import { SmallX } from '@/assets/icons/SmallX';
-import { BigSearch } from '@/assets/icons/BigSearch';
 import ReviewList from '@/components/common/ReviewList';
+import NoRecentSearchResult from '@/components/common/NoRecentSearchResult';
 
 interface Ikey {
   id: number;
@@ -17,10 +17,13 @@ interface Ikey {
 
 function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
-  // 로컬 스토리지에 저장한 검색어를 관리할 useState keywords
-  const [keywords, setKeywords] = useState<Ikey[]>([]);
+  const [keywords, setKeywords] = useState<Ikey[]>(() => {
+    const savedKeywords = localStorage.getItem('keywords');
+    return savedKeywords ? JSON.parse(savedKeywords) : [];
+  });
   const { reviews, isLoadingFetchReviews, fetchReviewsNextPage } = useReviews();
   const { register, handleSubmit, setValue } = useForm<{ query: string }>();
+
   const onSubmit = (data: { query: string }) => {
     setSearchParams({ query: data.query });
     const newKeyword = {
@@ -34,13 +37,6 @@ function Search() {
     setKeywords(updatedKeywords.slice(0, 5));
   };
 
-  // 1. window 즉, 브라우저가 모두 렌더링된 상태에서 해당 함수를 실행할 수 있도록 작업
-  useEffect(() => {
-    const result = localStorage.getItem('keywords') || '[]';
-    setKeywords(JSON.parse(result));
-  }, []);
-
-  // 2. keywords 객체를 의존하여, 변경될 경우 새롭게 localStroage의 아이템 'keywords'를 세팅한다
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(keywords));
   }, [keywords]);
@@ -48,33 +44,37 @@ function Search() {
   const buttonRef = useRef<null | HTMLButtonElement>(null);
 
   const handleRemoveKeyword = (id: number) => {
-    const nextKeyword = keywords.filter((keyword) => {
-      return keyword.id != id;
-    });
+    const nextKeyword = keywords.filter((keyword) => keyword.id !== id);
     setKeywords(nextKeyword);
+  };
+
+  const handleCancelSearch = () => {
+    setValue('query', ''); // 검색어를 비움
+    setSearchParams(); // URL에서 query를 제거
   };
 
   return (
     <Layout showBackButton={false} title="검색">
-      <Container>
+      <div>
+        {/* 검색 인풋 박스 */}
         <StickyContainer>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Fieldset>
               <Button type="submit" ref={buttonRef} />
               <SearchIcon
                 onClick={() => {
-                  if (buttonRef.current === null) {
-                    return;
-                  } else {
+                  if (buttonRef.current !== null) {
                     buttonRef.current.click();
                   }
                 }}
               >
                 <MagnifyingGlass />
               </SearchIcon>
-              <CancleIcon onClick={() => setValue('query', '')}>
+
+              <CancelIcon onClick={handleCancelSearch}>
                 <SmallX />
-              </CancleIcon>
+              </CancelIcon>
+
               <StyledInput
                 defaultValue={String(searchParams.get('query') || '')}
                 $inputType="text"
@@ -85,40 +85,44 @@ function Search() {
             </Fieldset>
           </Form>
         </StickyContainer>
-        {keywords.length === 0 ? (
-          <NoRecentSearchResult>
-            <BigSearch />
-            <p>최근검색어가 없습니다.</p>
-          </NoRecentSearchResult>
-        ) : (
+
+        {/* 검색하지 않았을 때 보여줄 화면 (최근 검색어도 없음) */}
+        {!searchParams.get('query') && keywords.length === 0 && (
+          <NoRecentSearchResult text="최근 검색어가 없습니다." />
+        )}
+
+        {/* 검색하지 않았을 때 보여줄 화면 (최근 검색어가 있을 때) */}
+        {!searchParams.get('query') && keywords.length > 0 && (
           <RecentKeywordContainer>
             <h2>최근검색어</h2>
             {keywords.map((keyword) => (
               <RecentKeywordInnerContainer key={keyword.id}>
                 <div>{keyword.text}</div>
-                <div onClick={() => handleRemoveKeyword(keyword.id)}>
+                <RecentKeywordCancelIcon
+                  onClick={() => handleRemoveKeyword(keyword.id)}
+                >
                   <SmallX />
-                </div>
+                </RecentKeywordCancelIcon>
               </RecentKeywordInnerContainer>
             ))}
           </RecentKeywordContainer>
         )}
-        <SearchResultContainer>
-          <ReviewList
-            title={'최신글'}
-            reviews={reviews}
-            isLoading={false}
-            text={'찾으시는 검색결과가 없습니다.'}
-          />
-        </SearchResultContainer>
-      </Container>
+
+        {/* 검색어를 입력했을 때 보여줄 화면 */}
+        {searchParams.get('query') && (
+          <div>
+            <ReviewList
+              title="검색 결과"
+              reviews={reviews}
+              isLoading={isLoadingFetchReviews}
+              text={<NoRecentSearchResult text="검색한 결과가 없습니다." />}
+            />
+          </div>
+        )}
+      </div>
     </Layout>
   );
 }
-
-const Container = styled.div``;
-
-const SearchResultContainer = styled.div``;
 
 const RecentKeywordContainer = styled.div`
   display: flex;
@@ -131,21 +135,17 @@ const RecentKeywordContainer = styled.div`
 `;
 
 const RecentKeywordInnerContainer = styled.div`
-  padding: 19px;
+  padding: 19px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 20px;
 `;
 
-const NoRecentSearchResult = styled.div`
-  padding-top: 25vh;
-  text-align: center;
-`;
-
 const StickyContainer = styled.div`
   position: sticky;
   top: 0;
+  margin-bottom: 28px;
 `;
 
 const Form = styled.form``;
@@ -179,18 +179,26 @@ const SearchIcon = styled.div`
   height: 40px;
 `;
 
-const CancleIcon = styled.div`
-  fill: ${({ theme }) => theme.buttonScheme.disabled};
+const cancelIconStyle = css`
+  fill: ${({ theme }) => theme.color.disabled};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  cursor: pointer;
+`;
+
+const CancelIcon = styled.div`
   position: absolute;
   z-index: 2;
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
+  ${cancelIconStyle};
+`;
+
+const RecentKeywordCancelIcon = styled.div`
+  ${cancelIconStyle};
 `;
 
 export default Search;

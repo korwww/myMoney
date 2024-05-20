@@ -7,7 +7,7 @@ interface Props {
   buttonText: string;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm?: (selectedOptions: string[]) => void;
+  onConfirm?: (selectedOption: string) => void;
   onCancel?: () => void;
   title?: string;
   imageSrc?: string;
@@ -30,13 +30,13 @@ function Modal({
 
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const handleToggleOption = (option: string) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((o) => o !== option));
+    if (selectedOption === option) {
+      setSelectedOption(null);
     } else {
-      setSelectedOptions([...selectedOptions, option]);
+      setSelectedOption(option);
     }
   };
 
@@ -45,7 +45,7 @@ function Modal({
   };
 
   const handleConfirm = () => {
-    onConfirm?.(selectedOptions);
+    onConfirm?.(selectedOption ? selectedOption : '신고 사유가 없음');
     setIsFadingOut(true);
   };
 
@@ -63,7 +63,7 @@ function Modal({
   const handleAnimationEnd = () => {
     if (isFadingOut) {
       setIsFadingOut(false);
-      setSelectedOptions([]);
+      setSelectedOption(null);
       onClose();
     }
   };
@@ -89,17 +89,17 @@ function Modal({
             <div className="reportButtons">
               <ToggleButton
                 label="욕설"
-                isActive={selectedOptions.includes('욕설')}
+                isActive={selectedOption === '욕설'}
                 onClick={() => handleToggleOption('욕설')}
               />
               <ToggleButton
                 label="광고"
-                isActive={selectedOptions.includes('광고')}
+                isActive={selectedOption === '광고'}
                 onClick={() => handleToggleOption('광고')}
               />
               <ToggleButton
                 label="법률위반"
-                isActive={selectedOptions.includes('법률위반')}
+                isActive={selectedOption === '법률위반'}
                 onClick={() => handleToggleOption('법률위반')}
               />
             </div>

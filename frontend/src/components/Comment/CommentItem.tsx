@@ -9,7 +9,7 @@ import Modal from '../common/Modal';
 
 interface Props {
   comment: IComment;
-  onUpdate: (id: number, content: string) => void;
+  onUpdate: (commentId: number, content: string) => void;
 }
 
 function CommentItem({ comment, onUpdate }: Props) {
@@ -21,6 +21,7 @@ function CommentItem({ comment, onUpdate }: Props) {
 
   const handleEdit = () => {
     setIsEdit(true);
+    setEditedContent(comment.content);
   };
 
   const handleCancel = () => {
@@ -29,8 +30,8 @@ function CommentItem({ comment, onUpdate }: Props) {
   };
 
   const handleSubmit = () => {
-    setIsEdit(false);
     onUpdate(comment.id, editedContent);
+    setIsEdit(false);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +42,8 @@ function CommentItem({ comment, onUpdate }: Props) {
     deleteComment(comment.id);
     setIsOpen(false);
   };
+
+  // console.log(comment);
 
   return (
     <Container>
