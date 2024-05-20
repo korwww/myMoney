@@ -6,7 +6,7 @@ import { IReviewItem } from '@/models/review.model';
 import { QUERYSTRING } from '@/constance/querystring';
 
 export const useReviews = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   /** 쿼리스트링 분석해서 데이터 요청하는 함수
    * - categoryIdParams: 카테고리 아이디
@@ -24,6 +24,20 @@ export const useReviews = () => {
       isVerified: isVerifiedParams ? true : undefined,
       currentPage: pageParams,
       query: queryParams ? String(queryParams) : undefined,
+    });
+  };
+
+  const updateParams = (updates: Record<string, string | null>) => {
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null) {
+          newParams.delete(key);
+        } else {
+          newParams.set(key, value);
+        }
+      });
+      return newParams;
     });
   };
 
@@ -60,6 +74,7 @@ export const useReviews = () => {
 
   return {
     reviews: computedData,
+    updateParams,
     isLoadingFetchReviews,
     fetchReviewsNextPage,
     hasNextPageFetchReviews,
