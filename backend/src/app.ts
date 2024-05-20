@@ -12,6 +12,7 @@ import { reviewsRouter } from './routes/reviews.route';
 import { reportsRouter } from './routes/reports.route';
 import { commentsRouter } from './routes/comments.route';
 import { likeRouter } from './routes/likes.route';
+import { categoryRouter } from './routes/category.route';
 
 const app: Express = express();
 
@@ -33,6 +34,7 @@ app.use('/reports', reportsRouter);
 app.use('/list', reviewsRouter);
 app.use('/comments', commentsRouter);
 app.use('/likes', likeRouter);
+app.use('/category', categoryRouter);
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   console.error(err);

@@ -1,11 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { cancelReport, getSuspendedUsers } from '@/api/report.api';
+import { deleteReport, getSuspendedUsers } from '@/api/report.api';
 import { fetchUnverifiedReviews, fetchApproveReview } from '@/api/admin.api';
 
 export const useAdmin = () => {
+  // 정지된 사용자 정보 가져오기
   const {
-    data: suspendedUsers,
+    data: suspendedUsersData,
     isLoading: isLoadingSuspendedUsers,
     refetch: refetchSuspendedUsers,
   } = useQuery({
@@ -14,21 +15,34 @@ export const useAdmin = () => {
     throwOnError: true,
   });
 
-  const cancelReportMutation = useMutation({
-    mutationFn: cancelReport,
+  // 신고 취소 처리하기
+  const deleteReportMutation = useMutation({
+    mutationFn: deleteReport,
     throwOnError: true,
     onSuccess: () => {
-      refetchSuspendedUsers;
+      refetchSuspendedUsers();
     },
   });
-  const fetchCancelReport = (reportId: number) => {
-    cancelReportMutation.mutate(reportId);
+  const deleteReportAction = (reportId: number) => {
+    deleteReportMutation.mutate(reportId);
   };
 
+  // 미인증 후기 가져오기
+  const {
+    data: unverifiedReviewsData,
+    isLoading: isLoadingUnverifiedReviews,
+    refetch: refetchUnverifiedReviews,
+  } = useQuery({
+    queryKey: ['unverifiedReviews'],
+    queryFn: fetchUnverifiedReviews,
+    throwOnError: true,
+  });
+
+  // 미인증 후기 인증 처리하기
   const approveReviewMutation = useMutation({
     mutationFn: fetchApproveReview,
     onSuccess: () => {
-      refetchSuspendedUsers;
+      refetchUnverifiedReviews();
     },
     throwOnError: true,
   });
@@ -37,19 +51,12 @@ export const useAdmin = () => {
     approveReviewMutation.mutate(reviewId);
   };
 
-  const { data: unverifiedReviews, isLoading: isLoadingUnverifiedReviews } =
-    useQuery({
-      queryKey: ['unverifiedReviews'],
-      queryFn: fetchUnverifiedReviews,
-      throwOnError: true,
-    });
-  console.log(unverifiedReviews);
   return {
-    suspendedUsers: suspendedUsers?.users || [],
+    suspendedUsers: suspendedUsersData?.users || [],
     isLoadingSuspendedUsers,
-    fetchCancelReport,
+    deleteReportAction,
     approveReview,
     isLoadingUnverifiedReviews,
-    unverifiedReviews: unverifiedReviews?.reviews || [],
+    unverifiedReviews: unverifiedReviewsData?.reviews || [],
   };
 };

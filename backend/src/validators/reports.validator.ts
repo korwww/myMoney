@@ -26,4 +26,4 @@ export const validateAddReport = [
   validator,
 ];
 
-export const validateCancelReport = [validateReportId, validator];
+export const validateDeleteReport = [validateReportId, validator];

@@ -141,7 +141,7 @@ function ReviewContent({ reviewId }: Props) {
       </TitleContainer>
 
       <ReviewInfo>
-        <Link to={`/list?categroyId=${review.categoryId}`}>
+        <Link to={`/list?categoryId=${review.categoryId}`}>
           {review.categoryName}
         </Link>
         <span>{formatDate(review.createdAt)}</span>
@@ -151,7 +151,11 @@ function ReviewContent({ reviewId }: Props) {
 
       <Content dangerouslySetInnerHTML={{ __html: review.content }}></Content>
 
-      <Like review={review} onClick={likeToggle} />
+      <Like
+        isLiked={review.isLiked}
+        likes={review.likes}
+        onClick={likeToggle}
+      />
     </Container>
   );
 }

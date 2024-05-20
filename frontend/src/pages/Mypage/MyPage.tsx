@@ -32,7 +32,7 @@ function MyPage() {
   };
 
   return (
-    <Layout showBackButton={true} title="마이페이지">
+    <Layout showBackButton={false} title="마이페이지">
       {isLoadingUsers ? (
         <LoadingContainer>
           <Loading />

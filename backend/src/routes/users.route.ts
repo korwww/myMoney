@@ -7,7 +7,7 @@ import {
   joinUser,
   loginUser,
   logoutUser,
-  userInfo,
+  getUserInfo,
 } from '../controllers/user.controller';
 import {
   validateCheckedEmail,
@@ -20,13 +20,13 @@ const router = express.Router();
 
 router.post('/login', validateLogin, loginUser);
 router.post('/logout', logoutUser);
-router.post('/checked_email', validateCheckedEmail, checkedDuplicateEmail);
+router.post('/checkedEmail', validateCheckedEmail, checkedDuplicateEmail);
 router.post(
-  '/checked_nickname',
+  '/checkedNickname',
   validateCheckedNickname,
   checkedDuplicateNickname,
 );
 router.post('/join', validateJoin, joinUser);
-router.get('/me', authentication(true), userInfo);
+router.get('/me', authentication(true), getUserInfo);
 
 export { router as usersRouter };

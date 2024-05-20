@@ -11,6 +11,7 @@ import {
   getReviews,
   approve,
   deleteReview,
+  // getTotalCount,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -52,8 +53,11 @@ export const getReviewList = async ({
   sortBy,
   orderBy,
   userId,
-}: getReviewParams): Promise<IResponseReview[]> => {
-  let reviews = await getReviews({
+}: getReviewParams): Promise<{
+  reviews: IResponseReview[];
+  totalCount: number;
+}> => {
+  let { reviews, totalCount } = await getReviews({
     categoryId,
     isVerified,
     query,
@@ -83,14 +87,14 @@ export const getReviewList = async ({
       isLiked: review.isLiked,
     })),
   );
-  return reviews;
+  return { reviews, totalCount };
 };
 
-export const createPagination = async (
+export const createPagination = (
   currentPage: number,
   limit: number,
   total: number,
-): Promise<IResponsePagination> => {
+): IResponsePagination => {
   const totalCount = Math.ceil(total / limit);
 
   return { currentPage, totalCount };

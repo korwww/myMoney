@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { TOKEN_PRIVATE_KEY } from '../settings';
-import { getUserInfo } from '../services/user.service';
+import { serviceGetUserInfo } from '../services/user.service';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 
 export interface IUserInfo {
@@ -48,7 +48,7 @@ export const authentication = (requireLogin: boolean = false) => {
 
     const { email } = decodedToken as IUserInfo;
     try {
-      const userInfoResult = await getUserInfo(email);
+      const userInfoResult = await serviceGetUserInfo(email);
 
       // 사용자가 차단된 경우
       if ('suspendedUser' in userInfoResult) {

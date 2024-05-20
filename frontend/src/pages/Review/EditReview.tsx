@@ -7,6 +7,7 @@ import ReviewForm from '../../components/Review/ReviewForm';
 function EditReview() {
   const { id } = useParams<{ id: string }>();
   const { review } = useReview(id!);
+  const { updateToReview } = useReview();
   
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
@@ -27,8 +28,8 @@ function EditReview() {
       setContent(review.content || '');
       setRatingIndex(review.stars || 3);
       setCategoryIndex(review.categoryId || 0);
-      setReceiptImg(review.reviewReceiptImg || '');
-      setPhotoToAddList(review.reviewImg || []);
+      setReceiptImg(review.receiptImg || '');
+      setPhotoToAddList(review.reviewImgs || []);
     }
   }, [review]);
 
@@ -42,9 +43,7 @@ function EditReview() {
       reviewImg: photoToAddList,
       receiptImg,
     };
-    console.log('update', data);
-    //작업 해야 함
-    //updateToReview(data);
+    updateToReview(id!, data);
   };
 
   return (

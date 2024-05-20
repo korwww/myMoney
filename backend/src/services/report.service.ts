@@ -20,7 +20,7 @@ export const serviceFindSuspendedUsers = async () => {
   return { users: extendedUsers };
 };
 
-export const serviceCancelReport = async (reportId: number) => {
+export const serviceDeleteReport = async (reportId: number) => {
   return await deleteReport(reportId);
 };
 

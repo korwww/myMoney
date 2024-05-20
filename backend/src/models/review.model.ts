@@ -1,5 +1,4 @@
 import { ERROR_MESSAGE } from '../constance/errorMessage';
-import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Comment } from '../entity/comments.entity';
 import { Like } from '../entity/likes.entity';
@@ -21,7 +20,10 @@ export const getReviews = async ({
   sortBy,
   orderBy,
   userId,
-}: getReviewParams): Promise<IResponseReview[]> => {
+}: getReviewParams): Promise<{
+  reviews: IResponseReview[];
+  totalCount: number;
+}> => {
   const queryBuilder = reviewRepository
     .createQueryBuilder('reviews')
     .leftJoinAndSelect('reviews.user', 'user')
@@ -106,10 +108,12 @@ export const getReviews = async ({
     queryBuilder.limit(limit);
   }
 
+  const totalCount = await queryBuilder.getCount();
+
   const reviews: IResponseReview[] =
     await queryBuilder.getRawMany<IResponseReview>();
 
-  return reviews;
+  return { reviews, totalCount };
 };
 
 export const getReviewImages = async (reviewId: number): Promise<string[]> => {
