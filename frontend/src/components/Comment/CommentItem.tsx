@@ -7,6 +7,7 @@ import useComments from '@/hooks/useComment';
 import { useParams } from 'react-router-dom';
 import Modal from '../common/Modal';
 import useAuthStore from '@/store/auth.store';
+import { MODAL_BTNTEXT, MODAL_TITLE } from '@/constance/modalString';
 
 interface Props {
   comment: IComment;
@@ -33,6 +34,7 @@ function CommentItem({ comment, onUpdate }: Props) {
 
   const handleSubmit = () => {
     onUpdate(comment.id, editedContent);
+    comment.content = editedContent;
     setIsEdit(false);
   };
 
@@ -40,7 +42,7 @@ function CommentItem({ comment, onUpdate }: Props) {
     setEditedContent(event.target.value);
   };
 
-  const handleConfirmDelete = () => {
+  const handleDelete = () => {
     deleteComment(comment.id);
     setIsOpen(false);
   };
@@ -64,6 +66,13 @@ function CommentItem({ comment, onUpdate }: Props) {
       )}
       {isLoggedIn && (
         <ButtonContainer>
+          <Modal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            title={MODAL_TITLE.COMMENT_DELETE}
+            buttonText={MODAL_BTNTEXT.DELETE}
+            onConfirm={handleDelete}
+          ></Modal>
           {isEdit ? (
             <>
               <Button size="small" scheme="primary" onClick={handleSubmit}>
@@ -75,7 +84,7 @@ function CommentItem({ comment, onUpdate }: Props) {
             </>
           ) : comment.isAuthor ? (
             <>
-              <Button size="small" scheme="border" onClick={handleEdit}>
+              <Button size="small" scheme="primary" onClick={handleEdit}>
                 수정
               </Button>
               <Button
@@ -89,13 +98,6 @@ function CommentItem({ comment, onUpdate }: Props) {
           ) : null}
         </ButtonContainer>
       )}
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="댓글을 삭제하시겠어요?"
-        buttonText="삭제"
-        onConfirm={handleConfirmDelete}
-      ></Modal>
     </Container>
   );
 }
