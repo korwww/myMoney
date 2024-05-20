@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
 
-import Icon from './Icon';
 import Dropdown from './Dropdown';
 import { DotsThree } from '@/assets/icons/DotsThree';
 import BadgeImg from '@/assets/images/badge-img.png';
@@ -10,17 +8,14 @@ import {
   Container,
   Content,
   ImgContainer,
-  LikeButton,
   LikesContainer,
   TitleContainer,
   InfoContainer,
 } from './ReviewItem.style';
 import { IReviewItem } from '@/models/review.model';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import Like from '../Review/Like';
-import { useReview } from '@/hooks/useReview';
-import { useReviewDetail } from '@/hooks/useReviewDetail';
 import { useLike } from '@/hooks/useLike';
+import { formatDate } from '@/utils/format';
 
 function ReviewItem({
   title,
@@ -40,10 +35,6 @@ function ReviewItem({
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     return doc.body.textContent || '';
-  };
-
-  const formatDate = (date: string) => {
-    return dayjs(date).format('YYYY.MM.DD');
   };
 
   return (
