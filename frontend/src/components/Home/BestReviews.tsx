@@ -21,12 +21,25 @@ function BestReviews({ reviews, isLoading }: Props) {
     );
   }
   if (!reviews) {
-    return <div></div>;
+    return (
+      <BestReview
+        id={0}
+        img={
+          'https://i0.wp.com/millionmine.com/wp-content/uploads/2020/03/reveiws.jpg?fit=1000%2C630&ssl=1'
+        }
+        isVerified={1}
+        title={'베스트 리뷰를 써보자!'}
+        userName={'내돈내산'}
+        stars={5}
+        page="1/1"
+      />
+    );
   }
   const items: ReactNode[] = reviews.map((item, idx, arr) => {
     let page = `${idx + 1} / ${arr.length}`;
     return (
       <BestReview
+        id={item.id}
         img={item.reviewImg}
         isVerified={item.verified}
         title={item.title}
