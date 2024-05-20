@@ -10,11 +10,8 @@ import BestReviews from '@/components/Review/BestReviews';
 function Home() {
   const { reviews, isLoadingFetchReviews, fetchReviewsNextPage } = useReviews();
   return (
-    <HomeStyle>
-      <Layout showBackButton={false}>
-        <p>기본 굵기</p>
-        <SemiBoldText>600 굵기</SemiBoldText>
-        <BoldText>700 굵기</BoldText>
+    <Layout showBackButton={false}>
+      <HomeStyle>
         <BestReviews />
         <Category />
         <hr />
@@ -24,19 +21,15 @@ function Home() {
           isLoading={false}
           text={'최신'}
         />
-      </Layout>
-    </HomeStyle>
+      </HomeStyle>
+    </Layout>
   );
 }
 
-const SemiBoldText = styled.p`
-  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
-`;
-const BoldText = styled.p`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;
-
 const HomeStyle = styled.div`
+  max-width: 100%;
+  max-height: 100%;
+
   hr {
     margin: 20px 0;
   }
