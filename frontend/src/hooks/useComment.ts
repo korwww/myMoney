@@ -1,6 +1,4 @@
-import { addComment } from './../../../backend/src/controllers/comment.controller';
-import { updateComment } from './../../../backend/src/models/comment.model';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   addReviewComment,
   deleteReviewComment,
@@ -11,7 +9,15 @@ import { TCommentItemWrite } from '@/models/comment.model';
 import { queryClient } from '@/api/queryClient';
 
 function useComments(reviewId: string | undefined) {
-  if (!reviewId) return;
+  if (!reviewId) {
+    return {
+      comments: undefined,
+      isReviewLoading: false,
+      addComment: () => {},
+      updateComment: () => {},
+      deleteComment: () => {},
+    };
+  }
 
   const { data: commentList, isLoading: isReviewLoading } = useQuery({
     queryKey: ['review', reviewId],
