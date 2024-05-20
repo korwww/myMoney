@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useReview } from '@/hooks/useReview';
 import Header from '@/layout/Header';
 import ReviewForm from '@/components/Review/ReviewForm';
+import { FormStyled } from './EditReview';
 
 function CreateReview() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [ratingIndex, setRatingIndex] = useState<number>(3);
-  const [categoryIndex, setCategoryIndex] = useState<number>(0);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(1);
   const [receiptImg, setReceiptImg] = useState<string>('');
   const [photoToAddList, setPhotoToAddList] = useState<string[]>([]);
 
@@ -24,15 +25,16 @@ function CreateReview() {
       title,
       content,
       stars: ratingIndex,
-      categoryId: categoryIndex,
+      categoryId: selectedCategoryId,
       reviewImg: photoToAddList,
       receiptImg,
     };
+    console.log('data', data)
     addToReview(data);
   };
 
   return (
-    <>
+    <FormStyled>
       <Header showBackButton={true} title="리뷰 작성" />
       <ReviewForm
         titleValue={title}
@@ -41,8 +43,8 @@ function CreateReview() {
         setContent={setContent}
         ratingIndex={ratingIndex}
         setRatingIndex={setRatingIndex}
-        categoryIndex={categoryIndex}
-        setCategoryIndex={setCategoryIndex}
+        selectedCategoryId={selectedCategoryId}
+        setSelectedCategoryId={setSelectedCategoryId}
         receiptImg={receiptImg}
         setReceiptImg={setReceiptImg}
         photoToAddList={photoToAddList}
@@ -50,8 +52,9 @@ function CreateReview() {
         handleSubmit={handleSubmit}
         isFormValid={isFormValid}
       />
-    </>
+    </FormStyled>
   );
 }
 
 export default CreateReview;
+

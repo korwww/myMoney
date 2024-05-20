@@ -36,7 +36,7 @@ function CreateContent({ content, onChange }: CreateContentProps) {
       <ReactQuillStyled>
         <ReactQuill
           value={content}
-          style={{ width: '100%', height: '300px' }}
+          style={{ width: '100%', height: '270px' }}
           modules={modules}
           onChange={handleQuillChange}
           onKeyDown={handleKeyDown}
@@ -53,16 +53,14 @@ export default CreateContent;
 
 const ReactQuillStyled = styled.div`
   width: 100%;
-  height: 390px;
+  height: 340px;
 `;
 
 const CharacterCount = styled.div`
-  margin-top: 5px;
   font-size: 12px;
-  right: 20px;
-  bottom: 60px;
-  position: absolute;
+  text-align: end;
 `;
+
 
 const modules = {
   toolbar: {
