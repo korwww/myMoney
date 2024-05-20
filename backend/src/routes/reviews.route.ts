@@ -19,9 +19,9 @@ router.route('/').get(authentication(), getReviewsWithPagination).post();
 router
   .route('/:id')
   .get(authentication(), getReviewDetails)
-  .delete(authentication(), removeReview);
+  .delete(authentication(true), removeReview);
 
-router.post('/',  validateReview, authentication(true),createReview);
+router.post('/', validateReview, authentication(true), createReview);
 router.patch('/:id', validateReview, authentication(true), updateReview);
 router.patch('/:id/approve', authentication(true), approveReviewByAdmin);
 
