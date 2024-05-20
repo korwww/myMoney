@@ -1,7 +1,14 @@
 import styled from 'styled-components';
 
-import BestReview from './BestReview';
 import ImageSlide from '../common/ImageSlide';
+import BestReview from './BestReview';
+import { LoadingContainer } from '../Admin/AdminContent';
+import Loading from '../common/Loading';
+
+interface Props {
+  reviews?: React.ReactNode[];
+  isLoading?: boolean;
+}
 
 const items = [
   <BestReview
@@ -32,16 +39,25 @@ const items = [
   />,
 ];
 
-function BestReviews() {
+function BestReviews({ reviews, isLoading }: Props) {
+  if (isLoading) {
+    return (
+      <LoadingContainer>
+        <Loading />
+      </LoadingContainer>
+    );
+  }
+
   return (
     <BestReviewsStyle>
-      <div className="imageSlide">
-        <ImageSlide items={items} />
-      </div>
+      {items ? <ImageSlide items={items} /> : <div></div>}
     </BestReviewsStyle>
   );
 }
 
-const BestReviewsStyle = styled.div``;
+const BestReviewsStyle = styled.div`
+  width: 390px;
+  height: 350px;
+`;
 
 export default BestReviews;

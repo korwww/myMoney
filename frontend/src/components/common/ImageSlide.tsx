@@ -25,9 +25,7 @@ function ImageSlide({ items }: Props) {
   };
   return (
     <ImageSlideStyle>
-      <div className="items">
-        <Slider {...settings}>{items.map((item) => item)}</Slider>
-      </div>
+      <Slider {...settings}>{items.map((item) => item)}</Slider>
     </ImageSlideStyle>
   );
 }
@@ -75,11 +73,6 @@ const ImageSlideStyle = styled.div`
   margin: auto;
   height: 350px;
   overflow: hidden;
-
-  .items {
-    width: 390px;
-    height: 100%;
-  }
 `;
 
 export default ImageSlide;

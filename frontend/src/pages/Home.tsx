@@ -12,7 +12,7 @@ function Home() {
   return (
     <Layout showBackButton={false}>
       <HomeStyle>
-        <BestReviews />
+        <BestReviews reviews={reviews} isLoading={false} />
         <Category />
         <hr />
         <ReviewList
