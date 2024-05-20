@@ -13,6 +13,7 @@ import AdminLogin from '@/pages/Admin/AdminLogin';
 import ReportedUsersDashboard from '@/pages/Admin/ReportedUsersDashboard';
 import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard';
 import NotFoundError from './components/Error/NotFoundError';
+import ReviewDetail from './pages/ReviewDetail';
 import MyReviews from './pages/Mypage/MyReviews';
 import LikedReviews from './pages/Mypage/LikedReviews';
 import EditReview from './pages/Review/EditReview';
@@ -26,6 +27,7 @@ export function Router() {
         <Route path="/review" element={<CreateReview />} />
         <Route path="/review/:id" element={<EditReview />} />
         <Route path="/list" element={<ReviewList />} />
+        <Route path="/list/:id" element={<ReviewDetail />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
 

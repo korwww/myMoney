@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import AdminContent from '@/components/Admin/AdminContent';
@@ -10,12 +10,14 @@ import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthentic
 import { useAdmin } from '@/hooks/useAdmin';
 import Modal from '@/components/common/Modal';
 import { IReviewItem } from '@/models/review.model';
+import dayjs from 'dayjs';
 
 const tableHead: TableHeadItem[] = [
-  { name: 'No', $widthRatio: 5 },
-  { name: '제목', $widthRatio: 44.5 },
-  { name: '작성자(이메일)', $widthRatio: 23 },
-  { name: '인증 사진', $widthRatio: 18.7 },
+  { name: 'No', $widthRatio: 7 },
+  { name: '제목', $widthRatio: 45 },
+  { name: '작성자(닉네임)', $widthRatio: 16 },
+  { name: '작성일', $widthRatio: 16 },
+  { name: '인증 사진', $widthRatio: 16 },
 ];
 
 function UnverifiedReviewsDashboard() {
@@ -25,27 +27,34 @@ function UnverifiedReviewsDashboard() {
 
   const approve = async (reviewId: number) => {
     await approveReview(reviewId);
+    setIsModalOpen(false);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
   return (
     <AdminLayout>
       <AdminContent
         title="미승인 후기 관리"
         isLoading={isLoadingUnverifiedReviews}
       >
-        {!unverifiedReviews.length && <p>미승인 후기가 없습니다.</p>}
+        {!unverifiedReviews.length && (
+          <tr>
+            <td colSpan={tableHead.length}>미승인 후기가 없습니다.</td>
+          </tr>
+        )}
 
         {unverifiedReviews.length > 0 && (
           <AdminTable tableHead={tableHead}>
             {unverifiedReviews.map((report: IReviewItem, idx: number) => (
-              <>
-                <tr key={idx}>
+              <React.Fragment key={idx}>
+                <tr>
                   <td>{idx + 1}</td>
                   <td>{report.title}</td>
                   <td>{report.userName}</td>
+                  <td>{dayjs(report.createdAt).format('YYYY-MM-DD')}</td>
                   <td>
                     <IconButton onClick={() => setIsModalOpen(true)}>
                       <Icon width={22} icon={<Image />} />
@@ -54,13 +63,13 @@ function UnverifiedReviewsDashboard() {
                 </tr>
                 <Modal
                   buttonText="승인"
-                  imageSrc="https://www.press9.kr/news/photo/201910/30004_craw1.jpg"
+                  imageSrc={report.reviewImg}
                   isOpen={isModalOpen}
                   onClose={closeModal}
                   onCancel={closeModal}
                   onConfirm={() => approve(report.id)}
                 />
-              </>
+              </React.Fragment>
             ))}
           </AdminTable>
         )}

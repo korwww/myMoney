@@ -9,18 +9,7 @@ import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '@/store/auth.store';
-
-const categoryOptions = [
-  '디지털',
-  '의류',
-  '가구/인테리어',
-  '가전',
-  '문화',
-  '식품',
-  '뷰티/미용',
-  '장소',
-  '기타',
-];
+import { useCategory } from '@/hooks/useCategory';
 
 interface ReviewFormProps {
   titleValue: string;
@@ -29,8 +18,8 @@ interface ReviewFormProps {
   setContent: React.Dispatch<React.SetStateAction<string>>;
   ratingIndex: number;
   setRatingIndex: React.Dispatch<React.SetStateAction<number>>;
-  categoryIndex: number;
-  setCategoryIndex: React.Dispatch<React.SetStateAction<number>>;
+  selectedCategoryId: number;
+  setSelectedCategoryId: React.Dispatch<React.SetStateAction<number>>;
   receiptImg: string;
   setReceiptImg: React.Dispatch<React.SetStateAction<string>>;
   photoToAddList: string[];
@@ -46,10 +35,10 @@ function ReviewForm({
   setContent,
   ratingIndex,
   setRatingIndex,
-  categoryIndex,
-  setCategoryIndex,
   receiptImg,
   setReceiptImg,
+  selectedCategoryId,
+  setSelectedCategoryId,
   photoToAddList,
   setPhotoToAddList,
   handleSubmit,
@@ -57,6 +46,7 @@ function ReviewForm({
 }: ReviewFormProps) {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
+  const { categoryList } = useCategory();
 
   useEffect(() => {
     if (!isLoggedIn && '/review'.includes(location.pathname)) {
@@ -66,7 +56,7 @@ function ReviewForm({
   }, [isLoggedIn, location.pathname]);
 
   return (
-    <ReviewFormStyled>
+    <>
       <PhotoUpload
         photoToAddList={photoToAddList}
         setPhotoToAddList={setPhotoToAddList}
@@ -77,9 +67,9 @@ function ReviewForm({
       <StarRating ratingIndex={ratingIndex} setRatingIndex={setRatingIndex} />
 
       <CategorySelector
-        categoryOptions={categoryOptions}
-        categoryIndex={categoryIndex}
-        setCategoryIndex={setCategoryIndex}
+        categoryOptions={categoryList}
+        selectedCategoryId={selectedCategoryId}
+        setSelectedCategoryId={setSelectedCategoryId}
       />
 
       <Title>제목</Title>
@@ -106,20 +96,14 @@ function ReviewForm({
           완료
         </Button>
       </ButtonContainer>
-    </ReviewFormStyled>
+    </>
   );
 }
 
 export default ReviewForm;
 
-const ReviewFormStyled = styled.div`
-  padding: 0px 16px;
-`;
-
 const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 358px;
+  width: 360px;
 `;
 
 const Title = styled.h1`

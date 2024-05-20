@@ -41,7 +41,7 @@ const THead = styled.thead`
 `;
 
 const Th = styled.th<Pick<TableHeadItem, '$widthRatio'>>`
-  width: ${({ $widthRatio }) => `calc((100% * ${$widthRatio})/100)`}px;
+  width: ${({ $widthRatio }) => $widthRatio}%;
   font-size: ${({ theme }) => theme.text['medium'].fontSize};
   font-weight: ${({ theme }) => theme.fontWeight.semiBold};
   line-height: 40px;
