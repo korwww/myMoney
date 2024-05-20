@@ -6,7 +6,7 @@ import { LightStar } from '@/assets/icons/LightStar';
 
 interface Props {
   img?: string;
-  isVerified?: boolean;
+  isVerified?: number;
   title?: string;
   userName?: string;
   stars?: number;
@@ -26,12 +26,12 @@ function BestReview({
       <div className="wrapTop">
         <div className="badge">
           <BadgeStyle>Best</BadgeStyle>
-          {isVerified && (
+          {isVerified ? (
             <BadgeStyle>
               <img className="badgeImg" src={BadgeImg} alt="인증마크" />
               인증
             </BadgeStyle>
-          )}
+          ) : null}
         </div>
       </div>
       <img className="img" src={img} />
