@@ -7,7 +7,7 @@ interface Props {
   buttonText: string;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm?: () => void;
+  onConfirm?: (selectedOptions: string[]) => void;
   onCancel?: () => void;
   title?: string;
   imageSrc?: string;
@@ -30,12 +30,22 @@ function Modal({
 
   const modalRef = useRef<HTMLDivElement | null>(null);
 
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+  const handleToggleOption = (option: string) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((o) => o !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
+
   const handleClose = () => {
     setIsFadingOut(true);
   };
 
   const handleConfirm = () => {
-    onConfirm?.();
+    onConfirm?.(selectedOptions);
     setIsFadingOut(true);
   };
 
@@ -53,6 +63,7 @@ function Modal({
   const handleAnimationEnd = () => {
     if (isFadingOut) {
       setIsFadingOut(false);
+      setSelectedOptions([]);
       onClose();
     }
   };
@@ -74,7 +85,25 @@ function Modal({
             </div>
           )}
           {summary && <div className="summary">{summary}</div>}
-          {report && <div>신고 버튼 컴포넌트</div>}
+          {report && (
+            <div className="reportButtons">
+              <ToggleButton
+                label="욕설"
+                isActive={selectedOptions.includes('욕설')}
+                onClick={() => handleToggleOption('욕설')}
+              />
+              <ToggleButton
+                label="광고"
+                isActive={selectedOptions.includes('광고')}
+                onClick={() => handleToggleOption('광고')}
+              />
+              <ToggleButton
+                label="법률위반"
+                isActive={selectedOptions.includes('법률위반')}
+                onClick={() => handleToggleOption('법률위반')}
+              />
+            </div>
+          )}
           <div className="buttons">
             <Button size={'small'} scheme={'border'} onClick={handleCancel}>
               취소
@@ -87,6 +116,23 @@ function Modal({
       </div>
     </ModalStyle>,
     document.body,
+  );
+}
+
+interface ToggleButtonProps {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+}
+function ToggleButton({ label, isActive, onClick }: ToggleButtonProps) {
+  return (
+    <Button
+      size="small"
+      scheme={isActive ? 'primary' : 'border'}
+      onClick={onClick}
+    >
+      {label}
+    </Button>
   );
 }
 
@@ -194,6 +240,10 @@ const ModalStyle = styled.div`
       margin-top: 16px;
       display: flex;
       gap: 16px;
+    }
+
+    .reportButtons {
+      display: flex;
     }
   }
 `;
