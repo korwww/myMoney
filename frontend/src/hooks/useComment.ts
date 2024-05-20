@@ -7,7 +7,6 @@ import {
 import { fetchReview } from '@/api/review.api';
 import { TCommentItemWrite } from '@/models/comment.model';
 import { queryClient } from '@/api/queryClient';
-
 function useComments(reviewId: string | undefined) {
   if (!reviewId) {
     return {
@@ -27,7 +26,8 @@ function useComments(reviewId: string | undefined) {
   });
 
   const { mutate: addComment } = useMutation({
-    mutationFn: addReviewComment,
+    mutationFn: (data: TCommentItemWrite) =>
+      addReviewComment({ ...data, reviewId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['review', reviewId] });
     },
@@ -49,7 +49,7 @@ function useComments(reviewId: string | undefined) {
   });
 
   return {
-    comments: commentList,
+    commentList,
     isReviewLoading,
     addComment,
     updateComment,
