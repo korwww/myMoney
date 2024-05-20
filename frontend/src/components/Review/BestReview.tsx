@@ -40,8 +40,12 @@ function BestReview({
         <div className="userName">{userName}</div>
         <div className="wrapFlex">
           <div className="stars">
-            {[1, 2, 3, 4, 5].map((e) =>
-              e <= stars ? <LightStar /> : <Star />,
+            {[1, 2, 3, 4, 5].map((e, index) =>
+              e <= stars ? (
+                <LightStar key={`light-star-${index}`} />
+              ) : (
+                <Star key={`star-${index}`} />
+              ),
             )}
           </div>
           {page}

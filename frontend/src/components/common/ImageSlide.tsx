@@ -25,7 +25,11 @@ function ImageSlide({ items }: Props) {
   };
   return (
     <ImageSlideStyle>
-      <Slider {...settings}>{items.map((item) => item)}</Slider>
+      <Slider {...settings}>
+        {items.map((item, index) => (
+          <div key={`item-${index}`}>{item}</div>
+        ))}
+      </Slider>
     </ImageSlideStyle>
   );
 }
@@ -38,7 +42,7 @@ function CustomArrow({ className, style, onClick }: ArrowProps) {
         ...style,
         display: 'block',
         position: 'absolute',
-        top: '50%',
+        top: '35%',
         transform: 'translateY(-50%)',
         zIndex: 2,
       }}
