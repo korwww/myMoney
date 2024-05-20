@@ -12,7 +12,6 @@ export type TCategoryNames =
 
 export interface ICategoryItem {
   categoryId: number | null;
-  element?: JSX.Element;
-  imgSrc?: string;
   categoryName: TCategoryNames;
+  element?: JSX.Element | string;
 }

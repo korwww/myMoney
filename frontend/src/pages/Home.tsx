@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
-import CateogoryButton from '@/components/common/CategoryButton';
 import Layout from '@/layout/Layout';
 import ReviewList from '@/components/common/ReviewList';
 
 import { useReviews } from '@/hooks/useReviews';
+import Category from '@/components/common/Category';
+import { Badge } from '@/components/common/ReviewItem.style';
+import BadgeImg from '@/assets/images/badge-img.png';
 
 function Home() {
   const { reviews, isLoadingFetchReviews, fetchReviewsNextPage } = useReviews();
@@ -14,7 +16,12 @@ function Home() {
         <p>기본 굵기</p>
         <SemiBoldText>600 굵기</SemiBoldText>
         <BoldText>700 굵기</BoldText>
-        <CateogoryButton></CateogoryButton>
+        <Badge>
+          <img className="badgeImg" src={BadgeImg} alt="인증마크" />
+          인증
+        </Badge>
+        <Badge>베스트</Badge>
+        <Category />
         <hr />
         <ReviewList
           title={'최신글'}

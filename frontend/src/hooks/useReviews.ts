@@ -12,15 +12,18 @@ export const useReviews = () => {
    * - categoryIdParams: 카테고리 아이디
    * - isVerifiedParams: 인증 후기 가져오기
    * - pageParams: 페이지
+   * - queryParams: 검색 결과
    */
   const fetchReviewsData = (pageParams: number) => {
     const categoryIdParams = searchParams.get(QUERYSTRING.CATEGORY_ID);
     const isVerifiedParams = searchParams.has(QUERYSTRING.IS_VERIFIED);
+    const queryParams = searchParams.get(QUERYSTRING.QUERY);
 
     return fetchReviews({
       categoryId: categoryIdParams ? Number(categoryIdParams) : undefined,
       isVerified: isVerifiedParams ? true : undefined,
       currentPage: pageParams,
+      query: queryParams ? String(queryParams) : undefined,
     });
   };
 
