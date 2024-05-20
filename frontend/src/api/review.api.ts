@@ -14,11 +14,14 @@ interface FetchReviewsParams {
   isVerified?: true;
   currentPage?: number;
   query?: string;
+  sortBy?: string;
+  orderBy?: string;
+  limit?: number;
 }
 
 export const fetchReviews = async (params: FetchReviewsParams) => {
   const { data } = await httpClient.get('/reviews', {
-    params: { ...params, limit: 10 },
+    params: { ...params },
   });
   return data;
 };

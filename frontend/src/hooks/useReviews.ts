@@ -18,12 +18,14 @@ export const useReviews = () => {
     const categoryIdParams = searchParams.get(QUERYSTRING.CATEGORY_ID);
     const isVerifiedParams = searchParams.has(QUERYSTRING.IS_VERIFIED);
     const queryParams = searchParams.get(QUERYSTRING.QUERY);
+    const limitParams = searchParams.get(QUERYSTRING.LIMIT);
 
     return fetchReviews({
       categoryId: categoryIdParams ? Number(categoryIdParams) : undefined,
       isVerified: isVerifiedParams ? true : undefined,
       currentPage: pageParams,
       query: queryParams ? String(queryParams) : undefined,
+      limit: limitParams ? Number(limitParams) : 10,
     });
   };
 
