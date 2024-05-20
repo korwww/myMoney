@@ -74,7 +74,13 @@ function Modal({
             </div>
           )}
           {summary && <div className="summary">{summary}</div>}
-          {report && <div>신고 버튼 컴포넌트</div>}
+          {report && (
+            <ul className="reason">
+              <li>욕설/비난</li>
+              <li>광고</li>
+              <li>법률 위반</li>
+            </ul>
+          )}
           <div className="buttons">
             <Button size={'small'} scheme={'border'} onClick={handleCancel}>
               취소
@@ -194,6 +200,13 @@ const ModalStyle = styled.div`
       margin-top: 16px;
       display: flex;
       gap: 16px;
+    }
+
+    .reason {
+      li:hover {
+        cursor: pointer;
+        font-weight: ${({ theme }) => theme.fontWeight.bold};
+      }
     }
   }
 `;

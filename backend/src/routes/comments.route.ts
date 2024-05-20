@@ -12,8 +12,8 @@ import {
 
 const router = express.Router();
 
-router.post('/', authentication, validateAddComment, addComment);
-router.patch('/:id', authentication, validateEditComment, editComment);
-router.delete('/:id', authentication, removeComment);
+router.post('/', authentication(true), validateAddComment, addComment);
+router.patch('/:id', authentication(true), validateEditComment, editComment);
+router.delete('/:id', authentication(true), removeComment);
 
 export { router as commentsRouter };

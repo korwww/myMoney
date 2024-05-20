@@ -2,16 +2,16 @@ import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { IReviewQueryParams } from '../controllers/reviews.controller';
 import { AppDataSource } from '../data-source';
 import { Category } from '../entity/category.entity';
+import { allComments } from '../models/comment.model';
 import {
   createNewReview,
   findReviewById,
   updateReviewData,
-  allComments,
   findReviewDetails,
   getReviews,
   approve,
   deleteReview,
-  getTotalCount,
+  // getTotalCount,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -105,7 +105,16 @@ export const serviceReviewDetails = async (
   userId?: number,
 ) => {
   const review = await findReviewDetails(reviewId, userId);
-  const comments = await allComments(reviewId);
+
+  review.likes = parseInt(review.likes);
+  review.isLiked = review.isLiked > 0 ? true : false;
+  review.isAuthor = userId === review.userId;
+
+  let comments = await allComments(reviewId);
+  comments = comments.map((comment) => ({
+    ...comment,
+    isAuthor: userId === comment.userId,
+  }));
 
   return {
     ...review,
