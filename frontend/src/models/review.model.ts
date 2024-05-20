@@ -1,15 +1,15 @@
 export interface IReview {
-  id: number;
   title: string;
   content: string;
   stars: number;
   categoryId: number;
-  categoryName: string;
   reviewImg: string[];
   receiptImg: string;
 }
 export interface IReviewDetail extends IReview {
+  id: number;
   userId: number;
+  categoryName: string;
   name: string;
   likes: number;
   isLiked: boolean;
