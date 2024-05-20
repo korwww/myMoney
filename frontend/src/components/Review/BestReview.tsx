@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Badge } from '@/components/common/ReviewItem.style';
 import BadgeImg from '@/assets/images/badge-img.png';
 import { Star } from '@/assets/icons/Star';
-import { useState } from 'react';
+import { LightStar } from '@/assets/icons/LightStar';
 
 interface Props {
   img?: string;
@@ -13,11 +13,14 @@ interface Props {
   page?: string;
 }
 
-const SCORE = [0, 1, 2, 3, 4];
-
-function BestReview({ img, isVerified, title, userName, stars, page }: Props) {
-  const [score, setScore] = useState([false, false, false, false, false]);
-
+function BestReview({
+  img,
+  isVerified,
+  title,
+  userName,
+  stars = 0,
+  page,
+}: Props) {
   return (
     <BestReviewStyle>
       <div className="wrapTop">
@@ -31,15 +34,15 @@ function BestReview({ img, isVerified, title, userName, stars, page }: Props) {
           )}
         </div>
       </div>
-      <img src={img} />
+      <img className="img" src={img} />
       <div className="wrapBottom">
         <div className="title">{title}</div>
         <div className="userName">{userName}</div>
         <div className="wrapFlex">
           <div className="stars">
-            {SCORE.map(() => (
-              <Star />
-            ))}
+            {[1, 2, 3, 4, 5].map((e) =>
+              e <= stars ? <LightStar /> : <Star />,
+            )}
           </div>
           {page}
         </div>
@@ -51,6 +54,11 @@ function BestReview({ img, isVerified, title, userName, stars, page }: Props) {
 const BestReviewStyle = styled.div`
   width: 390px;
   height: 350px;
+
+  .img {
+    height: 350px;
+    object-fit: cover;
+  }
 
   .wrapTop {
     position: absolute;
@@ -94,21 +102,11 @@ const BestReviewStyle = styled.div`
   .wrapFlex {
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 
     .stars {
-      svg {
-        width: 16px;
-        height: 16px;
-      }
-      path {
-        fill: #ffffff;
-      }
+      display: flex;
     }
-  }
-
-  img {
-    height: 350px;
-    object-fit: cover;
   }
 `;
 

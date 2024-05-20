@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import BestReview from './BestReview';
-import { Badge } from '@/components/common/ReviewItem.style';
 import ImageSlide from '../common/ImageSlide';
 
 const items = [
