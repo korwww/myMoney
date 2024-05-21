@@ -149,7 +149,7 @@ function ReviewContent() {
           modalType === MODAL_TYPES.LOGIN
             ? MODAL_TITLE.LOGIN
             : modalType === MODAL_TYPES.DELETE
-              ? MODAL_TITLE.DELETE
+              ? MODAL_TITLE.REVIEW_DELETE
               : MODAL_TITLE.REPORT
         }
         buttonText={

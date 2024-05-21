@@ -31,17 +31,26 @@ export const ImgContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 219.375px;
-  max-height: 292.5px;
+  height: 219.375px;
   background-color: ${({ theme }) => theme.color.background};
   margin-bottom: 14px;
   border-radius: 10px;
   overflow: hidden;
   a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     text-decoration: none;
     p {
       color: ${({ theme }) => theme.color.darkGrey};
       font-size: ${({ theme }) => theme.text['small'].fontSize};
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 `;
