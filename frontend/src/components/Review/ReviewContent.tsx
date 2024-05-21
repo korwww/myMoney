@@ -70,7 +70,7 @@ function ReviewContent() {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   if (!review) return null;
-
+  console.log(selectedOption);
   const openModal = () => {
     setIsModalOpen(true);
     setSelectedOption('');

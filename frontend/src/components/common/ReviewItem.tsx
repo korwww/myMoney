@@ -24,7 +24,6 @@ import {
   MODAL_TITLE,
   MODAL_TYPES,
 } from '@/constance/modalString';
-import { useAuth } from '@/hooks/useAuth';
 import useAuthStore from '@/store/auth.store';
 import { handleGoLogin } from '@/utils/routingUtils';
 
