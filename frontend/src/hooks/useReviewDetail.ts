@@ -56,7 +56,11 @@ export const useReviewDetail = (reviewId: string | undefined) => {
   };
 
   const reportToggle = (data: IReport) => {
-    addReport(data);
+    addReport(data).catch((error) => {
+      if (error?.response?.status === 409) {
+        alert('이미 신고한 유저입니다.');
+      }
+    });
   };
 
   useEffect(() => {
