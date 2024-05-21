@@ -1,9 +1,12 @@
 import { useSearchParams } from 'react-router-dom';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 
 import { fetchReviews } from '@/api/review.api';
 import { IReviewItem } from '@/models/review.model';
 import { QUERYSTRING } from '@/constance/querystring';
+import { addReport } from '@/api/report.api';
+import { deleteReview } from '@/api/review.api';
+import { IReport } from '@/models/report.model';
 
 export const useReviews = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,6 +51,7 @@ export const useReviews = () => {
     isLoading: isLoadingFetchReviews,
     fetchNextPage: fetchReviewsNextPage,
     hasNextPage: hasNextPageFetchReviews,
+    refetch,
   } = useInfiniteQuery({
     queryKey: ['fetchReviews', searchParams.toString()],
     queryFn: ({ pageParam = 1 }) => fetchReviewsData(pageParam),
@@ -74,11 +78,48 @@ export const useReviews = () => {
       )
     : [];
 
+  const deleteReviewInReviewsMutation = useMutation({
+    mutationFn: deleteReview,
+    onSuccess: () => {
+      alert('후기가 삭제되었습니다.');
+      refetch();
+    },
+    throwOnError: true,
+  });
+
+  const deleteReviewInReviews = (reviewId: number) => {
+    deleteReviewInReviewsMutation.mutate(reviewId);
+  };
+
+  const postReportMutation = useMutation({
+    mutationFn: addReport,
+    onSuccess: () => {
+      alert('신고되었습니다.');
+      refetch();
+    },
+    onError: (error: any) => {
+      console.log(error);
+      if (error?.response?.status === 409) {
+        alert('이미 신고한 유저입니다.');
+      }
+    },
+    throwOnError: (error: any) => {
+      console.log(error);
+      if (error?.response?.status === 409) return false;
+      return true;
+    },
+  });
+  const postReport = (data: IReport) => {
+    postReportMutation.mutate(data);
+  };
+
   return {
     reviews: computedData,
     updateParams,
     isLoadingFetchReviews,
     fetchReviewsNextPage,
     hasNextPageFetchReviews,
+    postReport,
+    deleteReviewInReviews,
   };
 };

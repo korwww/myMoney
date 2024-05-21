@@ -6,10 +6,12 @@ import { useState } from 'react';
 import useComments from '@/hooks/useComment';
 import { useParams } from 'react-router-dom';
 import Modal from '../common/Modal';
+import useAuthStore from '@/store/auth.store';
+import { MODAL_BTNTEXT, MODAL_TITLE } from '@/constance/modalString';
 
 interface Props {
   comment: IComment;
-  onUpdate: (id: number, content: string) => void;
+  onUpdate: (commentId: number, content: string) => void;
 }
 
 function CommentItem({ comment, onUpdate }: Props) {
@@ -18,9 +20,11 @@ function CommentItem({ comment, onUpdate }: Props) {
   const [editedContent, setEditedContent] = useState(comment.content);
   const [isOpen, setIsOpen] = useState(false);
   const { deleteComment } = useComments(id);
+  const { isLoggedIn } = useAuthStore();
 
   const handleEdit = () => {
     setIsEdit(true);
+    setEditedContent(comment.content);
   };
 
   const handleCancel = () => {
@@ -29,15 +33,16 @@ function CommentItem({ comment, onUpdate }: Props) {
   };
 
   const handleSubmit = () => {
-    setIsEdit(false);
     onUpdate(comment.id, editedContent);
+    comment.content = editedContent;
+    setIsEdit(false);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEditedContent(event.target.value);
   };
 
-  const handleConfirmDelete = () => {
+  const handleDelete = () => {
     deleteComment(comment.id);
     setIsOpen(false);
   };
@@ -59,39 +64,40 @@ function CommentItem({ comment, onUpdate }: Props) {
       ) : (
         <div className="cont">{comment.content}</div>
       )}
-
-      <ButtonContainer>
-        {isEdit ? (
-          <>
-            <Button size="small" scheme="primary" onClick={handleSubmit}>
-              수정 완료
-            </Button>
-            <Button size="small" scheme="border" onClick={handleCancel}>
-              취소
-            </Button>
-          </>
-        ) : comment.isAuthor ? (
-          <>
-            <Button size="small" scheme="border" onClick={handleEdit}>
-              수정
-            </Button>
-            <Button
-              size="small"
-              scheme="border"
-              onClick={() => setIsOpen(true)}
-            >
-              삭제
-            </Button>
-          </>
-        ) : null}
-      </ButtonContainer>
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="댓글을 삭제하시겠어요?"
-        buttonText="삭제"
-        onConfirm={handleConfirmDelete}
-      ></Modal>
+      {isLoggedIn && (
+        <ButtonContainer>
+          <Modal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            title={MODAL_TITLE.COMMENT_DELETE}
+            buttonText={MODAL_BTNTEXT.DELETE}
+            onConfirm={handleDelete}
+          ></Modal>
+          {isEdit ? (
+            <>
+              <Button size="small" scheme="primary" onClick={handleSubmit}>
+                수정 완료
+              </Button>
+              <Button size="small" scheme="border" onClick={handleCancel}>
+                취소
+              </Button>
+            </>
+          ) : comment.isAuthor ? (
+            <>
+              <Button size="small" scheme="primary" onClick={handleEdit}>
+                수정
+              </Button>
+              <Button
+                size="small"
+                scheme="border"
+                onClick={() => setIsOpen(true)}
+              >
+                삭제
+              </Button>
+            </>
+          ) : null}
+        </ButtonContainer>
+      )}
     </Container>
   );
 }

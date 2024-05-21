@@ -16,6 +16,10 @@ interface Ikey {
 }
 
 function Search() {
+  const handleKeywordClick = (text: string) => {
+    setValue('query', text); // 검색어 설정
+    setSearchParams({ query: text }); // URL 파라미터 설정
+  };
   const [searchParams, setSearchParams] = useSearchParams();
   const [keywords, setKeywords] = useState<Ikey[]>(() => {
     const savedKeywords = localStorage.getItem('keywords');
@@ -48,9 +52,14 @@ function Search() {
     setKeywords(nextKeyword);
   };
 
+  //검색어 전체 삭제
+  const handleClearKeywords = () => {
+    setKeywords([]);
+  };
+
   const handleCancelSearch = () => {
-    setValue('query', ''); // 검색어를 비움
-    setSearchParams(); // URL에서 query를 제거
+    setValue('query', '');
+    setSearchParams();
   };
 
   return (
@@ -94,12 +103,26 @@ function Search() {
         {/* 검색하지 않았을 때 보여줄 화면 (최근 검색어가 있을 때) */}
         {!searchParams.get('query') && keywords.length > 0 && (
           <RecentKeywordContainer>
-            <h2>최근검색어</h2>
+            <div className="SearchClearKeyword">
+              <h2>최근검색어</h2>
+              {keywords.length ? (
+                <ClearAllButton type="button" onClick={handleClearKeywords}>
+                  전체 삭제
+                </ClearAllButton>
+              ) : null}
+            </div>
+
             {keywords.map((keyword) => (
-              <RecentKeywordInnerContainer key={keyword.id}>
-                <div>{keyword.text}</div>
+              <RecentKeywordInnerContainer
+                key={keyword.id}
+                onClick={() => handleKeywordClick(keyword.text)}
+              >
+                <div className="RecentKeywordItem">{keyword.text}</div>
                 <RecentKeywordCancelIcon
-                  onClick={() => handleRemoveKeyword(keyword.id)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleRemoveKeyword(keyword.id);
+                  }}
                 >
                   <SmallX />
                 </RecentKeywordCancelIcon>
@@ -132,6 +155,15 @@ const RecentKeywordContainer = styled.div`
   h2 {
     font-weight: ${({ theme }) => theme.fontWeight.bold};
   }
+  .RecentKeywordItem:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .SearchClearKeyword {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const RecentKeywordInnerContainer = styled.div`
@@ -140,6 +172,18 @@ const RecentKeywordInnerContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 20px;
+`;
+
+const ClearAllButton = styled.button`
+  color: ${({ theme }) => theme.color.border};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-size: 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const StickyContainer = styled.div`
@@ -186,6 +230,9 @@ const cancelIconStyle = css`
   justify-content: center;
   height: 40px;
   cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const CancelIcon = styled.div`
@@ -194,6 +241,7 @@ const CancelIcon = styled.div`
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
+
   ${cancelIconStyle};
 `;
 

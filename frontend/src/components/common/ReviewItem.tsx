@@ -16,6 +16,17 @@ import { IReviewItem } from '@/models/review.model';
 import Like from '../Review/Like';
 import { useLike } from '@/hooks/useLike';
 import { formatDate } from '@/utils/format';
+import { useReviews } from '@/hooks/useReviews';
+import { useState } from 'react';
+import Modal from './Modal';
+import {
+  MODAL_BTNTEXT,
+  MODAL_TITLE,
+  MODAL_TYPES,
+} from '@/constance/modalString';
+import { useAuth } from '@/hooks/useAuth';
+import useAuthStore from '@/store/auth.store';
+import { handleGoLogin } from '@/utils/routingUtils';
 
 function ReviewItem({
   title,
@@ -27,14 +38,51 @@ function ReviewItem({
   likes,
   id,
   isLiked,
+  userId,
   isMyReview,
 }: IReviewItem) {
-  const { likeToggle, localIsLiked } = useLike(id, isLiked);
+  const { postReport, deleteReviewInReviews } = useReviews();
+  const { likeToggle, localIsLiked, localLikes } = useLike({
+    reviewId: id,
+    isLikedDB: isLiked,
+    likesDB: likes,
+  });
 
   const stripHtmlTags = (html: string) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     return doc.body.textContent || '';
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const { isLoggedIn } = useAuthStore();
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleReportClick = () => {
+    if (!isLoggedIn) {
+      setModalType(MODAL_TYPES.LOGIN);
+      setIsModalOpen(true);
+      return;
+    }
+    setModalType(MODAL_TYPES.REPORT);
+    openModal();
+  };
+
+  const handleConfirm = (option: string) => {
+    if (modalType === MODAL_TYPES.LOGIN) {
+      handleGoLogin();
+    }
+    postReport({ reason: option, reportedUserId: userId });
+
+    closeModal();
   };
 
   return (
@@ -57,14 +105,30 @@ function ReviewItem({
                 <li>
                   <Link to={`/review/${id}`}>수정하기</Link>
                 </li>
-                <li>삭제하기</li>
+                <li onClick={() => deleteReviewInReviews(id)}>삭제하기</li>
               </>
             ) : (
-              <li>신고하기</li>
+              <li onClick={handleReportClick}>신고하기</li>
             )}
           </ul>
         </Dropdown>
       </InfoContainer>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={
+          modalType === MODAL_TYPES.LOGIN
+            ? MODAL_TITLE.LOGIN
+            : MODAL_TITLE.REPORT
+        }
+        buttonText={
+          modalType === MODAL_TYPES.LOGIN
+            ? MODAL_BTNTEXT.LOGIN
+            : MODAL_BTNTEXT.REPORT
+        }
+        report={modalType === MODAL_TYPES.REPORT}
+        onConfirm={handleConfirm}
+      />
 
       <ImgContainer>
         <Link to={`/list/${id}`}>
@@ -92,7 +156,7 @@ function ReviewItem({
 
       <Content>{stripHtmlTags(content)}</Content>
       <LikesContainer>
-        <Like isLiked={localIsLiked} likes={likes} onClick={likeToggle} />
+        <Like isLiked={localIsLiked} likes={localLikes} onClick={likeToggle} />
       </LikesContainer>
     </Container>
   );

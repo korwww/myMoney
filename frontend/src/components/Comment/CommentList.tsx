@@ -8,25 +8,22 @@ import { IComment } from '@/models/comment.model';
 
 function CommentList() {
   const { id } = useParams(); // reviewId
-  const {
-    comments: commentLists,
-    isReviewLoading,
-    addComment,
-    updateComment,
-  } = useComments(id);
+  const { commentList, isReviewLoading, addComment, updateComment } =
+    useComments(id);
 
   if (isReviewLoading) return <Loading />;
 
   const handleUpdateComment = (commentId: number, content: string) => {
     if (!id) return;
-    updateComment({ commentId, data: { content, reviewId: id } });
+    const data = { content, reviewId: id };
+    updateComment({ commentId, data });
   };
 
   return (
     <CommentStyle>
-      <Title>댓글 {commentLists?.length}</Title>
+      <Title>댓글 {commentList?.length}</Title>
       <CommentAdd onAdd={addComment} />
-      {commentLists?.map((comment: IComment, index: number) => (
+      {commentList?.map((comment: IComment, index: number) => (
         <CommentItem
           key={index}
           comment={comment}
@@ -43,7 +40,7 @@ const CommentStyle = styled.section`
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.heading.small.fontSize};
+  font-size: ${({ theme }) => theme.heading.medium.fontSize};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 

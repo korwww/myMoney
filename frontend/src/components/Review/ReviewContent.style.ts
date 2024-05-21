@@ -12,11 +12,14 @@ export const Container = styled.section`
 
 export const TitleContainer = styled.div`
   display: flex;
+  align-items: baseline;
   gap: 6px;
   margin-bottom: 8px;
   .title {
-    font-size: ${({ theme }) => theme.heading['small'].fontSize};
+    font-size: ${({ theme }) => theme.heading['medium'].fontSize};
     font-weight: ${({ theme }) => theme.fontWeight.bold};
+    white-space: normal;
+    line-height: 1.4;
   }
 `;
 
