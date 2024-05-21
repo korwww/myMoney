@@ -24,6 +24,7 @@ app.use(
       CORS_ALLOWED_ORIGIN!,
       'http://localhost:5173',
       'http://localhost:80',
+      'http://13.124.217.248:80',
     ],
     credentials: true,
   }),
