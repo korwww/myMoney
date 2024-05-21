@@ -37,7 +37,11 @@ function BestReview({
           ) : null}
         </div>
       </div>
-      <img className="img" src={img} />
+      <div className="imgwrap">
+        {' '}
+        <img className="img" src={img} />
+      </div>
+
       <div className="wrapBottom">
         <StyledLink to={`/reviews/${id}`}>
           <div className="title">{title}</div>
@@ -63,7 +67,11 @@ function BestReview({
 const BestReviewStyle = styled.div`
   width: 390px;
   height: 350px;
-
+  .imgwrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .img {
     height: 350px;
     object-fit: cover;
