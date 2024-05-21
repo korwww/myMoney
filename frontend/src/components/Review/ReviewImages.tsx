@@ -48,6 +48,7 @@ const ReviewImagesStyle = styled.div`
   height: 390px;
   background-color: ${({ theme }) => theme.color.background};
   position: relative;
+  overflow: hidden;
 `;
 
 const ReactSlider = styled(Slider)`
