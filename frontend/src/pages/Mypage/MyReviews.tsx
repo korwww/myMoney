@@ -1,4 +1,3 @@
-import React from 'react';
 import Layout from '@/layout/Layout';
 import { useMyReviews } from '@/hooks/useMyReviews';
 import ReviewList from '@/components/common/ReviewList';

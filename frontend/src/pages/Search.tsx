@@ -21,7 +21,7 @@ function Search() {
     const savedKeywords = localStorage.getItem('keywords');
     return savedKeywords ? JSON.parse(savedKeywords) : [];
   });
-  const { reviews, isLoadingFetchReviews, fetchReviewsNextPage } = useReviews();
+  const { reviews, isLoadingFetchReviews } = useReviews();
   const { register, handleSubmit, setValue } = useForm<{ query: string }>();
 
   const onSubmit = (data: { query: string }) => {

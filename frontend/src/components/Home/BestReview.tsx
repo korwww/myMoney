@@ -39,9 +39,15 @@ function BestReview({
       </div>
       <img className="img" src={img} />
       <div className="wrapBottom">
-        <StyledLink to={`/reviews/${id}`}>
+        <Link
+          style={{
+            textDecoration: 'none',
+            color: 'white',
+          }}
+          to={`/reviews/${id}`}
+        >
           <div className="title">{title}</div>
-        </StyledLink>
+        </Link>
         <div className="userName">{userName}</div>
         <div className="wrapFlex">
           <div className="stars">
@@ -133,11 +139,6 @@ const BadgeStyle = styled(Badge)`
   .badgeImg {
     height: 22px;
   }
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: white;
 `;
 
 export default BestReview;

@@ -1,4 +1,3 @@
-import React from 'react';
 import Layout from '@/layout/Layout';
 import { useLikedReviews } from '@/hooks/useLikedReviews';
 import ReviewList from '@/components/common/ReviewList';

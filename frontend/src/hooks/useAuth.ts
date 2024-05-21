@@ -13,7 +13,6 @@ import {
 import useUserRegistrationStore from '@/store/user.registration.store';
 import useAuthStore from '@/store/auth.store';
 import { IUserLogin } from '@/models/user.model';
-import { handleGoHome } from '@/utils/routingUtils';
 
 // 아이디 저장 만료일 (한달)
 const EXPIRATION_MAX_AGE = 30 * 24 * 60 * 60;

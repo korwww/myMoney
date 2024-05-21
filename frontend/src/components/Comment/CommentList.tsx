@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import CommentAdd from './CommentAdd';
 import CommentItem from './CommentItem';
