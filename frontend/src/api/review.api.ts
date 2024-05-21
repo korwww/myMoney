@@ -11,7 +11,7 @@ export const getReviewById = async (id: string) => {
 
 export const updateReview = async (id: string, reviewData: IReview) => {
   return await httpClient.patch<IReview>(`/reviews/${id}`, reviewData);
-}
+};
 
 interface FetchReviewsParams {
   categoryId?: number;
@@ -37,7 +37,6 @@ export const fetchReview = async (reviewId: string) => {
 
 export const likeReview = async (reviewId: number) => {
   const { data } = await httpClient.post(`/likes/${reviewId}`);
-  console.log(data);
   return data;
 };
 

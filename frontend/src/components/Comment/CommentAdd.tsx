@@ -3,6 +3,11 @@ import Button from '../common/Button';
 import { TCommentItemWrite } from '@/models/comment.model';
 import { useForm } from 'react-hook-form';
 import Input from '../common/Input';
+import useAuthStore from '@/store/auth.store';
+import Modal from '../common/Modal';
+import { useState } from 'react';
+import { MODAL_BTNTEXT, MODAL_TITLE } from '@/constance/modalString';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   onAdd: (data: TCommentItemWrite) => void;
@@ -15,6 +20,19 @@ function CommentAdd({ onAdd }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<TCommentItemWrite>();
+  const { isLoggedIn } = useAuthStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    reset();
+    setIsModalOpen(false);
+  };
 
   const onSubmit = (data: TCommentItemWrite) => {
     onAdd(data);
@@ -23,7 +41,14 @@ function CommentAdd({ onAdd }: Props) {
 
   return (
     <CommentAddStyle>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        buttonText={MODAL_BTNTEXT.LOGIN}
+        title={MODAL_TITLE.LOGIN}
+        onConfirm={() => navigate(`/login`)}
+      />
+      <form>
         <fieldset>
           <Input
             $inputType="text"
@@ -35,7 +60,11 @@ function CommentAdd({ onAdd }: Props) {
           )}
         </fieldset>
         <ButtonContainer>
-          <Button size="small" scheme="primary">
+          <Button
+            size="small"
+            scheme="primary"
+            onClick={!isLoggedIn ? openModal : handleSubmit(onSubmit)}
+          >
             등록
           </Button>
         </ButtonContainer>
