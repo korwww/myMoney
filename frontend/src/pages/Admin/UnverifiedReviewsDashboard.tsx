@@ -40,7 +40,7 @@ function UnverifiedReviewsDashboard() {
         title="미승인 후기 관리"
         isLoading={isLoadingUnverifiedReviews}
       >
-        {!unverifiedReviews.length && (
+        {unverifiedReviews.length === 0 && (
           <tr>
             <td colSpan={tableHead.length}>미승인 후기가 없습니다.</td>
           </tr>

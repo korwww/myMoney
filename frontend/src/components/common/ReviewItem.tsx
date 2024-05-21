@@ -29,7 +29,11 @@ function ReviewItem({
   isLiked,
   isMyReview,
 }: IReviewItem) {
-  const { likeToggle, localIsLiked } = useLike(id, isLiked);
+  const { likeToggle, localIsLiked, localLikes } = useLike({
+    reviewId: id,
+    isLikedDB: isLiked,
+    likesDB: likes,
+  });
 
   const stripHtmlTags = (html: string) => {
     const parser = new DOMParser();
@@ -92,7 +96,7 @@ function ReviewItem({
 
       <Content>{stripHtmlTags(content)}</Content>
       <LikesContainer>
-        <Like isLiked={localIsLiked} likes={likes} onClick={likeToggle} />
+        <Like isLiked={localIsLiked} likes={localLikes} onClick={likeToggle} />
       </LikesContainer>
     </Container>
   );

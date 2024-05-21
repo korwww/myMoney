@@ -25,7 +25,7 @@ function ReviewList({
   const { observerRef } = useIntersectionObserver(fetchNextPage);
 
   return (
-    <div>
+    <>
       {title && <Title>{title}</Title>}
       {!reviews.length &&
         (typeof text === 'string' ? (
@@ -42,7 +42,7 @@ function ReviewList({
         </LoadingContainer>
       )}
       {hasNextPage && <ObserverDiv id="more" ref={observerRef}></ObserverDiv>}
-    </div>
+    </>
   );
 }
 
