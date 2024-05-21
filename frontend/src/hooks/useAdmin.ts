@@ -21,6 +21,7 @@ export const useAdmin = () => {
     throwOnError: true,
     onSuccess: () => {
       refetchSuspendedUsers();
+      alert('신고가 취소되었습니다.');
     },
   });
   const deleteReportAction = (reportId: number) => {
@@ -43,6 +44,7 @@ export const useAdmin = () => {
     mutationFn: fetchApproveReview,
     onSuccess: () => {
       refetchUnverifiedReviews();
+      alert('후기를 승인처리했습니다.');
     },
     throwOnError: true,
   });
