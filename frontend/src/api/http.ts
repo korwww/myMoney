@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { logout } from './auth.api';
 import { handleGoLogin } from '@/utils/routingUtils';
 
-const BASE_URL = 'http://13.124.217.248:3031';
+const BASE_URL = 'http://localhost:3031';
 const DEFAULT_TIMEOUT = 30000;
 
 export const createClient = (config?: AxiosRequestConfig) => {
