@@ -2,15 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../common/Button';
+import AlertText from '../common/AlertText';
 
 interface JoinFormProps {
   children: React.ReactNode;
   isLastStep: boolean;
   onSubmit: () => void;
   isValid: boolean;
+  errorMessage: string | null;
 }
 
-function JoinForm({ children, isLastStep, onSubmit, isValid }: JoinFormProps) {
+function JoinForm({
+  children,
+  isLastStep,
+  onSubmit,
+  isValid,
+  errorMessage,
+}: JoinFormProps) {
   return (
     <Form onSubmit={onSubmit}>
       <InputWrapper>{children}</InputWrapper>
@@ -25,6 +33,7 @@ function JoinForm({ children, isLastStep, onSubmit, isValid }: JoinFormProps) {
       >
         {isLastStep ? '회원가입' : '계속하기'}
       </Button>
+      {errorMessage && <AlertText size="small">{errorMessage}</AlertText>}
     </Form>
   );
 }

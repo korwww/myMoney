@@ -1,4 +1,3 @@
-import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,12 +9,12 @@ import { TextLogo } from '@/assets/icons/textLogo';
 
 const adminNav: AdminNavItemProps[] = [
   {
-    path: '/myMoney-admin/report-user',
+    path: '/admin/report-user',
     name: '신고된 사용자 관리',
     icon: <User />,
   },
   {
-    path: '/myMoney-admin/unverified-reviews',
+    path: '/admin/unverified-reviews',
     name: '미승인 후기 관리',
     icon: <ReceiptAuthentication />,
     $iconSize: 16,

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -8,8 +8,11 @@ import Layout from '@/layout/Layout';
 import { IUserRegistration } from '@/models/user.model';
 import { VALIDATE } from '@/constance/validate';
 import Input from '@/components/common/Input';
+import { useAuth } from '@/hooks/useAuth';
+import { withUnauthenticatedUser } from '@/components/hocs/withUnauthenticatedUser';
 
 const JoinStep3Password = () => {
+  const { errorMessage, userJoin } = useAuth();
   const {
     register,
     handleSubmit,
@@ -54,6 +57,7 @@ const JoinStep3Password = () => {
   };
 
   const passwordCheckedValidation = {
+    required: '비밀번호를 다시 입력해주세요',
     validate: {
       matchPassword: (value: string) => {
         const { password } = getValues();
@@ -63,12 +67,7 @@ const JoinStep3Password = () => {
   };
 
   const onSubmit = handleSubmit((data) => {
-    // 넘어온 데이터 중에 password만 추출
-    // email,nickname은 navigate할 때 state로 전달받거나,
-    // zustand를 사용하여 저장한 유저 정보 사용
-    // const user = {email,nickname,password:data.password}
-    // 회원가입 로직
-    // 로그인페이지로 이동
+    userJoin(data.password.trim());
   });
 
   return (
@@ -78,12 +77,12 @@ const JoinStep3Password = () => {
         title="비밀번호를\n입력해주세요."
         onSubmit={onSubmit}
         isValid={isValid}
+        errorMessage={errorMessage}
       >
         <fieldset>
           <Input
             $inputType="password"
             {...register('password', passwordValidation)}
-            type="password"
             placeholder="비밀번호를 입력해주세요"
           />
           {errors.password && (
@@ -94,7 +93,6 @@ const JoinStep3Password = () => {
           <Input
             $inputType="password"
             {...register('password_checked', passwordCheckedValidation)}
-            type="password"
             placeholder="비밀번호를 다시 입력해주세요"
           />
           {errors.password_checked && (
@@ -117,4 +115,4 @@ const PasswordDescription = styled.p`
   font-size: ${({ theme }) => theme.text['small'].fontSize};
 `;
 
-export default JoinStep3Password;
+export default withUnauthenticatedUser(JoinStep3Password);

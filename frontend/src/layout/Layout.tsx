@@ -11,17 +11,17 @@ interface LayoutProps {
 
 function Layout({ children, showBackButton, title }: LayoutProps) {
   return (
-    <div>
+    <Container>
       <Header title={title} showBackButton={showBackButton} />
-      <Main id="main">{children}</Main>
+      <div id="main">{children}</div>
       <Navigation />
-    </div>
+    </Container>
   );
 }
 
-const Main = styled.div`
-  /* max-width: 768px; */
-  width: 390px;
-  margin: 0 auto;
+const Container = styled.div`
+  max-width: 390px;
+  margin-inline: auto;
+  padding-bottom: 85px;
 `;
 export default Layout;

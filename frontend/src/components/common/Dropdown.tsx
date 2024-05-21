@@ -5,9 +5,21 @@ interface Props {
   children: React.ReactNode;
   toggleButton: React.ReactNode;
   isOpen?: boolean;
+  $positionLnR: 'left' | 'right';
+  $positionValue?: number;
+  $positionTopValue: number;
+  $width?: number;
 }
 
-function Dropdown({ children, toggleButton, isOpen = false }: Props) {
+function Dropdown({
+  children,
+  toggleButton,
+  isOpen = false,
+  $positionLnR = 'right',
+  $positionValue,
+  $positionTopValue,
+  $width,
+}: Props) {
   const [open, setOpen] = useState(isOpen);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +41,14 @@ function Dropdown({ children, toggleButton, isOpen = false }: Props) {
   }, [dropdownRef]);
 
   return (
-    <DropdownStyle $open={open} ref={dropdownRef}>
+    <DropdownStyle
+      $open={open}
+      ref={dropdownRef}
+      $positionLnR={$positionLnR}
+      $positionValue={$positionValue}
+      $positionTopValue={$positionTopValue}
+      $width={$width}
+    >
       <button className="toggle" onClick={() => setOpen(!open)}>
         {toggleButton}
       </button>
@@ -40,6 +59,10 @@ function Dropdown({ children, toggleButton, isOpen = false }: Props) {
 
 interface DropdownStyleProps {
   $open: boolean;
+  $positionLnR: 'left' | 'right';
+  $positionValue?: number;
+  $positionTopValue: number;
+  $width?: number;
 }
 
 const DropdownStyle = styled.div<DropdownStyleProps>`
@@ -61,7 +84,11 @@ const DropdownStyle = styled.div<DropdownStyleProps>`
 
   .panel {
     position: absolute;
-    right: 0;
+    ${({ $positionLnR, $positionValue }) =>
+      $positionLnR === 'left'
+        ? `left: ${$positionValue ? `${$positionValue}px` : '0px'}`
+        : `right: ${$positionLnR ? `${$positionValue}px` : '0px'}`};
+    top: ${({ $positionTopValue }) => `${$positionTopValue}px`};
     background: #fff;
     border: 1px solid ${({ theme }) => theme.color.border};
     border-radius: ${({ theme }) => theme.borderRadius.default};
@@ -69,7 +96,7 @@ const DropdownStyle = styled.div<DropdownStyleProps>`
 
     ul {
       li {
-        width: 90px;
+        width: ${({ $width }) => ($width ? `${$width}px` : '90px')};
         display: flex;
         align-items: center;
         justify-content: center;

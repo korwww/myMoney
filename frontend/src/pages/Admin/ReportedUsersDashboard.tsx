@@ -1,68 +1,72 @@
-import React from 'react';
-
 import AdminLayout from '@/components/Admin/AdminLayout';
 import AdminContent from '@/components/Admin/AdminContent';
 import AdminTable, { TableHeadItem } from '@/components/Admin/AdminTable';
 import Button from '@/components/common/Button';
-
-interface ReportUserTd {
-  email: string;
-  reason: '광고용 후기' | '부적절한 단어 사용';
-  count: number;
-  state: '정지 종료' | '정지';
-}
+import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthenticatedUser';
+import { useAdmin } from '@/hooks/useAdmin';
+import { ISuspendedUsers } from '@/models/admin.model';
 
 const tableHead: TableHeadItem[] = [
-  { name: 'No', width: 40 },
-  { name: '이메일', width: 295 },
-  { name: '신고 사유', width: 240 },
-  { name: '횟수', width: 50 },
-  { name: '상태', width: 150 },
-  { name: '', width: 135 },
-];
-
-const tableBody: ReportUserTd[] = [
-  {
-    email: 'myMoney@gmail.com',
-    reason: '광고용 후기',
-    count: 3,
-    state: '정지 종료',
-  },
-  {
-    email: 'prgms@gmail.com',
-    reason: '부적절한 단어 사용',
-    count: 1,
-    state: '정지',
-  },
+  { name: 'No', $widthRatio: 7 },
+  { name: '이메일', $widthRatio: 36 },
+  { name: '신고 사유', $widthRatio: 13 },
+  { name: '횟수', $widthRatio: 13 },
+  { name: '상태', $widthRatio: 14 },
+  { name: '', $widthRatio: 20 },
 ];
 
 function ReportedUsersDashboard() {
+  const { isLoadingSuspendedUsers, suspendedUsers, deleteReportAction } =
+    useAdmin();
+
+  const transformData = (users: ISuspendedUsers[]) => {
+    return users.map((data: ISuspendedUsers) => ({
+      ...data,
+      status: data.isSuspended ? '정지' : '정지 종료',
+    }));
+  };
+
+  const handleDeleteReport = (reportId: number) => {
+    deleteReportAction(reportId);
+  };
   return (
     <AdminLayout>
-      <AdminContent title="신고된 유저 관리">
-        <AdminTable tableHead={tableHead}>
-          {tableBody.map((report, idx) => (
-            <tr key={idx}>
-              <td>{idx + 1}</td>
-              <td>{report.email}</td>
-              <td>{report.reason}</td>
-              <td>{report.count}</td>
-              <td>{report.state}</td>
-              <td>
-                <Button
-                  scheme="primary"
-                  size="small"
-                  disabled={report.state === '정지 종료'}
-                >
-                  정지해제
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </AdminTable>
+      <AdminContent
+        title="신고된 유저 관리"
+        isLoading={isLoadingSuspendedUsers}
+      >
+        {!suspendedUsers.length && (
+          <tr>
+            <td colSpan={tableHead.length}>신고된 유저가 없습니다.</td>
+          </tr>
+        )}
+
+        {suspendedUsers.length > 0 && (
+          <AdminTable tableHead={tableHead}>
+            {transformData(suspendedUsers).map((report, idx) => (
+              <tr key={idx}>
+                <td>{idx + 1}</td>
+                <td>{report.reportedUserEmail}</td>
+                <td>{report.reportReason}</td>
+                <td>{report.reportCount}</td>
+                <td>{report.status}</td>
+                <td>
+                  <Button
+                    scheme="primary"
+                    size="small"
+                    disabled={report.status === '정지 종료'}
+                    onClick={() => handleDeleteReport(report.reportId)}
+                  >
+                    정지해제
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </AdminTable>
+        )}
       </AdminContent>
     </AdminLayout>
   );
 }
 
-export default ReportedUsersDashboard;
+export default withAdminAuthenticatedUser(ReportedUsersDashboard);

@@ -1,32 +1,38 @@
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
 import LoginForm from '@/components/Login/LoginForm';
 import { IUserLogin } from '@/models/user.model';
 import AuthOptions from '@/components/common/AuthOptions';
+import { useAuth } from '@/hooks/useAuth';
 
 function AdminLogin() {
-  const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IUserLogin>();
+  const { errorMessage, userLogin } = useAuth();
+  const { register, handleSubmit } = useForm<IUserLogin>();
 
-  const onSubmit = handleSubmit(() => {
-    // navigate('/myMoney-admin/report-user')
+  const onSubmit = handleSubmit((data) => {
+    userLogin(data, false);
   });
   return (
     <Container>
       <Inner>
         <Title>관리자 로그인</Title>
-        <LoginForm onSubmit={onSubmit} register={register} errors={errors} />
-        <AuthOptions
-          description="계정을 잊으셨나요?"
-          linkPath=""
-          linkText="계정찾기"
+        <LoginForm
+          onSubmit={onSubmit}
+          register={register}
+          errorMessage={errorMessage}
         />
+        <div
+          onClick={() =>
+            alert('준비 중인 서비스입니다. 서비스 관리자에게 문의하세요')
+          }
+        >
+          <AuthOptions
+            description="계정을 잊으셨나요?"
+            linkPath=""
+            linkText="계정찾기"
+          />
+        </div>
       </Inner>
     </Container>
   );

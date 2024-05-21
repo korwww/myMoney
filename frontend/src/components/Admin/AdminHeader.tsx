@@ -1,13 +1,14 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import Button from '../common/Button';
+import { useAuth } from '@/hooks/useAuth';
 
 function AdminHeader() {
+  const { userLogout } = useAuth();
   return (
     <Header>
       <h4>관리자 페이지</h4>
-      <Button scheme="primary" size="small">
+      <Button scheme="primary" size="small" onClick={userLogout}>
         로그아웃
       </Button>
     </Header>
