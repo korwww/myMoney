@@ -9,16 +9,13 @@ import styled from 'styled-components';
 function ReviewDetail() {
   const { id } = useParams();
   const { review } = useReviewDetail(id);
-  console.log(review);
-
-  if (!review) return null;
-
+  if (!review) return;
   return (
     <Layout showBackButton={true}>
       <ReviewDetailStyle>
         <ReviewImages reviewImages={review.reviewImg} title={review.title} />
 
-        <ReviewContent reviewId={id} />
+        <ReviewContent />
 
         <CommentList />
       </ReviewDetailStyle>

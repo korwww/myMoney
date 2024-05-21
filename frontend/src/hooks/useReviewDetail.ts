@@ -5,6 +5,7 @@ import {
   likeReview,
   deleteReview,
 } from '@/api/review.api';
+import { IReport } from '@/models/report.model';
 import { IReviewDetail } from '@/models/review.model';
 import useAuthStore from '@/store/auth.store';
 import { useEffect, useState } from 'react';
@@ -54,11 +55,7 @@ export const useReviewDetail = (reviewId: string | undefined) => {
     });
   };
 
-  const reportToggle = () => {
-    const data = {
-      reason: '',
-      reportedUserId: 1,
-    };
+  const reportToggle = (data: IReport) => {
     addReport(data);
   };
 

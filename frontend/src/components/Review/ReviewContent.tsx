@@ -4,7 +4,7 @@ import { Siren } from '@/assets/icons/Siren';
 import { IReviewDetail } from '@/models/review.model';
 import { AiFillStar } from 'react-icons/ai';
 import { useReviewDetail } from '@/hooks/useReviewDetail';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Badge } from '../common/ReviewItem.style';
 import BadgeImg from '@/assets/images/badge-img.png';
 import {
@@ -20,6 +20,11 @@ import { Trash } from '@/assets/icons/Trash';
 import useAuthStore from '@/store/auth.store';
 import Modal from '../common/Modal';
 import { useState } from 'react';
+import {
+  MODAL_TYPES,
+  MODAL_TITLE,
+  MODAL_BTNTEXT,
+} from '@/constance/modalString';
 
 export interface Props {
   reviewId?: string;
@@ -55,34 +60,69 @@ const Btn: React.FC<BtnProps> = ({ className, icon, label, onClick }) => {
   );
 };
 
-function ReviewContent({ reviewId }: Props) {
+function ReviewContent() {
+  const { id } = useParams();
   const { review, likeToggle, deleteToggle, reportToggle } =
-    useReviewDetail(reviewId);
+    useReviewDetail(id);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
-  const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState('');
-
+  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   if (!review) return null;
 
-  const handleUpdateClick = () => {
-    if (!isLoggedIn) {
-      window.alert('로그인이 필요합니다.');
-      return;
-    }
-    navigate(`/list/${reviewId}`);
+  const openModal = () => {
+    setIsModalOpen(true);
+    setSelectedOption('');
   };
 
-  const handleConfirmAction = () => {
-    if (modalType === 'delete') {
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedOption('');
+  };
+
+  const handleUpdate = () => {
+    if (!isLoggedIn) {
+      setModalType(MODAL_TYPES.LOGIN);
+      setIsModalOpen(true);
+      return;
+    }
+    navigate(`/review/${id}`);
+  };
+
+  const handleDelete = () => {
+    if (!isLoggedIn) {
+      setModalType(MODAL_TYPES.LOGIN);
+      setIsModalOpen(true);
+      return;
+    }
+    setModalType(MODAL_TYPES.DELETE);
+    openModal();
+  };
+
+  const handleReport = () => {
+    if (!isLoggedIn) {
+      setModalType(MODAL_TYPES.LOGIN);
+      setIsModalOpen(true);
+      return;
+    }
+    setModalType(MODAL_TYPES.REPORT);
+    openModal();
+  };
+
+  // 모달창 확인버튼 눌렀을 때 다음 동작
+  const handleConfirm = (option: string) => {
+    if (modalType === MODAL_TYPES.DELETE) {
       deleteToggle();
     }
-    if (modalType === 'report') {
-      reportToggle();
+    if (modalType === MODAL_TYPES.REPORT) {
+      reportToggle({ reason: option, reportedUserId: review.userId });
     }
-    setIsOpen(false);
+    if (modalType === MODAL_TYPES.LOGIN) {
+      navigate(`/login`);
+    }
+    closeModal();
   };
-  review.isAuthor = false;
 
   return (
     <Container>
@@ -91,43 +131,36 @@ function ReviewContent({ reviewId }: Props) {
         {review.isAuthor ? (
           <div className="btn">
             <Btn
-              className="updateBtn"
+              className="update"
               icon={<PencilSimple />}
-              onClick={handleUpdateClick}
+              onClick={handleUpdate}
             />
-            <Btn
-              className="deleteBtn"
-              icon={<Trash />}
-              onClick={() => {
-                setModalType('delete');
-                setIsOpen(true);
-              }}
-            />
+            <Btn className="delete" icon={<Trash />} onClick={handleDelete} />
           </div>
         ) : (
-          <Btn
-            className="reportBtn btn"
-            icon={<Siren />}
-            onClick={() => {
-              setModalType('report');
-              setIsOpen(true);
-            }}
-            label="신고하기"
-          />
+          <Btn className="report btn" icon={<Siren />} onClick={handleReport} />
         )}
       </AuthorContainer>
 
       <Modal
-        isOpen={isOpen}
+        isOpen={isModalOpen}
+        onClose={closeModal}
         title={
-          modalType === 'delete'
-            ? '리뷰를 정말로 삭제하시겠어요?'
-            : '리뷰 작성자를 신고하시겠어요?'
+          modalType === MODAL_TYPES.LOGIN
+            ? MODAL_TITLE.LOGIN
+            : modalType === MODAL_TYPES.DELETE
+              ? MODAL_TITLE.DELETE
+              : MODAL_TITLE.REPORT
         }
-        buttonText={modalType === 'delete' ? '삭제' : '신고'}
-        report={modalType === 'delete' ? false : true}
-        onClose={() => setIsOpen(false)}
-        onConfirm={handleConfirmAction}
+        buttonText={
+          modalType === MODAL_TYPES.LOGIN
+            ? MODAL_BTNTEXT.LOGIN
+            : modalType === MODAL_TYPES.DELETE
+              ? MODAL_BTNTEXT.DELETE
+              : MODAL_BTNTEXT.REPORT
+        }
+        report={modalType === MODAL_TYPES.REPORT}
+        onConfirm={handleConfirm}
       />
 
       <TitleContainer>
@@ -154,7 +187,15 @@ function ReviewContent({ reviewId }: Props) {
       <Like
         isLiked={review.isLiked}
         likes={review.likes}
-        onClick={likeToggle}
+        onClick={
+          !isLoggedIn
+            ? () => {
+                setModalType(MODAL_TYPES.LOGIN);
+                setIsModalOpen(true);
+                return;
+              }
+            : likeToggle
+        }
       />
     </Container>
   );
