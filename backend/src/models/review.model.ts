@@ -302,7 +302,7 @@ export const findUnverifiedReviews = async () => {
       'user.nickname AS userName',
     ])
     .where('reviews.verified = false')
-    .getRawOne();
+    .getRawMany();
 
   return reviews;
 };
