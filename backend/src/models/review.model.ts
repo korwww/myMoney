@@ -1,6 +1,5 @@
 import { ERROR_MESSAGE } from '../constance/errorMessage';
 import { AppDataSource } from '../data-source';
-import { Comment } from '../entity/comments.entity';
 import { Like } from '../entity/likes.entity';
 import { ReviewImg } from '../entity/review_img.entity';
 import { Review } from '../entity/reviews.entity';
@@ -287,4 +286,23 @@ export const approve = async (reviewId: number) => {
 
   review.verified = true;
   return await reviewRepository.save(review);
+};
+
+// 미인증 후기 목록 조회
+export const findUnverifiedReviews = async () => {
+  const reviews = await reviewRepository
+    .createQueryBuilder('reviews')
+    .leftJoinAndSelect('reviews.user', 'user')
+    .select([
+      'reviews.id AS id',
+      'reviews.title AS title',
+      'reviews.createdAt AS createdAt',
+      'reviews.receiptImg AS receiptImg',
+      'user.id AS userId',
+      'user.nickname AS userName',
+    ])
+    .where('reviews.verified = false')
+    .getRawMany();
+
+  return reviews;
 };

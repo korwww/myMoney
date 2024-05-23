@@ -9,6 +9,7 @@ import {
   serviceReviewDetails,
   approveReview,
   serviceDeleteReview,
+  serviceGetUnverifiedReviews,
 } from '../services/review.service';
 import { CustomRequest } from '../middlewares/authentication';
 import { ERROR_MESSAGE } from '../constance/errorMessage';
@@ -198,6 +199,22 @@ export const approveReviewByAdmin = async (
   try {
     await approveReview(reviewId);
     res.status(200).send({ message: 'success' });
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const getUnverifiedReviews = async (
+  req: CustomRequest,
+  res: Response,
+) => {
+  const { isAdmin } = req.user!;
+  if (!isAdmin) {
+    throw new Error(ERROR_MESSAGE.DENIED);
+  }
+  try {
+    const reviews = await serviceGetUnverifiedReviews();
+    res.status(200).send({ message: 'success', reviews });
   } catch (error: any) {
     throw new Error(error.message);
   }

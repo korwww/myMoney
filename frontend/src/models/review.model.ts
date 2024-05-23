@@ -32,3 +32,12 @@ export interface IReviewItem {
   isMyReview: boolean;
   isLiked: boolean;
 }
+
+export interface IUnverifiedReviewItem {
+  id: number;
+  userId: number;
+  userName: string;
+  title: string;
+  createdAt: string;
+  receiptImg: string;
+}
