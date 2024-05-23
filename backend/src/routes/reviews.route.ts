@@ -6,6 +6,7 @@ import {
   updateReview,
   getReviewsWithPagination,
   approveReviewByAdmin,
+  getUnverifiedReviews,
 } from '../controllers/reviews.controller';
 import { authentication } from '../middlewares/authentication';
 import { validateReview } from '../validators/reviews.validator';
@@ -16,6 +17,7 @@ router.use(express.json());
 
 router.route('/').get(authentication(), getReviewsWithPagination).post();
 
+router.get('/unverifiedReviews', authentication(true), getUnverifiedReviews);
 router
   .route('/:id')
   .get(authentication(), getReviewDetails)

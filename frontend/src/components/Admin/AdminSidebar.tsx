@@ -53,6 +53,9 @@ const Container = styled.aside`
   width: 230px;
   height: 100%;
   background-color: ${({ theme }) => theme.color.darkGray};
+  position: fixed;
+  top: 0;
+  left: 0;
 `;
 
 const Logo = styled.div`

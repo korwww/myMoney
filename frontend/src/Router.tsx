@@ -12,11 +12,10 @@ import JoinStep3Password from '@/pages/Join/JoinStep3Password';
 import AdminLogin from '@/pages/Admin/AdminLogin';
 import ReportedUsersDashboard from '@/pages/Admin/ReportedUsersDashboard';
 import UnverifiedReviewsDashboard from '@/pages/Admin/UnverifiedReviewsDashboard';
-import NotFoundError from './components/Error/NotFoundError';
-import ReviewDetail from './pages/ReviewDetail';
-import MyReviews from './pages/Mypage/MyReviews';
-import LikedReviews from './pages/Mypage/LikedReviews';
-import EditReview from './pages/Review/EditReview';
+import ReviewDetail from '@/pages/ReviewDetail';
+import MyReviews from '@/pages/Mypage/MyReviews';
+import LikedReviews from '@/pages/Mypage/LikedReviews';
+import EditReview from '@/pages/Review/EditReview';
 
 export function Router() {
   return (
@@ -49,13 +48,12 @@ export function Router() {
           <Route path="step3" element={<JoinStep3Password />} />
         </Route>
 
+        {/* 마이페이지 */}
         <Route path="/mypage">
           <Route index element={<MyPage />} />
           <Route path="reviews" element={<MyReviews />} />
           <Route path="liked" element={<LikedReviews />} />
         </Route>
-
-        <Route path="*" element={<NotFoundError />} />
       </Routes>
     </BrowserRouter>
   );
