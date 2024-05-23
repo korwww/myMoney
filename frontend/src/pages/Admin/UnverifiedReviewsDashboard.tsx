@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import dayjs from 'dayjs';
 
 import AdminContent from '@/components/Admin/AdminContent';
 import AdminLayout from '@/components/Admin/AdminLayout';
@@ -9,8 +10,7 @@ import Icon from '@/components/common/Icon';
 import { withAdminAuthenticatedUser } from '@/components/hocs/withAdminAuthenticatedUser';
 import { useAdmin } from '@/hooks/useAdmin';
 import Modal from '@/components/common/Modal';
-import { IReviewItem } from '@/models/review.model';
-import dayjs from 'dayjs';
+import { IUnverifiedReviewItem } from '@/models/review.model';
 
 const tableHead: TableHeadItem[] = [
   { name: 'No', $widthRatio: 7 },
@@ -48,29 +48,31 @@ function UnverifiedReviewsDashboard() {
 
         {unverifiedReviews.length > 0 && (
           <AdminTable tableHead={tableHead}>
-            {unverifiedReviews.map((report: IReviewItem, idx: number) => (
-              <React.Fragment key={idx}>
-                <tr>
-                  <td>{idx + 1}</td>
-                  <td>{report.title}</td>
-                  <td>{report.userName}</td>
-                  <td>{dayjs(report.createdAt).format('YYYY-MM-DD')}</td>
-                  <td>
-                    <IconButton onClick={() => setIsModalOpen(true)}>
-                      <Icon width={22} icon={<Image />} />
-                    </IconButton>
-                  </td>
-                </tr>
-                <Modal
-                  buttonText="승인"
-                  imageSrc={report.reviewImg}
-                  isOpen={isModalOpen}
-                  onClose={closeModal}
-                  onCancel={closeModal}
-                  onConfirm={() => approve(report.id)}
-                />
-              </React.Fragment>
-            ))}
+            {unverifiedReviews.map(
+              (report: IUnverifiedReviewItem, idx: number) => (
+                <React.Fragment key={idx}>
+                  <tr>
+                    <td>{idx + 1}</td>
+                    <td>{report.title}</td>
+                    <td>{report.userName}</td>
+                    <td>{dayjs(report.createdAt).format('YYYY-MM-DD')}</td>
+                    <td>
+                      <IconButton onClick={() => setIsModalOpen(true)}>
+                        <Icon width={22} icon={<Image />} />
+                      </IconButton>
+                    </td>
+                  </tr>
+                  <Modal
+                    buttonText="승인"
+                    imageSrc={report.receiptImg}
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                    onCancel={closeModal}
+                    onConfirm={() => approve(report.id)}
+                  />
+                </React.Fragment>
+              ),
+            )}
           </AdminTable>
         )}
       </AdminContent>
