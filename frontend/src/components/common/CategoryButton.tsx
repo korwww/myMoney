@@ -11,7 +11,8 @@ function CategoryButton({ categoryId, element, categoryName }: ICategoryItem) {
       <StyledLink
         to={{
           pathname: '/list',
-          search: categoryId ? `?categoryId=${categoryId}` : `?isVerified=true`,
+          search:
+            categoryId != 10 ? `?categoryId=${categoryId}` : `?isVerified=true`,
         }}
       >
         <Button
