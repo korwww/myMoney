@@ -80,6 +80,7 @@ export const Badge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 40px;
   height: 18px;
   border: 1px solid ${({ theme }) => theme.color.primary};
