@@ -17,7 +17,7 @@ function RecentKeyword({
   handleClearRecentKeywords,
   handleRecentKeywordClick,
 }: IRecentKeywordProps) {
-  if (RecentKeyword.length === 0)
+  if (keywords.length === 0)
     return <NoRecentSearchResult text="최근 검색어가 없습니다." />;
   return (
     <RecentKeywordContainer>
