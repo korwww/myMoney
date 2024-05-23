@@ -146,7 +146,7 @@ function ReviewItem({
         <Link to={`/list/${id}`}>
           <h4 className="title">{title}</h4>
         </Link>
-        {verified && (
+        {Boolean(verified) && (
           <Badge>
             <img className="badgeImg" src={BadgeImg} alt="인증마크" />
             인증

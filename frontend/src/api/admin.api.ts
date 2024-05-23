@@ -1,7 +1,7 @@
 import { httpClient } from './http';
 
 export const fetchUnverifiedReviews = async () => {
-  const { data } = await httpClient.get('/reviews?isVerified=false');
+  const { data } = await httpClient.get('/reviews/unverifiedReviews');
   return data;
 };
 
