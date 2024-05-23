@@ -11,7 +11,7 @@ import {
   getReviews,
   approve,
   deleteReview,
-  // getTotalCount,
+  findUnverifiedReviews,
 } from '../models/review.model';
 import { findUserById } from '../models/user.model';
 
@@ -180,4 +180,8 @@ export const update = async (
 
 export const approveReview = async (reviewId: number) => {
   return await approve(reviewId);
+};
+
+export const serviceGetUnverifiedReviews = async () => {
+  return await findUnverifiedReviews();
 };
