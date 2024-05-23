@@ -83,13 +83,7 @@ const BestReviewStyle = styled.div`
     position: absolute;
     z-index: 15;
     width: 100%;
-    background-image: linear-gradient(
-      to bottom,
-      #454545,
-      rgba(255, 255, 255, 0)
-    );
     height: 50px;
-
     padding: 8px;
 
     .badge {
