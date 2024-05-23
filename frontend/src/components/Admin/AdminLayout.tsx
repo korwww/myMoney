@@ -57,7 +57,6 @@ const AlertContainer = styled.div`
 `;
 
 const Container = styled.div`
-  display: flex;
   width: 100%;
   min-width: 1200px;
   height: 100vh;
@@ -65,7 +64,7 @@ const Container = styled.div`
 `;
 
 const AdminMainContent = styled.section`
-  flex: 1;
+  padding-left: 230px;
 `;
 
 export default AdminLayout;
