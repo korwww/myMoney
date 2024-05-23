@@ -12,12 +12,12 @@ function StatRating({ ratingIndex, setRatingIndex }: RatingSectionProps) {
 
   return (
     <RatingContainer>
-      {ArrayIndexes.map((arrayindex, index) => (
+      {ArrayIndexes.map((arrayIndex, index) => (
         <RatingStar
           size={35}
           key={index}
-          className={arrayindex <= ratingIndex ? 'active' : 'inactive'}
-          onClick={() => setRatingIndex(arrayindex)}
+          className={arrayIndex <= ratingIndex ? 'active' : 'inactive'}
+          onClick={() => setRatingIndex(arrayIndex)}
         />
       ))}
     </RatingContainer>
@@ -31,7 +31,7 @@ const RatingContainer = styled.div`
   text-align: center;
   margin: 12px 0px;
   justify-content: center;
-  
+
   .inactive {
     color: ${({ theme }) => theme.color.disabled};
   }
